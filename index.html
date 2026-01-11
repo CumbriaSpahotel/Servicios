@@ -853,9 +853,9 @@
                         <!-- Starters -->
                         <div class="mb-8 text-center">
                             <h3 class="text-xl font-bold text-stone-800 mb-4 text-left">Primer plato para elegir:</h3>
-                            <ul class="space-y-2">
+                            <ul class="space-y-3">
                                 ${(dm.starters || []).map(d => `
-                                    <li class="text-stone-600 text-lg leading-relaxed">
+                                    <li class="font-serif italic text-xl text-stone-700 leading-relaxed">
                                         ${formatDish(d)}
                                     </li>
                                 `).join('')}
@@ -865,9 +865,9 @@
                         <!-- Mains -->
                         <div class="mb-10 text-center">
                             <h3 class="text-xl font-bold text-stone-800 mb-4 text-left">Segundo plato para elegir:</h3>
-                            <ul class="space-y-2">
+                            <ul class="space-y-3">
                                 ${(dm.mains || []).map(d => `
-                                    <li class="text-stone-600 text-lg leading-relaxed">
+                                    <li class="font-serif italic text-xl text-stone-700 leading-relaxed">
                                         ${formatDish(d)}
                                     </li>
                                 `).join('')}
@@ -877,7 +877,14 @@
                         <!-- Footer Info -->
                         <div class="text-right border-t pt-4 border-stone-200">
                             <p class="font-bold text-stone-800 text-sm mb-1">${(dm.includes || '').replace(/\n/g, '<br>')}</p>
-                            <p class="text-3xl font-bold text-stone-900">${dm.price} €</p>
+                            <div class="flex justify-between items-end mt-4">
+                                <!-- WhatsApp Share Button -->
+                                <button onclick="shareDailyMenu()" class="inline-flex items-center gap-2 px-4 py-2 bg-[#25D366] text-white rounded-full text-xs font-bold uppercase tracking-wider hover:bg-green-600 transition shadow-sm card-press">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="w-4 h-4 brightness-0 invert">
+                                    Enviar Menú
+                                </button>
+                                <p class="text-3xl font-bold text-stone-900">${dm.price} €</p>
+                            </div>
                         </div>
 
                         <!-- Date -->
@@ -1028,6 +1035,36 @@
                     <span class="text-sm font-bold text-stone-500">${item.price}€</span>
                 </div>
              `).join('');
+        }
+
+        // Helper: Share Daily Menu via WhatsApp
+        function shareDailyMenu() {
+            const dm = appData.restaurante.dailyMenu;
+            if (!dm) return;
+
+            let phone = prompt("Introduce el teléfono del cliente (con código de país, ej: 34600123456):");
+            // If user cancels, do nothing. If empty, fallback to generic share? 
+            // User requested "al telefono que ponga", so if they cancel, we stop.
+            if (phone === null) return;
+
+            // Clean phone number (remove spaces, dashes)
+            phone = phone.replace(/[^0-9]/g, '');
+
+            let text = `🍽️ *Menú del Día - Restaurante Cumbria*\n📅 ${dm.date}\n\n`;
+
+            text += `*Primeros:*\n`;
+            dm.starters.forEach(d => text += `• ${d.split('(')[0].trim()}\n`);
+
+            text += `\n*Segundos:*\n`;
+            dm.mains.forEach(d => text += `• ${d.split('(')[0].trim()}\n`);
+
+            text += `\n💰 Precio: ${dm.price}€\n`;
+            text += `ℹ️ Incluye: ${dm.includes.replace(/\n/g, ' ')}\n`;
+            text += `\n📍 *Hotel Cumbria*`;
+
+            // If phone is empty, open generic picker, otherwise specific
+            const url = phone ? `https://wa.me/${phone}?text=${encodeURIComponent(text)}` : `https://wa.me/?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
         }
 
         // Initial Render

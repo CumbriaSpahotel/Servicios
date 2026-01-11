@@ -342,6 +342,13 @@
             </div>
         </div>
 
+        <!-- Admin Link -->
+        <div class="mt-8 text-center pb-24 opacity-50 hover:opacity-100 transition">
+            <button onclick="goToAdmin()"
+                class="text-[10px] text-stone-300 uppercase tracking-widest hover:text-stone-500">
+                Admin
+            </button>
+        </div>
     </main>
 
     <!-- ========== FIXED BOTTOM BAR ========== -->
@@ -1065,6 +1072,26 @@
             // If phone is empty, open generic picker, otherwise specific
             const url = phone ? `https://wa.me/${phone}?text=${encodeURIComponent(text)}` : `https://wa.me/?text=${encodeURIComponent(text)}`;
             window.open(url, '_blank');
+        }
+
+        // Admin Access
+        function goToAdmin() {
+            let user = prompt("Usuario Admin:", "admin");
+            if (!user) return;
+
+            user = user.trim().toLowerCase();
+
+            if (user !== "admin" && user !== "administrador") {
+                alert("Usuario no reconocido. Prueba con: admin");
+                return;
+            }
+
+            const pass = prompt("Contraseña:");
+            if (pass === "cumbria2024") {
+                window.location.href = "admin.html";
+            } else {
+                alert("Contraseña incorrecta");
+            }
         }
 
         // Initial Render

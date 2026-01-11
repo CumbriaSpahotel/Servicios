@@ -1,10 +1,14 @@
 /**
  * db.js
  * Handles data persistence for Cumbria Guest Portal
- * Uses localStorage to sync between Admin and Guest View
+ * Uses Firebase Firestore to sync between Admin and Guest View
  */
 
-const DB_KEY = 'cumbria_hotel_data_v1';
+// We assume firebaseConfig is already loaded from firebase-config.js
+// and Firebase SDKs are loaded in the HTML
+
+const DB_KEY = 'cumbria_services_v1';
+const DB_COLLECTION = 'hotels'; // Structure: hotels/cumbria/services/general
 
 const DEFAULT_DATA = {
     restaurante: {
@@ -260,100 +264,119 @@ const DEFAULT_DATA = {
     }
 };
 
+let db = null; // Firestore instance
+
 const DB = {
-    // Load data from localStorage or return default
-    get: () => {
-        const stored = localStorage.getItem(DB_KEY);
-        let data = stored ? JSON.parse(stored) : null;
+    // Initialize Firebase
+    init: () => {
+        if (!window.firebase || !window.firebaseConfig) {
+            console.warn("Firebase not loaded or configured. Using default/local data only.");
+            return;
+        }
 
-        if (!data) {
-            // Initialize if new
-            data = JSON.parse(JSON.stringify(DEFAULT_DATA));
-            localStorage.setItem(DB_KEY, JSON.stringify(data));
-        } else {
-            // Merge missing top-level keys from DEFAULT_DATA
-            // This ensures new features (like tourism, info) appear in old datasets
-            let updated = false;
-            for (const key in DEFAULT_DATA) {
-                if (data[key] === undefined) {
-                    data[key] = DEFAULT_DATA[key];
-                    updated = true;
-                    data[key] = DEFAULT_DATA[key];
-                    updated = true;
+        // Prevent double init
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        db = firebase.firestore();
+        console.log("🔥 Firestore Initialized");
+    },
+
+    // Load data (Async)
+    get: async () => {
+        if (!db) DB.init(); // Try to init if not already
+
+        if (!db || !window.firebaseConfig || window.firebaseConfig.apiKey === "PEGAR_TU_API_KEY_AQUI") {
+            // Fallback to localStorage if no Firebase
+            console.warn("Using LocalStorage Fallback (No Firebase Config)");
+            const stored = localStorage.getItem(DB_KEY);
+            let data = stored ? JSON.parse(stored) : null;
+            return DB.mergeDefaults(data);
+        }
+
+        try {
+            const docRef = db.collection(DB_COLLECTION).doc('cumbria').collection('services').doc('general');
+            const doc = await docRef.get();
+            if (doc.exists) {
+                console.log("✅ Data loaded from Firestore");
+                return DB.mergeDefaults(doc.data());
+            } else {
+                console.log("ℹ️ No remote data found, checking local...");
+
+                // Check local storage before falling back to defaults
+                const stored = localStorage.getItem(DB_KEY);
+                let dataToUpload;
+
+                if (stored) {
+                    console.log("⬆️ Uploading LOCAL data to Cloud (First sync)");
+                    dataToUpload = JSON.parse(stored);
+                } else {
+                    console.log("✨ Creating defaults for Cloud");
+                    dataToUpload = JSON.parse(JSON.stringify(DEFAULT_DATA));
                 }
-                // Ensure 'active' property exists for all keys if missing
-                if (data[key] && data[key].active === undefined) {
-                    data[key].active = true;
-                    updated = true;
-                }
+
+                // Ensure data structure is up to date
+                dataToUpload = DB.mergeDefaults(dataToUpload);
+
+                // Save initial data to cloud
+                await docRef.set(dataToUpload);
+                return dataToUpload;
             }
+        } catch (error) {
+            console.error("Error loading from Firestore:", error);
+            // Fallback
+            const stored = localStorage.getItem(DB_KEY);
+            return DB.mergeDefaults(stored ? JSON.parse(stored) : null);
+        }
+    },
 
-            // Migration: Ensure restaurante.showCarta exists
-            if (data.restaurante && data.restaurante.showCarta === undefined) {
-                data.restaurante.showCarta = true;
+    // Save data (Async)
+    save: async (data) => {
+        if (!db) DB.init();
+
+        // Always save to localStorage as backup/cache
+        localStorage.setItem(DB_KEY, JSON.stringify(data));
+
+        if (!db || !window.firebaseConfig || window.firebaseConfig.apiKey === "PEGAR_TU_API_KEY_AQUI") {
+            alert("Guardado en LOCAL. \u26A0\uFE0F CLAVES NO CONFIGURADAS. \n\nEdita 'firebase-config.js' para sincronizar con la nube.");
+            return;
+        }
+
+        try {
+            await db.collection(DB_COLLECTION).doc('cumbria').collection('services').doc('general').set(data);
+            console.log("✅ Data saved to Firestore");
+        } catch (error) {
+            console.error("Error saving to Firestore:", error);
+            throw error;
+        }
+    },
+
+    // Helper to merge old data with new structure defaults
+    mergeDefaults: (data) => {
+        if (!data) return JSON.parse(JSON.stringify(DEFAULT_DATA));
+
+        let updated = false;
+        // Deep merge logic simplified for our specific top-level keys
+        for (const key in DEFAULT_DATA) {
+            if (data[key] === undefined) {
+                data[key] = DEFAULT_DATA[key];
                 updated = true;
             }
-
-            // Migration for Daily Menu (Ensure it exists in restaurante)
-            if (data.restaurante && !data.restaurante.dailyMenu) {
-                data.restaurante.dailyMenu = {
-                    active: false,
-                    price: "20,00",
-                    date: "",
-                    includes: "Incluido postre, pan, y una bebida\n(Agua, refresco, copa de vino o caña)",
-                    starters: [],
-                    mains: []
-                };
+            // Ensure 'active' property exists
+            if (data[key] && typeof data[key] === 'object' && data[key].active === undefined) {
+                data[key].active = true;
                 updated = true;
-            }
-            // FORCE FIX: Update to User's specific requested video if it's not already set
-            // This ensures the new video replaces any previous default or "safe" video
-            if (data.tourism && data.tourism.videoUrl) {
-                const currentUrl = data.tourism.videoUrl;
-                // If it's the old default or the "safe" replacement, update to the user's choice
-                if (currentUrl.includes('MOKuKw_1tEQ') || currentUrl.includes('videoseries')) {
-                    data.tourism.videoUrl = "https://www.youtube.com/embed/40fgsb3EbrE?list=PLCvAsDau1uLP8E-YGMIV3asYjlwlw5uV2";
-                    updated = true;
-                }
-            } else if (!data.tourism) {
-                // Create tourism object if missing
-                data.tourism = DEFAULT_DATA.tourism;
-                updated = true;
-            }
-
-            // Ensure detailed Laundry structure
-            if (data.laundry && !data.laundry.categories && DEFAULT_DATA.laundry.categories) {
-                data.laundry = DEFAULT_DATA.laundry;
-                updated = true;
-            }
-
-            // Ensure excursions array exists and FORCE UPDATE if it contains old data
-            if (data.tourism) {
-                if (!data.tourism.excursions) {
-                    data.tourism.excursions = DEFAULT_DATA.tourism.excursions;
-                    updated = true;
-                } else if (data.tourism.excursions[0] && (data.tourism.excursions[0].title === "Almagro: La Perla de La Mancha" || data.tourism.excursions[0].title === "Almagro: Joya Manchega" || data.tourism.excursions[0].title === "Almagro: Tesoro Manchego" || data.tourism.excursions[0].title === "Almagro: Teatro, Historia y Sabor" || data.tourism.excursions[0].title === "Almagro: Viaje al Siglo de Oro")) {
-                    // Update to "Almagro: Escapada Cultural" (New Key to force refresh)
-                    data.tourism.excursions = DEFAULT_DATA.tourism.excursions;
-                    updated = true;
-                }
-            }
-
-            if (updated) {
-                localStorage.setItem(DB_KEY, JSON.stringify(data));
             }
         }
+
+        // Specific migrations
+        if (data.restaurante && data.restaurante.showCarta === undefined) {
+            data.restaurante.showCarta = true;
+        }
+
         return data;
     },
 
-    // Save data object to localStorage
-    save: (data) => {
-        localStorage.setItem(DB_KEY, JSON.stringify(data));
-        // Dispatch event for updating UI in other tabs/windows if needed (not strict requirement but good practice)
-        window.dispatchEvent(new Event('storage'));
-    },
-
-    // Reset to defaults
     reset: () => {
         localStorage.setItem(DB_KEY, JSON.stringify(DEFAULT_DATA));
         return DEFAULT_DATA;

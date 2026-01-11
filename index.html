@@ -804,12 +804,25 @@
 
 
     <!-- SCRIPTS -->
+    <!-- SCRIPTS -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
     <script src="db.js"></script>
     <script>
         lucide.createIcons();
 
         // ====== DYNAMIC DATA LOADING ======
-        const appData = DB.get();
+        let appData = null;
+
+        (async function initApp() {
+            appData = await DB.get();
+            renderApp();
+
+            // Auto Sync Listener (Optional but good)
+            // If we implement onSnapshot in db.js later, we can hook it here.
+            // For now, listener for 'storage' event covers local tab sync + manual refresh for cloud.
+        })();
 
         function renderApp() {
             // 1. VISIBILITY CHECK

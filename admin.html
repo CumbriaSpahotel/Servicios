@@ -92,6 +92,24 @@
 
             let html = '';
 
+            // Master Toggle (Active/Inactive)
+            // Use flex-row-reverse or justify-between to place it well
+            html += `
+                <div class="mb-6 p-4 bg-stone-50 rounded-xl border border-stone-200 flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-lg text-gray-800">Visible en App</h3>
+                        <p class="text-xs text-gray-500">Activar o desactivar este servicio para los huéspedes</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" 
+                               ${data.active ? 'checked' : ''} 
+                               onchange="appData.${currentTab}.active = this.checked; saveChanges();" 
+                               class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                    </label>
+                </div>
+            `;
+
             // Common Fields
             if (data.desc !== undefined && currentTab !== 'minibar' && currentTab !== 'laundry') html += field('Descripción', `appData.${currentTab}.desc`, data.desc, 'textarea');
             if (data.info !== undefined && currentTab === 'laundry') html += field('Información', `appData.${currentTab}.info`, data.info, 'textarea');
@@ -139,6 +157,80 @@
                 html += field('Rest. Cenas', `appData.info.restaurant.schedule_dinner`, data.restaurant.schedule_dinner);
                 html += field('Cafetería', `appData.info.cafeteria.schedule`, data.cafeteria.schedule);
                 html += field('Room Service', `appData.info.roomService.schedule`, data.roomService.schedule);
+            }
+
+            // Categories & Items (Restaurant, Room Service, Minibar)
+            if (currentTab === 'restaurante') {
+                const menu = data.dailyMenu || { active: false, price: '', date: '', includes: '', starters: [], mains: [] };
+
+                // Initialize if missing in data but present in default
+                if (!appData.restaurante.dailyMenu) {
+                    if (typeof DEFAULT_DATA !== 'undefined' && DEFAULT_DATA.restaurante.dailyMenu) {
+                        appData.restaurante.dailyMenu = JSON.parse(JSON.stringify(DEFAULT_DATA.restaurante.dailyMenu));
+                    } else {
+                        appData.restaurante.dailyMenu = {
+                            active: false,
+                            price: "20,00",
+                            date: "",
+                            includes: "Incluido postre, pan, y una bebida\n(Agua, refresco, copa de vino o caña)",
+                            starters: [],
+                            mains: []
+                        };
+                    }
+                }
+
+                html += `
+                    <div class="mt-8 mb-8 border-2 border-stone-800 rounded-xl p-6 bg-stone-50">
+                        <div class="flex justify-between items-center mb-6 border-b border-stone-200 pb-4">
+                            <h3 class="font-bold text-2xl font-serif text-stone-900">Configuración Menú del Día</h3>
+                             
+                             <div class="flex gap-4">
+                                <!-- Helper: Activar Carta -->
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" 
+                                           ${data.showCarta !== false ? 'checked' : ''} 
+                                           onchange="appData.restaurante.showCarta = this.checked; saveChanges();" 
+                                           class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-stone-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600"></div>
+                                    <span class="ml-3 text-sm font-medium text-gray-900">Mostrar Carta</span>
+                                </label>
+
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" 
+                                           ${menu.active ? 'checked' : ''} 
+                                           onchange="appData.restaurante.dailyMenu.active = this.checked; saveChanges();" 
+                                           class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-stone-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-stone-800"></div>
+                                    <span class="ml-3 text-sm font-medium text-gray-900">Activar Menú</span>
+                                </label>
+                             </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            ${field('Fecha (Texto)', `appData.restaurante.dailyMenu.date`, menu.date)}
+                            ${field('Precio (€)', `appData.restaurante.dailyMenu.price`, menu.price)}
+                        </div>
+
+                        <div class="mb-4">
+                             <label class="block text-sm font-bold text-gray-600 mb-1">Primeros Platos (Uno por línea)</label>
+                             <textarea rows="6" onchange="updateMenuArray('starters', this.value)" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-stone-500 font-mono text-sm">${(menu.starters || []).join('\n')}</textarea>
+                        </div>
+
+                        <div class="mb-4">
+                             <label class="block text-sm font-bold text-gray-600 mb-1">Segundos Platos (Uno por línea)</label>
+                             <textarea rows="6" onchange="updateMenuArray('mains', this.value)" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-stone-500 font-mono text-sm">${(menu.mains || []).join('\n')}</textarea>
+                        </div>
+                        
+                         <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-600 mb-1">Incluye (Texto al pie)</label>
+                            <textarea rows="2" onchange="appData.restaurante.dailyMenu.includes = this.value" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-stone-500">${menu.includes || ''}</textarea>
+                        </div>
+
+                        <div class="bg-blue-50 p-4 rounded text-xs text-blue-800">
+                            <strong>Nota:</strong> Los números entre paréntesis, ej: (1/4), se mostrarán automáticamente en la app como alérgenos.
+                        </div>
+                    </div>
+                `;
             }
 
             // Categories & Items (Restaurant, Room Service, Minibar)
@@ -295,6 +387,12 @@
         function saveChanges() {
             DB.save(appData);
             alert('¡Cambios guardados! Actualice el portal del huésped.');
+        }
+
+        function updateMenuArray(key, value) {
+            // Split by newline and remove empty lines
+            const arr = value.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+            appData.restaurante.dailyMenu[key] = arr;
         }
 
         function resetData() {

@@ -8,9 +8,19 @@ const DB_KEY = 'cumbria_hotel_data_v1';
 
 const DEFAULT_DATA = {
     restaurante: {
+        active: true,
+        showCarta: true,
         title: "Restaurante Cumbria",
         desc: "Cocina de mercado con productos de la tierra.",
         schedule: "13:30 - 16:00 / 20:00 - 23:00 (Dom. Noche Cerrado)",
+        dailyMenu: {
+            active: false,
+            price: "20,00",
+            date: "",
+            includes: "Incluido postre, pan, y una bebida\n(Agua, refresco, copa de vino o caña)",
+            starters: [],
+            mains: []
+        },
         categories: [
             {
                 name: "Entrantes",
@@ -34,6 +44,7 @@ const DEFAULT_DATA = {
         ]
     },
     roomService: {
+        active: true,
         ext: "1181",
         surcharge: "3.00",
         categories: [
@@ -66,6 +77,7 @@ const DEFAULT_DATA = {
         ]
     },
     cafeteria: {
+        active: true,
         schedule: "08:00 - 24:00",
         items: [
             { name: "Café Expreso", price: "1.80" },
@@ -76,6 +88,7 @@ const DEFAULT_DATA = {
         ]
     },
     minibar: {
+        active: true,
         desc: "¡Disfruta tu momento relax! El minibar te espera con bebidas frías y snacks para que te sientas como en casa durante tu estancia. Si quieres añadir algo diferente, nuestro equipo en recepción está disponible para ti.",
         categories: [
             {
@@ -105,6 +118,7 @@ const DEFAULT_DATA = {
         ]
     },
     laundry: {
+        active: true,
         items: [
             { name: "Camisa / Blusa", price: "6.00" },
             { name: "Pantalón", price: "7.00" },
@@ -113,6 +127,7 @@ const DEFAULT_DATA = {
         ]
     },
     spa: {
+        active: true,
         prices: {
             week: "12",
             weekend: "18",
@@ -121,6 +136,7 @@ const DEFAULT_DATA = {
         }
     },
     info: {
+        active: true,
         reception: {
             phone: "1198 / 1199",
             text: "Nuestra recepción está disponible para ayudarte en cualquier momento. Estamos abiertos las 24 horas del día. Nos encontrarás en la Planta Baja (B)."
@@ -166,7 +182,81 @@ const DEFAULT_DATA = {
         }
     },
     tourism: {
-        videoUrl: "https://www.youtube.com/embed/40fgsb3EbrE?list=PLCvAsDau1uLP8E-YGMIV3asYjlwlw5uV2"
+        active: true,
+        videoUrl: "https://www.youtube.com/embed/40fgsb3EbrE?list=PLCvAsDau1uLP8E-YGMIV3asYjlwlw5uV2",
+
+        excursions: [
+            {
+                title: "Almagro: Escapada Cultural",
+                image: "Imagenes/ALMAGRO VISITA GUIADA.jpg",
+                shortDesc: "Historia viva, teatro clásico y gastronomía única en un entorno monumental.",
+                fullDesc: `
+                <p class="mb-6 leading-relaxed text-stone-300">
+                    <strong class="text-amber-500 text-lg">Almagro</strong> le invita a un viaje en el tiempo. Declarada Conjunto Histórico-Artístico, esta villa manchega es conocida mundialmente como la <em>"Ciudad del Teatro"</em>.
+                </p>
+
+                <!-- 1. Plaza Mayor Header -->
+                <div class="mb-8 rounded-xl overflow-hidden shadow-lg border border-white/10">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Almagro_-_Plaza_Mayor_001.jpg/1024px-Almagro_-_Plaza_Mayor_001.jpg" alt="Plaza Mayor" class="w-full h-48 object-cover">
+                </div>
+
+                <div class="space-y-6 text-sm text-stone-300 leading-relaxed">
+                    
+                    <div>
+                        <h3 class="flex items-center gap-2 text-lg font-serif font-bold text-white mb-2">
+                            <i data-lucide="landmark" class="w-5 h-5 text-amber-500"></i>
+                            Qué visitar
+                        </h3>
+                        <p class="mb-3">
+                            La <strong>Plaza Mayor</strong> es el corazón de la villa, única por sus galerías acristaladas. No se pierda el <strong>Palacio de los Fúcares</strong> ni el <strong>Museo Nacional del Teatro</strong>.
+                        </p>
+                        <p>
+                            El <strong>Corral de Comedias</strong> es el monumento más emblemático. Construido en 1628, es el único del s. XVII que se conserva intacto y en activo en todo el mundo.
+                        </p>
+                    </div>
+
+                    <div class="border-t border-white/10 my-6"></div>
+
+                    <!-- Flex Layout (Cleaner & More Stable) -->
+                    <div class="bg-stone-800/50 p-4 rounded-xl border border-white/5">
+                        <h3 class="text-xl font-serif font-bold text-white mb-4">Cómo planificar su visita</h3>
+                        
+                        <div class="flex flex-col sm:flex-row gap-5 items-start">
+                            <!-- Image -->
+                            <img src="Imagenes/ALMAGRO VISITA GUIADA.jpg" class="w-full sm:w-40 rounded-lg shadow-lg border border-white/5 shrink-0" alt="Folleto Visita">
+                            
+                            <!-- Text Content -->
+                            <div class="text-stone-300 text-sm space-y-3">
+                                <p class="text-white/90 font-medium">Para una excursión memorable:</p>
+                                
+                                <ul class="space-y-2 list-disc pl-4 marker:text-amber-500">
+                                    <li>
+                                        <strong>Reserve tiempo suficiente</strong> (media jornada) para recorrer los puntos clave con calma.
+                                    </li>
+                                    <li>
+                                        Si puede, visite durante el <strong>Festival de Teatro Clásico</strong> (julio) para vivir su máxima expresión.
+                                    </li>
+                                    <li>
+                                        Lleve <strong>calzado cómodo</strong> para el empedrado y cámara para los rincones únicos.
+                                    </li>
+                                    <li>
+                                        <strong>Combine la visita</strong> con una cata de vinos o tapas en la zona.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-white/10">
+                    <p class="text-sm text-stone-400 italic">
+                        En <strong>Cumbria Spa & Hotel</strong>, nos comprometemos a ofrecerle no solo alojamiento de calidad, sino también experiencias enriquecedoras que complementen su estancia.
+                    </p>
+                </div>
+                `
+            }
+        ]
     }
 };
 
@@ -188,7 +278,33 @@ const DB = {
                 if (data[key] === undefined) {
                     data[key] = DEFAULT_DATA[key];
                     updated = true;
+                    data[key] = DEFAULT_DATA[key];
+                    updated = true;
                 }
+                // Ensure 'active' property exists for all keys if missing
+                if (data[key] && data[key].active === undefined) {
+                    data[key].active = true;
+                    updated = true;
+                }
+            }
+
+            // Migration: Ensure restaurante.showCarta exists
+            if (data.restaurante && data.restaurante.showCarta === undefined) {
+                data.restaurante.showCarta = true;
+                updated = true;
+            }
+
+            // Migration for Daily Menu (Ensure it exists in restaurante)
+            if (data.restaurante && !data.restaurante.dailyMenu) {
+                data.restaurante.dailyMenu = {
+                    active: false,
+                    price: "20,00",
+                    date: "",
+                    includes: "Incluido postre, pan, y una bebida\n(Agua, refresco, copa de vino o caña)",
+                    starters: [],
+                    mains: []
+                };
+                updated = true;
             }
             // FORCE FIX: Update to User's specific requested video if it's not already set
             // This ensures the new video replaces any previous default or "safe" video
@@ -209,6 +325,18 @@ const DB = {
             if (data.laundry && !data.laundry.categories && DEFAULT_DATA.laundry.categories) {
                 data.laundry = DEFAULT_DATA.laundry;
                 updated = true;
+            }
+
+            // Ensure excursions array exists and FORCE UPDATE if it contains old data
+            if (data.tourism) {
+                if (!data.tourism.excursions) {
+                    data.tourism.excursions = DEFAULT_DATA.tourism.excursions;
+                    updated = true;
+                } else if (data.tourism.excursions[0] && (data.tourism.excursions[0].title === "Almagro: La Perla de La Mancha" || data.tourism.excursions[0].title === "Almagro: Joya Manchega" || data.tourism.excursions[0].title === "Almagro: Tesoro Manchego" || data.tourism.excursions[0].title === "Almagro: Teatro, Historia y Sabor" || data.tourism.excursions[0].title === "Almagro: Viaje al Siglo de Oro")) {
+                    // Update to "Almagro: Escapada Cultural" (New Key to force refresh)
+                    data.tourism.excursions = DEFAULT_DATA.tourism.excursions;
+                    updated = true;
+                }
             }
 
             if (updated) {

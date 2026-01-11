@@ -187,19 +187,10 @@
         <!-- HORIZONTAL SCROLL: QUICK ACCESS -->
         <div class="overflow-x-auto no-scrollbar flex gap-3 pb-2 -mx-4 px-4 snap-x">
             <!-- Info Hotel -->
-            <button onclick="openModal('info-modal')"
-                class="snap-start shrink-0 w-28 h-32 bg-white rounded-2xl shadow-lg shadow-stone-200/50 flex flex-col items-center justify-center gap-3 card-press border border-stone-100">
-                <div class="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-stone-600">
-                    <i data-lucide="clock" class="w-5 h-5"></i>
-                </div>
-                <div class="text-center">
-                    <span class="block text-xs font-bold text-stone-800">Horarios</span>
-                    <span class="text-[10px] text-stone-400">e Info</span>
-                </div>
-            </button>
+            <!-- Info Hotel (Removed from here, moved to main grid) -->
 
             <!-- Minibar -->
-            <button onclick="openModal('minibar-modal')"
+            <button onclick="openModal('minibar-modal')" id="module-minibar"
                 class="snap-start shrink-0 w-28 h-32 bg-white rounded-2xl shadow-lg shadow-stone-200/50 flex flex-col items-center justify-center gap-3 card-press border border-stone-100">
                 <div class="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
                     <i data-lucide="wine" class="w-5 h-5"></i>
@@ -211,7 +202,7 @@
             </button>
 
             <!-- Laundry -->
-            <button onclick="openModal('laundry-modal')"
+            <button onclick="openModal('laundry-modal')" id="module-laundry"
                 class="snap-start shrink-0 w-28 h-32 bg-white rounded-2xl shadow-lg shadow-stone-200/50 flex flex-col items-center justify-center gap-3 card-press border border-stone-100">
                 <div class="w-10 h-10 rounded-full bg-cyan-50 flex items-center justify-center text-cyan-600">
                     <i data-lucide="shirt" class="w-5 h-5"></i>
@@ -222,15 +213,15 @@
                 </div>
             </button>
 
-            <!-- Tourism -->
-            <a href="turismo.html"
+            <!-- Guía de Viaje (Former Tourism) -->
+            <a href="turismo.html" id="module-tourism"
                 class="snap-start shrink-0 w-28 h-32 bg-white rounded-2xl shadow-lg shadow-stone-200/50 flex flex-col items-center justify-center gap-3 card-press border border-stone-100 no-underline">
                 <div class="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center text-rose-600">
-                    <i data-lucide="youtube" class="w-5 h-5"></i>
+                    <i data-lucide="map" class="w-5 h-5"></i>
                 </div>
                 <div class="text-center">
-                    <span class="block text-xs font-bold text-stone-800">Turismo</span>
-                    <span class="text-[10px] text-stone-400">Ver Video</span>
+                    <span class="block text-xs font-bold text-stone-800">Guía de Viaje</span>
+                    <span class="text-[10px] text-stone-400">Explorar</span>
                 </div>
             </a>
 
@@ -249,49 +240,91 @@
 
         <!-- VERTICAL FEED: FEATURED SERVICES -->
 
-        <!-- Restaurante Card -->
-        <div onclick="openModal('restaurante-modal')"
-            class="group relative h-64 rounded-[2rem] overflow-hidden shadow-xl shadow-stone-300/50 card-press cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80"
-                class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-0 p-6 w-full">
-                <div class="flex items-center gap-2 mb-2">
-                    <span
-                        class="px-2 py-1 bg-amber-500 rounded text-[10px] font-bold text-white uppercase tracking-wider">Destacado</span>
+        <!-- Spa (Full Width) - DESTACADO -->
+        <div onclick="openModal('spa-modal')" id="module-spa"
+            class="relative h-64 rounded-[2rem] overflow-hidden shadow-xl shadow-stone-300/50 card-press cursor-pointer group mb-4">
+            <img src="Imagenes/spa.jpg"
+                class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+            <div class="absolute inset-0 bg-stone-900/30 mix-blend-multiply"></div>
+
+            <div class="absolute inset-0 p-6 flex flex-col justify-center items-center text-center z-10">
+                <span
+                    class="absolute top-6 left-6 px-2 py-1 bg-amber-500 rounded text-[10px] font-bold text-white uppercase tracking-wider shadow-lg">Destacado</span>
+
+                <i data-lucide="droplets" class="w-10 h-10 text-white mb-3 opacity-90 filter drop-shadow-lg"></i>
+                <h3 class="text-4xl text-white font-serif font-bold mb-2 shadow-black drop-shadow-md">Spa & Wellness
+                </h3>
+                <p class="text-white text-base mb-6 font-medium shadow-black drop-shadow-sm">Relajación absoluta</p>
+                <div
+                    class="px-6 py-2 bg-white/20 backdrop-blur-md border border-white/40 rounded-full text-white text-xs font-bold uppercase tracking-widest hover:bg-white/30 transition shadow-lg">
+                    Más Información
                 </div>
-                <h3 class="text-2xl text-white font-serif font-bold">Restaurante Cumbria</h3>
-                <div class="flex justify-between items-end mt-2">
-                    <p class="text-stone-300 text-sm">Alta cocina de autor & Vinos</p>
+            </div>
+        </div>
+
+        <!-- ROW 1: Restaurante & Horarios -->
+        <div class="grid grid-cols-2 gap-4 h-60">
+            <!-- Restaurante Card -->
+            <div onclick="openModal('restaurante-modal')" id="module-restaurante"
+                class="relative rounded-[2rem] overflow-hidden shadow-lg card-press cursor-pointer col-span-1 group">
+                <img src="Imagenes/restaurante.jpg"
+                    class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-0 p-5 w-full">
+                    <h3 class="text-xl text-white font-serif font-bold leading-tight mb-1">Restaurante</h3>
+                    <p class="text-[10px] text-stone-300 line-clamp-2">Alta cocina & Vinos</p>
+                </div>
+                <div
+                    class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-white">
+                    <i data-lucide="utensils" class="w-4 h-4"></i>
+                </div>
+            </div>
+
+            <!-- Horarios e Info (Moved from top) -->
+            <div onclick="openModal('info-modal')" id="module-info"
+                class="relative rounded-[2rem] bg-stone-800 overflow-hidden shadow-lg card-press cursor-pointer col-span-1 group border border-stone-700">
+                <!-- Background Image for Info (Optional, using a dark elegant texture or reception image) -->
+                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+                    class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay transition duration-700 group-hover:scale-110">
+
+                <div class="absolute inset-0 bg-gradient-to-br from-stone-800/80 to-stone-900/40"></div>
+
+                <div class="absolute inset-0 p-5 flex flex-col justify-between z-10">
                     <div
-                        class="w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-white">
-                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        class="w-10 h-10 rounded-full bg-stone-100/10 backdrop-blur flex items-center justify-center text-stone-200 border border-white/10">
+                        <i data-lucide="clock" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg text-white font-serif font-bold leading-tight mb-1">Horarios</h3>
+                        <p class="text-xs text-stone-400">e Información</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Room Service & Cafeteria Split -->
+        <!-- ROW 2: Room Service & Cafeteria Split -->
         <div class="grid grid-cols-2 gap-4 h-60">
             <!-- Room Service -->
-            <div onclick="openModal('room-service-modal')"
-                class="relative rounded-[2rem] bg-stone-900 overflow-hidden shadow-lg card-press cursor-pointer col-span-1">
+            <div onclick="openModal('room-service-modal')" id="module-roomService"
+                class="relative rounded-[2rem] bg-stone-900 overflow-hidden shadow-lg card-press cursor-pointer col-span-1 group">
+                <img src="Imagenes/Room service.jpg"
+                    class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+
                 <div class="absolute inset-0 p-5 flex flex-col justify-between z-10">
                     <div
-                        class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white border border-white/10">
+                        class="w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-white border border-white/10">
                         <i data-lucide="bell-ring" class="w-5 h-5"></i>
                     </div>
                     <div>
                         <h3 class="text-lg text-white font-serif font-bold leading-tight mb-1">Room<br>Service</h3>
-                        <p class="text-xs text-stone-400">Cena en la habitación</p>
+                        <p class="text-xs text-stone-300">Cena en la habitación</p>
                     </div>
                 </div>
-                <!-- Decorative Circle -->
-                <div class="absolute -right-4 -bottom-4 w-32 h-32 rounded-full bg-stone-800 opacity-50"></div>
             </div>
 
             <!-- Cafetería -->
-            <div onclick="openModal('cafeteria-modal')"
+            <div onclick="openModal('cafeteria-modal')" id="module-cafeteria"
                 class="relative rounded-[2rem] bg-white overflow-hidden shadow-lg card-press cursor-pointer col-span-1 border border-stone-100">
                 <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
                     class="absolute inset-0 w-full h-full object-cover opacity-90">
@@ -305,23 +338,6 @@
                         <h3 class="text-lg text-white font-serif font-bold leading-tight mb-1">Cafetería</h3>
                         <p class="text-xs text-stone-300">Snacks & Café</p>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Spa (Full Width) -->
-        <div onclick="openModal('spa-modal')"
-            class="relative h-56 rounded-[2rem] overflow-hidden shadow-xl shadow-stone-300/50 card-press cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1600334089648-b0d9d302427f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                class="absolute inset-0 w-full h-full object-cover">
-            <div class="absolute inset-0 bg-stone-900/40 mix-blend-multiply"></div>
-            <div class="absolute inset-0 p-6 flex flex-col justify-center items-center text-center z-10">
-                <i data-lucide="droplets" class="w-8 h-8 text-white mb-2 opacity-80"></i>
-                <h3 class="text-3xl text-white font-serif font-bold mb-1">Spa & Wellness</h3>
-                <p class="text-white/90 text-sm mb-4">Relajación absoluta</p>
-                <div
-                    class="px-5 py-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs font-bold uppercase tracking-widest">
-                    Ver Carta
                 </div>
             </div>
         </div>
@@ -341,10 +357,11 @@
                 <i data-lucide="utensils" class="w-5 h-5"></i>
             </button>
             <div class="w-[1px] h-6 bg-white/10"></div>
-            <button onclick="openModal('spa-modal')"
-                class="w-14 h-12 rounded-full flex flex-col items-center justify-center text-stone-400 hover:text-white transition">
-                <i data-lucide="droplets" class="w-5 h-5"></i>
-            </button>
+            <a href="turismo.html"
+                class="w-14 h-12 rounded-full flex flex-col items-center justify-center text-stone-400 hover:text-amber-600 transition">
+                <i data-lucide="compass" class="w-6 h-6 mb-1"></i>
+                <span class="text-[10px] font-bold">Guía</span>
+            </a>
             <a href="tel:+34926000000"
                 class="w-14 h-12 rounded-full flex flex-col items-center justify-center text-stone-400 hover:bg-emerald-600 hover:text-white transition">
                 <i data-lucide="phone" class="w-5 h-5"></i>
@@ -477,8 +494,7 @@
             class="modal-content relative w-full h-[95vh] bg-stone-50 rounded-t-[2.5rem] overflow-hidden pointer-events-auto flex flex-col shadow-2xl">
             <!-- Visual Header -->
             <div class="relative h-60 shrink-0">
-                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80"
-                    class="w-full h-full object-cover">
+                <img src="Imagenes/restaurante.jpg" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 <button onclick="closeModal('restaurante-modal')"
                     class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-white hover:bg-white/30 z-20">
@@ -764,10 +780,125 @@
         const appData = DB.get();
 
         function renderApp() {
+            // 1. VISIBILITY CHECK
+            const modules = ['info', 'minibar', 'laundry', 'tourism', 'spa', 'restaurante', 'roomService', 'cafeteria'];
+            modules.forEach(mod => {
+                const el = document.getElementById('module-' + mod);
+                if (el && appData[mod]) {
+                    // If active is explicitly false, hide it. Otherwise show.
+                    // Default to true if undefined.
+                    const isActive = appData[mod].active !== false;
+                    el.style.display = isActive ? (el.tagName === 'BUTTON' || el.tagName === 'A' ? 'flex' : 'block') : 'none';
+
+                    // Special case for grid parent of RS/Coffee if strictly needed, 
+                    // but for now hiding the individual child is enough. 
+                    // If both are hidden, the grid will be empty height.
+                }
+            });
+
             // Restaurante
             document.getElementById('restaurante-desc').textContent = `"${appData.restaurante.desc}"`;
             document.getElementById('restaurante-schedule').textContent = `Horario: ${appData.restaurante.schedule}`;
-            renderCategories('restaurante-list', appData.restaurante.categories);
+
+            // DAILY MENU LOGIC
+            const rList = document.getElementById('restaurante-list');
+            rList.innerHTML = ''; // Clear first because we append
+
+            if (appData.restaurante.dailyMenu && appData.restaurante.dailyMenu.active) {
+                const dm = appData.restaurante.dailyMenu;
+
+                // Helper to format dishes with allergens
+                // Regex looks for (numbers/numbers)
+                const formatDish = (dish) => {
+                    return dish.replace(/\(([\d\/]+)\)/g, (match, p1) => {
+                        return `<span class="text-[10px] align-super text-stone-400 font-bold ml-1">(${p1})</span>`;
+                    });
+                };
+
+                const dailyMenuHTML = `
+                    <div class="bg-white p-6 md:p-12 shadow-xl border border-stone-100 mx-auto max-w-2xl relative">
+                        
+                        <!-- Top Logo -->
+                        <div class="flex justify-start mb-8">
+                            <img src="Imagenes/logo-cumbria.svg" class="h-16 opacity-80" alt="Cumbria Hotel">
+                        </div>
+
+                        <h2 class="text-4xl text-center font-bold text-stone-900 mb-8 italic">Menú del día</h2>
+
+                        <!-- Starters -->
+                        <div class="mb-8 text-center">
+                            <h3 class="text-xl font-bold text-stone-800 mb-4 text-left">Primer plato para elegir:</h3>
+                            <ul class="space-y-2">
+                                ${(dm.starters || []).map(d => `
+                                    <li class="text-stone-600 text-lg leading-relaxed">
+                                        ${formatDish(d)}
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+
+                        <!-- Mains -->
+                        <div class="mb-10 text-center">
+                            <h3 class="text-xl font-bold text-stone-800 mb-4 text-left">Segundo plato para elegir:</h3>
+                            <ul class="space-y-2">
+                                ${(dm.mains || []).map(d => `
+                                    <li class="text-stone-600 text-lg leading-relaxed">
+                                        ${formatDish(d)}
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+
+                        <!-- Footer Info -->
+                        <div class="text-right border-t pt-4 border-stone-200">
+                            <p class="font-bold text-stone-800 text-sm mb-1">${(dm.includes || '').replace(/\n/g, '<br>')}</p>
+                            <p class="text-3xl font-bold text-stone-900">${dm.price} €</p>
+                        </div>
+
+                        <!-- Date -->
+                        <div class="text-right mt-8 mb-8">
+                            <p class="text-stone-500 italic font-serif text-lg">${dm.date}</p>
+                        </div>
+                        
+                        <!-- Allergens Legend Img -->
+                        <div class="mt-8 opacity-90 w-full">
+                             <img src="Imagenes/Alergenos-removebg-preview.png" class="w-full object-contain">
+                        </div>
+
+                    </div>
+                    
+                    <div class="flex items-center justify-center gap-2 my-6 opacity-50">
+                        <div class="h-[1px] w-12 bg-stone-300"></div>
+                        <span class="text-xs text-stone-400 uppercase tracking-widest">Carta</span>
+                        <div class="h-[1px] w-12 bg-stone-300"></div>
+                    </div>
+                `;
+                rList.innerHTML += dailyMenuHTML;
+            }
+
+            // Categories (Carta)
+            if (appData.restaurante.categories && appData.restaurante.showCarta !== false) {
+                const catsHTML = appData.restaurante.categories.map((cat, catIdx) => `
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-stone-100">
+                        <h3 class="text-xl font-serif font-bold text-amber-600 mb-4 border-b border-amber-100 pb-2">${cat.name}</h3>
+                        <div class="space-y-4">
+                            ${cat.items.map((item) => `
+                                <div class="flex justify-between items-baseline group">
+                                    <div class="pr-4">
+                                        <h4 class="font-bold text-stone-800 group-hover:text-amber-600 transition">${item.name}</h4>
+                                        <!-- <p class="text-xs text-stone-400">${item.desc || ''}</p> -->
+                                        ${item.desc ? `<p class="text-xs text-stone-500 italic">${item.desc}</p>` : ''}
+                                    </div>
+                                    <div class="shrink-0 font-mono text-stone-600 font-bold">${item.price}€</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+                rList.innerHTML += catsHTML;
+            }
+
+            // renderCategories('restaurante-list', appData.restaurante.categories); // Removed old call
 
             // Room Service
             document.getElementById('rs-ext').textContent = `Extensión ${appData.roomService.ext}`;

@@ -88,7 +88,7 @@
             lucide.createIcons();
 
             appData = await DB.get();
-            renderEditor();
+            switchTab(currentTab); // Render and set active tab state
         })();
 
         function switchTab(tab) {
@@ -229,9 +229,15 @@
                              </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-4 mb-4">
-                            ${field('Fecha (Texto)', `appData.restaurante.dailyMenu.date`, menu.date)}
-                            ${field('Precio (€)', `appData.restaurante.dailyMenu.price`, menu.price)}
+                        <div class="grid grid-cols-2 gap-4 mb-4 relative">
+                            <div>
+                                ${field('Fecha (Texto)', `appData.restaurante.dailyMenu.date`, menu.date)}
+                                <button onclick="setTodayDate()" class="absolute top-[34px] right-[52%] text-xs bg-stone-200 hover:bg-stone-300 px-2 py-1 rounded">Hoy</button>
+                            </div>
+                            <div class="relative">
+                                ${field('Precio (€)', `appData.restaurante.dailyMenu.price`, menu.price)}
+                                <a href="https://translate.google.com/" target="_blank" class="absolute top-[34px] right-2 text-xs text-amber-600 hover:underline flex items-center gap-1"><i data-lucide="languages" class="w-3 h-3"></i> Traducir</a>
+                            </div>
                         </div>
 
                         <div class="mb-4">
@@ -413,14 +419,43 @@
             btn.innerHTML = '<i data-lucide="loader-2" class="w-6 h-6 animate-spin"></i> Guardando...';
 
             try {
+                // Save Main Data
                 await DB.save(appData);
-                alert('¡Cambios guardados! Actualice el portal del huésped.');
+
+                // Save History if we are in Restaurant tab
+                if (currentTab === 'restaurante' && appData.restaurante.dailyMenu.active) {
+                    await DB.saveMenuHistory(appData.restaurante.dailyMenu);
+                }
+
+                alert('¡Cambios guardados! Sincronizado con la nube.');
             } catch (err) {
                 alert('Error al guardar: ' + err.message);
             } finally {
                 btn.innerHTML = originalText;
                 lucide.createIcons();
             }
+        }
+
+        function setTodayDate() {
+            const date = new Date();
+            const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+            // Format: "Ciudad Real, 11 de Enero de 2026"
+            const str = `Ciudad Real, ${date.getDate()} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
+
+            // Update Data
+            if (appData && appData.restaurante && appData.restaurante.dailyMenu) {
+                appData.restaurante.dailyMenu.date = str;
+            }
+
+            // Update Input View: Find input that syncs with dailyMenu.date
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                if (input.getAttribute('onchange') && input.getAttribute('onchange').includes('dailyMenu.date')) {
+                    input.value = str;
+                }
+            });
         }
 
         function updateMenuArray(key, value) {
@@ -437,8 +472,7 @@
         }
 
         // Init
-        switchTab('restaurante');
-
+        // switchTab call removed to prevent race condition with async load
     </script>
 </body>
 

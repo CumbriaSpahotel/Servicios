@@ -805,26 +805,51 @@
 
     <!-- SCRIPTS -->
     <!-- SCRIPTS -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="firebase-config.js"></script>
-    <script src="db.js"></script>
+    <script type="module" src="db.js"></script>
+    <script type="module">
+        import { DB } from './db.js';
+
+        // Globals for UI
+        window.appData = null;
+
+        async function initApp() {
+            // Ensure Config Exists
+            if (!window.firebaseConfig) {
+                console.error("Firebase config missing!");
+            }
+
+            // Initialize DB with Config explicitly
+            DB.init(window.firebaseConfig);
+
+            try {
+                window.appData = await DB.get();
+                console.log("App Data Loaded:", window.appData);
+                window.renderApp(); // Call the global render function
+            } catch (e) {
+                console.error("Error loading app data:", e);
+                alert("Error cargando datos. Por favor recarga.");
+            }
+        }
+
+        // Expose init logic if needed, or just run it
+        initApp();
+
+        // Listener for storage (for syncing across tabs/windows if Admin saves)
+        window.addEventListener('storage', async () => {
+            console.log("Storage changed, reloading...");
+            window.appData = await DB.get();
+            window.renderApp();
+        });
+    </script>
     <script>
         lucide.createIcons();
 
-        // ====== DYNAMIC DATA LOADING ======
-        let appData = null;
+        // Global Render Function
+        window.renderApp = function () {
+            if (!window.appData) return;
+            const appData = window.appData; // Local alias
 
-        (async function initApp() {
-            appData = await DB.get();
-            renderApp();
-
-            // Auto Sync Listener (Optional but good)
-            // If we implement onSnapshot in db.js later, we can hook it here.
-            // For now, listener for 'storage' event covers local tab sync + manual refresh for cloud.
-        })();
-
-        function renderApp() {
             // 1. VISIBILITY CHECK
             const modules = ['info', 'minibar', 'laundry', 'tourism', 'spa', 'restaurante', 'roomService', 'cafeteria'];
             modules.forEach(mod => {
@@ -1107,15 +1132,10 @@
             }
         }
 
-        // Initial Render
-        renderApp();
+        // Initial Render not needed here, called by module
 
-        // Listen for storage changes (Admin updates)
-        window.addEventListener('storage', () => {
-            Object.assign(appData, DB.get()); // Reload data
-            renderApp();
-            console.log("Data updated from Admin");
-        });
+        // Listeners handled in module
+
 
 
         // ====== MODAL LOGIC ======

@@ -166,7 +166,7 @@ const DEFAULT_DATA = {
         }
     },
     tourism: {
-        videoUrl: "https://www.youtube.com/embed/MOKuKw_1tEQ"
+        videoUrl: "https://www.youtube.com/embed/40fgsb3EbrE?list=PLCvAsDau1uLP8E-YGMIV3asYjlwlw5uV2"
     }
 };
 
@@ -190,7 +190,22 @@ const DB = {
                     updated = true;
                 }
             }
-            // Force update Laundry structure if it's the old simple format but we need detailed
+            // FORCE FIX: Update to User's specific requested video if it's not already set
+            // This ensures the new video replaces any previous default or "safe" video
+            if (data.tourism && data.tourism.videoUrl) {
+                const currentUrl = data.tourism.videoUrl;
+                // If it's the old default or the "safe" replacement, update to the user's choice
+                if (currentUrl.includes('MOKuKw_1tEQ') || currentUrl.includes('videoseries')) {
+                    data.tourism.videoUrl = "https://www.youtube.com/embed/40fgsb3EbrE?list=PLCvAsDau1uLP8E-YGMIV3asYjlwlw5uV2";
+                    updated = true;
+                }
+            } else if (!data.tourism) {
+                // Create tourism object if missing
+                data.tourism = DEFAULT_DATA.tourism;
+                updated = true;
+            }
+
+            // Ensure detailed Laundry structure
             if (data.laundry && !data.laundry.categories && DEFAULT_DATA.laundry.categories) {
                 data.laundry = DEFAULT_DATA.laundry;
                 updated = true;

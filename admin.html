@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Hotel Cumbria</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Cumbria Admin</h1>
+            <button onclick="resetData()" class="text-red-500 text-sm hover:underline">Reset to Default</button>
+        </div>
+
+        <!-- TABS -->
+        <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
+            <button onclick="switchTab('restaurante')"
+                class="tab-btn px-4 py-2 bg-white rounded-lg shadow-sm font-bold hover:bg-amber-50"
+                data-tab="restaurante">Restaurante</button>
+            <button onclick="switchTab('roomService')"
+                class="tab-btn px-4 py-2 bg-white rounded-lg shadow-sm font-bold hover:bg-amber-50"
+                data-tab="roomService">Room Service</button>
+            <button onclick="switchTab('cafeteria')"
+                class="tab-btn px-4 py-2 bg-white rounded-lg shadow-sm font-bold hover:bg-amber-50"
+                data-tab="cafeteria">Cafetería</button>
+            <button onclick="switchTab('minibar')"
+                class="tab-btn px-4 py-2 bg-white rounded-lg shadow-sm font-bold hover:bg-amber-50"
+                data-tab="minibar">Minibar</button>
+            <button onclick="switchTab('laundry')"
+                class="tab-btn px-4 py-2 bg-white rounded-lg shadow-sm font-bold hover:bg-amber-50"
+                data-tab="laundry">Lavandería</button>
+            <button onclick="switchTab('spa')"
+                class="tab-btn px-4 py-2 bg-white rounded-lg shadow-sm font-bold hover:bg-amber-50"
+                data-tab="spa">Spa</button>
+            <button onclick="switchTab('tourism')"
+                class="tab-btn px-4 py-2 bg-white rounded-lg shadow-sm font-bold hover:bg-amber-50"
+                data-tab="tourism">Turismo</button>
+            <button onclick="switchTab('info')"
+                class="tab-btn px-4 py-2 bg-white rounded-lg shadow-sm font-bold hover:bg-amber-50"
+                data-tab="info">Info</button>
+        </div>
+
+        <!-- EDITOR AREA -->
+        <div id="editor-area" class="bg-white p-6 rounded-2xl shadow-lg pb-24">
+            <!-- Dynamic Form -->
+        </div>
+
+        <button onclick="saveChanges()"
+            class="fixed bottom-6 right-6 bg-emerald-600 text-white p-4 rounded-full shadow-2xl hover:bg-emerald-700 transition transform hover:scale-105 flex items-center gap-2 z-50">
+            <i data-lucide="save" class="w-6 h-6"></i>
+            <span class="font-bold">GUARDAR CAMBIOS</span>
+        </button>
+    </div>
+
+    <script src="db.js"></script>
+    <script>
+        lucide.createIcons();
+        let appData = DB.get();
+        let currentTab = 'restaurante';
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('bg-amber-500', 'text-white');
+                b.classList.add('bg-white', 'text-gray-800');
+                if (b.dataset.tab === tab) {
+                    b.classList.remove('bg-white', 'text-gray-800');
+                    b.classList.add('bg-amber-500', 'text-white');
+                }
+            });
+            renderEditor();
+        }
+
+        function renderEditor() {
+            const container = document.getElementById('editor-area');
+            const data = appData[currentTab];
+
+            if (!data) {
+                container.innerHTML = `<p class="text-red-500">Error: No se encontraron datos para la pestaña ${currentTab}. Intenta reiniciar los datos.</p>`;
+                return;
+            }
+
+            let html = '';
+
+            // Common Fields
+            if (data.desc !== undefined && currentTab !== 'minibar' && currentTab !== 'laundry') html += field('Descripción', `appData.${currentTab}.desc`, data.desc, 'textarea');
+            if (data.info !== undefined && currentTab === 'laundry') html += field('Información', `appData.${currentTab}.info`, data.info, 'textarea');
+            if (data.schedule !== undefined) html += field('Horario', `appData.${currentTab}.schedule`, data.schedule);
+            if (data.ext !== undefined) html += field('Extensión Telefónica', `appData.${currentTab}.ext`, data.ext);
+            if (data.surcharge !== undefined) html += field('Suplemento (€)', `appData.${currentTab}.surcharge`, data.surcharge);
+
+            // Special: Tourism
+            if (currentTab === 'tourism') {
+                html += field('URL Video YouTube', `appData.tourism.videoUrl`, data.videoUrl);
+                html += `<p class="text-xs text-gray-500 mt-2">Usar formato embed: https://www.youtube.com/embed/VIDEO_ID</p>`;
+            }
+
+            // Special: Spa Prices
+            if (currentTab === 'spa') {
+                html += `<h3 class="font-bold mt-6 mb-4 border-b pb-2">Tarifas</h3>`;
+                html += field('Semana', `appData.spa.prices.week`, data.prices.week);
+                html += field('Fin de Semana', `appData.spa.prices.weekend`, data.prices.weekend);
+                html += field('Gorro', `appData.spa.prices.cap`, data.prices.cap);
+                html += field('Chanclas', `appData.spa.prices.flipflops`, data.prices.flipflops);
+            }
+
+            // Special: Info
+            if (currentTab === 'info') {
+                html += `<h3 class="font-bold mt-6 mb-4 border-b pb-2">Recepción</h3>`;
+                html += field('Texto', `appData.info.reception.text`, data.reception.text, 'textarea');
+                html += field('Teléfono', `appData.info.reception.phone`, data.reception.phone);
+
+                html += `<h3 class="font-bold mt-6 mb-4 border-b pb-2">Desayuno</h3>`;
+                html += field('Horario Semana', `appData.info.breakfast.schedule_week`, data.breakfast.schedule_week);
+                html += field('Horario Finde', `appData.info.breakfast.schedule_weekend`, data.breakfast.schedule_weekend);
+                html += field('Precio', `appData.info.breakfast.price`, data.breakfast.price);
+
+                html += `<h3 class="font-bold mt-6 mb-4 border-b pb-2">Piscina & Gym</h3>`;
+                html += field('Piscina Desc.', `appData.info.pool.text`, data.pool.text);
+                html += field('Piscina Horario', `appData.info.pool.schedule`, data.pool.schedule);
+                html += field('Gym Desc.', `appData.info.gym.text`, data.gym.text);
+                html += field('Gym Horario Sem.', `appData.info.gym.schedule_week`, data.gym.schedule_week);
+
+                html += `<h3 class="font-bold mt-6 mb-4 border-b pb-2">Parking</h3>`;
+                html += field('Texto', `appData.info.parking.text`, data.parking.text, 'textarea');
+
+                html += `<h3 class="font-bold mt-6 mb-4 border-b pb-2">Otros Horarios</h3>`;
+                html += field('Rest. Comidas', `appData.info.restaurant.schedule_lunch`, data.restaurant.schedule_lunch);
+                html += field('Rest. Cenas', `appData.info.restaurant.schedule_dinner`, data.restaurant.schedule_dinner);
+                html += field('Cafetería', `appData.info.cafeteria.schedule`, data.cafeteria.schedule);
+                html += field('Room Service', `appData.info.roomService.schedule`, data.roomService.schedule);
+            }
+
+            // Categories & Items (Restaurant, Room Service, Minibar)
+            if (data.categories && currentTab !== 'laundry') {
+                data.categories.forEach((cat, catIdx) => {
+                    html += `
+                        <div class="mt-8 border p-4 rounded-xl bg-gray-50 relative group">
+                            <h3 class="font-bold text-lg text-amber-600 mb-2 flex justify-between items-center">
+                                ${cat.name}
+                                <span class="text-xs text-gray-400 font-normal">Categoría</span>
+                            </h3>
+
+                            <div class="space-y-4">
+                                ${cat.items.map((item, itemIdx) => itemRow(currentTab, catIdx, itemIdx, item)).join('')}
+                            </div>
+
+                            <button onclick="addItem(${catIdx})" class="mt-4 w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 font-bold hover:border-amber-500 hover:text-amber-500 transition flex items-center justify-center gap-2">
+                                <i data-lucide="plus" class="w-4 h-4"></i> Añadir Plato
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+
+            // Special: Laundry Categories
+            if (data.categories && currentTab === 'laundry') {
+                data.categories.forEach((cat, catIdx) => {
+                    html += `
+                        <div class="mt-8 border p-4 rounded-xl bg-gray-50 relative group">
+                            <h3 class="font-bold text-lg text-blue-600 mb-2 flex justify-between items-center">
+                                ${cat.name}
+                            </h3>
+                            <div class="grid grid-cols-12 gap-2 text-xs font-bold text-gray-400 mb-2 px-2">
+                                <div class="col-span-6">Prenda</div>
+                                <div class="col-span-3 text-right">Lav+Plan</div>
+                                <div class="col-span-3 text-right">Plancha</div>
+                            </div>
+                            <div class="space-y-2">
+                                ${cat.items.map((item, itemIdx) => itemRowLaundry(catIdx, itemIdx, item)).join('')}
+                            </div>
+                            <!-- No add button for now to keep simple, fixed list per user request -->
+                        </div>
+                    `;
+                });
+            }
+
+            // Simple Items List (Cafeteria)
+            if (data.items && currentTab !== 'laundry') {
+                html += `
+                    <div class="mt-8 border p-4 rounded-xl bg-gray-50">
+                        <h3 class="font-bold text-lg text-amber-600 mb-2">Artículos</h3>
+                        <div class="space-y-4">
+                            ${data.items.map((item, itemIdx) => itemRowSimple(currentTab, itemIdx, item)).join('')}
+                        </div>
+                        <button onclick="addItemSimple()" class="mt-4 w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 font-bold hover:border-amber-500 hover:text-amber-500 transition flex items-center justify-center gap-2">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Añadir Artículo
+                        </button>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+            lucide.createIcons(); // Refresh icons after render
+        }
+
+        function field(label, path, value, type = 'text') {
+            return `
+                <div class="mb-4">
+                    <label class="block text-sm font-bold text-gray-600 mb-1">${label}</label>
+                    <input type="${type}" value="${value}" onchange="${path} = this.value" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-amber-500 options-input">
+                </div>
+            `;
+        }
+
+        // --- ROW TEMPLATES ---
+
+        function itemRow(tab, catIdx, itemIdx, item) {
+            return `
+                <div class="flex gap-2 items-start bg-white p-2 rounded shadow-sm group/item">
+                    <div class="flex-1">
+                        <input placeholder="Nombre" value="${item.name}" onchange="appData.${tab}.categories[${catIdx}].items[${itemIdx}].name = this.value" class="w-full font-bold border-b mb-1 focus:outline-none focus:border-amber-500">
+                        <input placeholder="Descripción" value="${item.desc || ''}" onchange="appData.${tab}.categories[${catIdx}].items[${itemIdx}].desc = this.value" class="w-full text-sm text-gray-500 focus:outline-none focus:text-gray-800">
+                    </div>
+                    <div class="w-24">
+                        <input type="number" step="0.50" value="${item.price}" onchange="appData.${tab}.categories[${catIdx}].items[${itemIdx}].price = this.value" class="w-full p-1 border rounded text-right font-mono focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <button onclick="deleteItem(${catIdx}, ${itemIdx})" class="p-2 text-gray-300 hover:text-red-500 transition" title="Eliminar">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        function itemRowSimple(tab, itemIdx, item) {
+            return `
+                <div class="flex gap-2 items-start bg-white p-2 rounded shadow-sm group/item">
+                    <div class="flex-1">
+                        <input placeholder="Nombre" value="${item.name}" onchange="appData.${tab}.items[${itemIdx}].name = this.value" class="w-full font-bold border-b mb-1 focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div class="w-24">
+                        <input type="number" step="0.50" value="${item.price}" onchange="appData.${tab}.items[${itemIdx}].price = this.value" class="w-full p-1 border rounded text-right font-mono focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <button onclick="deleteItemSimple(${itemIdx})" class="p-2 text-gray-300 hover:text-red-500 transition" title="Eliminar">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        function itemRowLaundry(catIdx, itemIdx, item) {
+            return `
+                <div class="grid grid-cols-12 gap-2 items-center bg-white p-2 rounded shadow-sm">
+                    <div class="col-span-6">
+                        <input value="${item.name}" onchange="appData.laundry.categories[${catIdx}].items[${itemIdx}].name = this.value" class="w-full font-bold text-sm bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none">
+                    </div>
+                    <div class="col-span-3">
+                        <input value="${item.priceWash}" onchange="appData.laundry.categories[${catIdx}].items[${itemIdx}].priceWash = this.value" class="w-full text-right text-xs font-mono bg-stone-50 rounded px-1 py-0.5 border border-transparent focus:border-blue-500">
+                    </div>
+                    <div class="col-span-3">
+                         <input value="${item.priceIron}" onchange="appData.laundry.categories[${catIdx}].items[${itemIdx}].priceIron = this.value" class="w-full text-right text-xs font-mono bg-stone-50 rounded px-1 py-0.5 border border-transparent focus:border-blue-500">
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- ACTIONS ---
+
+        function addItem(catIdx) {
+            const newItem = { name: "Nuevo Plato", desc: "Descripción...", price: "0.00" };
+            appData[currentTab].categories[catIdx].items.push(newItem);
+            renderEditor();
+        }
+
+        function deleteItem(catIdx, itemIdx) {
+            if (confirm('¿Eliminar este plato?')) {
+                appData[currentTab].categories[catIdx].items.splice(itemIdx, 1);
+                renderEditor();
+            }
+        }
+
+        function addItemSimple() {
+            const newItem = { name: "Nuevo Artículo", price: "0.00" };
+            appData[currentTab].items.push(newItem);
+            renderEditor();
+        }
+
+        function deleteItemSimple(itemIdx) {
+            if (confirm('¿Eliminar este artículo?')) {
+                appData[currentTab].items.splice(itemIdx, 1);
+                renderEditor();
+            }
+        }
+
+        function saveChanges() {
+            DB.save(appData);
+            alert('¡Cambios guardados! Actualice el portal del huésped.');
+        }
+
+        function resetData() {
+            if (confirm('¿Reiniciar todos los datos a fábrica?')) {
+                appData = DB.reset();
+                renderEditor();
+            }
+        }
+
+        // Init
+        switchTab('restaurante');
+
+    </script>
+</body>
+
+</html>

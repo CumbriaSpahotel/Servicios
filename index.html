@@ -1,410 +1,920 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal del Huésped | Hotel Cumbriahotel</title>
-    
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#1c1917"> <!-- Stone 900 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description"
+        content="Portal de servicios del Hotel Cumbria & Spa. Restaurante, Room Service, Spa y más.">
+    <title>Cumbria Hotel & Spa | Guest Portal</title>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
+        :root {
+            --primary: #d97706;
+            /* Amber 600 */
+            --dark: #1c1917;
+            /* Stone 900 */
+        }
+
         body {
             font-family: 'Lato', sans-serif;
-            background-color: #f5f5f4; /* Stone-100 */
+            background-color: #f5f5f4;
+            color: #1c1917;
+            -webkit-tap-highlight-color: transparent;
+            padding-bottom: env(safe-area-inset-bottom);
         }
-        h1, h2, h3 {
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .serif {
             font-family: 'Playfair Display', serif;
         }
-        .btn-action {
-            transition: transform 0.2s;
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
-        .btn-action:active {
-            transform: scale(0.98);
+
+        .glass-dark {
+            background: rgba(28, 25, 23, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        html {
-            scroll-behavior: smooth;
+
+        /* Utilities */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
-        /* Mobile specific adjustments */
-        @media (max-width: 640px) {
-            .hero-section {
-                border-bottom-left-radius: 2rem;
-                border-bottom-right-radius: 2rem;
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .safe-area-top {
+            padding-top: env(safe-area-inset-top);
+        }
+
+        .safe-area-bottom {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
-        /* Hero Background with Image */
-        .hero-bg {
-            background-image: url('image_9ad1e9.png'); 
-            background-size: cover;
-            background-position: center;
+
+        .animate-enter {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        
-        /* Utility for price lists */
-        .price-row {
+
+        .card-press {
+            transition: transform 0.1s;
+        }
+
+        .card-press:active {
+            transform: scale(0.98);
+        }
+
+        /* Modal Transitions */
+        .modal-backdrop {
+            transition: opacity 0.3s;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .modal-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
+        }
+
+        .modal-content.open {
+            transform: translateY(0);
+        }
+
+        .price-dotted {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 0.5rem;
-            margin-bottom: 0.5rem;
-            border-bottom: 1px dashed #e7e5e4;
+            align-items: baseline;
         }
-        .price-row:last-child {
-            border-bottom: none;
+
+        .price-dotted .dots {
+            flex: 1;
+            border-bottom: 1px dotted #a8a29e;
+            margin: 0 0.5rem;
         }
     </style>
 </head>
-<body class="bg-stone-100 text-stone-800 pb-20">
 
-    <!-- Header / Welcome Section -->
-    <header class="relative pt-8 pb-12 px-6 hero-section shadow-lg overflow-hidden hero-bg text-white">
-        <!-- Dark Overlay -->
-        <div class="absolute inset-0 bg-stone-900/70 z-0"></div>
+<body class="bg-stone-50 select-none">
 
-        <div class="relative z-10 max-w-md mx-auto">
-            <div class="flex justify-between items-center mb-6">
-                <div class="font-bold tracking-wider text-sm text-amber-500 bg-black/20 backdrop-blur-sm px-3 py-1 rounded-full">
-                    CUMBRIA<span class="text-white">HOTEL</span>
+    <!-- ========== HEADER ========== -->
+    <header class="relative h-[45vh] min-h-[380px] bg-stone-900 overflow-hidden rounded-b-[2.5rem] shadow-2xl z-10">
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1571896349842-68c242f9ed84?ixlib=rb-4.0.3&auto=format&fit=crop&w=1770&q=80"
+                class="w-full h-full object-cover opacity-80" alt="Hotel Ambient">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-stone-900"></div>
+        </div>
+
+        <div class="relative z-20 h-full flex flex-col justify-between p-6 safe-area-top">
+            <!-- Top Nav -->
+            <div class="flex justify-between items-center mt-2">
+                <div class="glass-dark px-4 py-2 rounded-full flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-white text-xs font-bold tracking-widest uppercase">Concierge</span>
                 </div>
-                <a href="tel:+34926000000" class="bg-white/10 backdrop-blur-sm p-2 rounded-full text-white hover:bg-white/20 transition-colors">
-                    <i data-lucide="bell" class="w-4 h-4"></i>
-                </a>
+                <!-- Wifi Quick Action -->
+                <button onclick="copyWifi()"
+                    class="glass-dark w-10 h-10 rounded-full flex items-center justify-center text-white active:scale-95 transition">
+                    <i data-lucide="wifi" class="w-5 h-5"></i>
+                </button>
             </div>
-            <h1 class="text-3xl font-bold mb-2 drop-shadow-md">Servicios</h1>
-            <p class="text-stone-200 text-sm drop-shadow-sm">Todo lo que necesita saber sobre su estancia.</p>
+
+            <!-- Hero Text -->
+            <div class="mb-8">
+                <p class="text-amber-400 text-xs font-bold tracking-[0.2em] uppercase mb-3 animate-enter"
+                    style="animation-delay: 0.1s">Hotel Cumbria & Spa</p>
+                <h1 class="text-4xl text-white font-serif leading-tight mb-2 animate-enter"
+                    style="animation-delay: 0.2s">
+                    Bienvenido a<br><span class="italic text-stone-300">su experiencia.</span>
+                </h1>
+                <p class="text-stone-300 text-sm max-w-[80%] animate-enter" style="animation-delay: 0.3s">
+                    Todo lo que necesita, a un toque de distancia.
+                </p>
+            </div>
         </div>
     </header>
 
-    <!-- Quick Wi-Fi Card -->
-    <div class="px-4 -mt-6 relative z-20 max-w-md mx-auto mb-6">
-        <div class="bg-white rounded-xl shadow-xl p-4 flex items-center justify-between border-l-4 border-amber-500">
-            <div class="flex items-center gap-4">
-                <div class="bg-amber-100 p-3 rounded-full text-amber-600">
-                    <i data-lucide="wifi" class="w-6 h-6"></i>
+    <!-- ========== MAIN FEED ========== -->
+    <main class="relative z-20 -mt-10 pb-32 px-4 space-y-4">
+
+        <!-- HORIZONTAL SCROLL: QUICK ACCESS -->
+        <div class="overflow-x-auto no-scrollbar flex gap-3 pb-2 -mx-4 px-4 snap-x">
+            <!-- Info Hotel -->
+            <button onclick="openModal('info-modal')"
+                class="snap-start shrink-0 w-28 h-32 bg-white rounded-2xl shadow-lg shadow-stone-200/50 flex flex-col items-center justify-center gap-3 card-press border border-stone-100">
+                <div class="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-stone-600">
+                    <i data-lucide="clock" class="w-5 h-5"></i>
                 </div>
-                <div>
-                    <p class="text-xs text-stone-500 uppercase font-bold tracking-wider">Wi-Fi Gratuito</p>
-                    <p class="font-mono text-lg font-bold text-stone-800">Cumbria_Guest</p>
+                <div class="text-center">
+                    <span class="block text-xs font-bold text-stone-800">Horarios</span>
+                    <span class="text-[10px] text-stone-400">e Info</span>
                 </div>
-            </div>
-            <button onclick="copyWifi()" class="text-amber-600 font-bold text-sm bg-amber-50 px-3 py-2 rounded-lg hover:bg-amber-100 transition-colors">
-                Copiar
             </button>
+
+            <!-- Minibar -->
+            <button onclick="openModal('minibar-modal')"
+                class="snap-start shrink-0 w-28 h-32 bg-white rounded-2xl shadow-lg shadow-stone-200/50 flex flex-col items-center justify-center gap-3 card-press border border-stone-100">
+                <div class="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
+                    <i data-lucide="wine" class="w-5 h-5"></i>
+                </div>
+                <div class="text-center">
+                    <span class="block text-xs font-bold text-stone-800">Minibar</span>
+                    <span class="text-[10px] text-stone-400">Tarifas</span>
+                </div>
+            </button>
+
+            <!-- Laundry -->
+            <button onclick="openModal('laundry-modal')"
+                class="snap-start shrink-0 w-28 h-32 bg-white rounded-2xl shadow-lg shadow-stone-200/50 flex flex-col items-center justify-center gap-3 card-press border border-stone-100">
+                <div class="w-10 h-10 rounded-full bg-cyan-50 flex items-center justify-center text-cyan-600">
+                    <i data-lucide="shirt" class="w-5 h-5"></i>
+                </div>
+                <div class="text-center">
+                    <span class="block text-xs font-bold text-stone-800">Lavandería</span>
+                    <span class="text-[10px] text-stone-400">Servicios</span>
+                </div>
+            </button>
+
+            <!-- Tourism -->
+            <button onclick="openModal('tourism-modal')"
+                class="snap-start shrink-0 w-28 h-32 bg-white rounded-2xl shadow-lg shadow-stone-200/50 flex flex-col items-center justify-center gap-3 card-press border border-stone-100">
+                <div class="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center text-rose-600">
+                    <i data-lucide="youtube" class="w-5 h-5"></i>
+                </div>
+                <div class="text-center">
+                    <span class="block text-xs font-bold text-stone-800">Turismo</span>
+                    <span class="text-[10px] text-stone-400">Ver Video</span>
+                </div>
+            </button>
+
+            <!-- Map -->
+            <a href="https://www.google.com/maps/search/?api=1&query=Cumbria+Spa+Hotel+Ciudad+Real" target="_blank"
+                class="snap-start shrink-0 w-28 h-32 bg-white rounded-2xl shadow-lg shadow-stone-200/50 flex flex-col items-center justify-center gap-3 card-press border border-stone-100">
+                <div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-600">
+                    <i data-lucide="navigation" class="w-5 h-5"></i>
+                </div>
+                <div class="text-center">
+                    <span class="block text-xs font-bold text-stone-800">Mapa</span>
+                    <span class="text-[10px] text-stone-400">Ir</span>
+                </div>
+            </a>
         </div>
-    </div>
 
-    <!-- Main Grid Actions -->
-    <main id="inicio" class="px-4 max-w-md mx-auto grid grid-cols-2 gap-4">
-        
-        <!-- Minibar -->
-        <button onclick="toggleModal('minibar-modal')" class="btn-action bg-white p-5 rounded-xl shadow-sm hover:shadow-md text-left flex flex-col gap-3 group">
-            <div class="bg-stone-100 w-10 h-10 rounded-full flex items-center justify-center text-stone-600 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                <i data-lucide="wine" class="w-5 h-5"></i>
-            </div>
-            <div>
-                <h3 class="font-bold text-stone-800">Minibar</h3>
-                <p class="text-xs text-stone-500 mt-1">Lista de precios</p>
-            </div>
-        </button>
+        <!-- VERTICAL FEED: FEATURED SERVICES -->
 
-        <!-- Lavandería -->
-        <button onclick="toggleModal('laundry-modal')" class="btn-action bg-white p-5 rounded-xl shadow-sm hover:shadow-md text-left flex flex-col gap-3 group">
-            <div class="bg-stone-100 w-10 h-10 rounded-full flex items-center justify-center text-stone-600 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                <i data-lucide="shirt" class="w-5 h-5"></i>
+        <!-- Restaurante Card -->
+        <div onclick="openModal('restaurante-modal')"
+            class="group relative h-64 rounded-[2rem] overflow-hidden shadow-xl shadow-stone-300/50 card-press cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80"
+                class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-0 p-6 w-full">
+                <div class="flex items-center gap-2 mb-2">
+                    <span
+                        class="px-2 py-1 bg-amber-500 rounded text-[10px] font-bold text-white uppercase tracking-wider">Destacado</span>
+                </div>
+                <h3 class="text-2xl text-white font-serif font-bold">Restaurante Cumbria</h3>
+                <div class="flex justify-between items-end mt-2">
+                    <p class="text-stone-300 text-sm">Alta cocina de autor & Vinos</p>
+                    <div
+                        class="w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-white">
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </div>
+                </div>
             </div>
-            <div>
-                <h3 class="font-bold text-stone-800">Lavandería</h3>
-                <p class="text-xs text-stone-500 mt-1">Tarifas de limpieza</p>
-            </div>
-        </button>
+        </div>
 
-        <!-- Spa -->
-        <button onclick="toggleModal('spa-modal')" class="btn-action bg-white p-5 rounded-xl shadow-sm hover:shadow-md text-left flex flex-col gap-3 group">
-            <div class="bg-stone-100 w-10 h-10 rounded-full flex items-center justify-center text-stone-600 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                <i data-lucide="droplets" class="w-5 h-5"></i>
+        <!-- Room Service & Cafeteria Split -->
+        <div class="grid grid-cols-2 gap-4 h-60">
+            <!-- Room Service -->
+            <div onclick="openModal('room-service-modal')"
+                class="relative rounded-[2rem] bg-stone-900 overflow-hidden shadow-lg card-press cursor-pointer col-span-1">
+                <div class="absolute inset-0 p-5 flex flex-col justify-between z-10">
+                    <div
+                        class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white border border-white/10">
+                        <i data-lucide="bell-ring" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg text-white font-serif font-bold leading-tight mb-1">Room<br>Service</h3>
+                        <p class="text-xs text-stone-400">Cena en la habitación</p>
+                    </div>
+                </div>
+                <!-- Decorative Circle -->
+                <div class="absolute -right-4 -bottom-4 w-32 h-32 rounded-full bg-stone-800 opacity-50"></div>
             </div>
-            <div>
-                <h3 class="font-bold text-stone-800">Spa & Wellness</h3>
-                <p class="text-xs text-stone-500 mt-1">Circuitos y masajes</p>
-            </div>
-        </button>
 
-        <!-- Room Service -->
-        <button onclick="toggleModal('menu-modal')" class="btn-action bg-white p-5 rounded-xl shadow-sm hover:shadow-md text-left flex flex-col gap-3 group">
-            <div class="bg-stone-100 w-10 h-10 rounded-full flex items-center justify-center text-stone-600 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                <i data-lucide="utensils" class="w-5 h-5"></i>
+            <!-- Cafetería -->
+            <div onclick="openModal('cafeteria-modal')"
+                class="relative rounded-[2rem] bg-white overflow-hidden shadow-lg card-press cursor-pointer col-span-1 border border-stone-100">
+                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+                    class="absolute inset-0 w-full h-full object-cover opacity-90">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div class="absolute inset-0 p-5 flex flex-col justify-between z-10">
+                    <div
+                        class="w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-white">
+                        <i data-lucide="coffee" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg text-white font-serif font-bold leading-tight mb-1">Cafetería</h3>
+                        <p class="text-xs text-stone-300">Snacks & Café</p>
+                    </div>
+                </div>
             </div>
-            <div>
-                <h3 class="font-bold text-stone-800">Room Service</h3>
-                <p class="text-xs text-stone-500 mt-1">Carta de comidas</p>
-            </div>
-        </button>
+        </div>
 
-        <!-- Reception -->
-        <a href="tel:+34926000000" class="btn-action bg-white p-5 rounded-xl shadow-sm hover:shadow-md text-left flex flex-col gap-3 group">
-            <div class="bg-stone-100 w-10 h-10 rounded-full flex items-center justify-center text-stone-600 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                <i data-lucide="phone" class="w-5 h-5"></i>
+        <!-- Spa (Full Width) -->
+        <div onclick="openModal('spa-modal')"
+            class="relative h-56 rounded-[2rem] overflow-hidden shadow-xl shadow-stone-300/50 card-press cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1600334089648-b0d9d302427f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                class="absolute inset-0 w-full h-full object-cover">
+            <div class="absolute inset-0 bg-stone-900/40 mix-blend-multiply"></div>
+            <div class="absolute inset-0 p-6 flex flex-col justify-center items-center text-center z-10">
+                <i data-lucide="droplets" class="w-8 h-8 text-white mb-2 opacity-80"></i>
+                <h3 class="text-3xl text-white font-serif font-bold mb-1">Spa & Wellness</h3>
+                <p class="text-white/90 text-sm mb-4">Relajación absoluta</p>
+                <div
+                    class="px-5 py-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-xs font-bold uppercase tracking-widest">
+                    Ver Carta
+                </div>
             </div>
-            <div>
-                <h3 class="font-bold text-stone-800">Recepción</h3>
-                <p class="text-xs text-stone-500 mt-1">Marcar Ext. 9</p>
-            </div>
-        </a>
-
-        <!-- La Ciudad -->
-        <button onclick="toggleModal('guide-modal')" class="btn-action bg-white p-5 rounded-xl shadow-sm hover:shadow-md text-left flex flex-col gap-3 group">
-            <div class="bg-stone-100 w-10 h-10 rounded-full flex items-center justify-center text-stone-600 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                <i data-lucide="map" class="w-5 h-5"></i>
-            </div>
-            <div>
-                <h3 class="font-bold text-stone-800">La Ciudad</h3>
-                <p class="text-xs text-stone-500 mt-1">Guía rápida</p>
-            </div>
-        </button>
+        </div>
 
     </main>
 
-    <!-- Information List -->
-    <section id="info" class="px-4 mt-8 max-w-md mx-auto mb-20">
-        <h3 class="text-lg font-bold text-stone-800 mb-4 px-1">Información General</h3>
-        
-        <div class="bg-white rounded-xl shadow-sm divide-y divide-stone-100 overflow-hidden">
-            <!-- Breakfast -->
-            <div class="p-4 flex items-start gap-4">
-                <i data-lucide="coffee" class="w-5 h-5 text-amber-600 mt-1"></i>
-                <div>
-                    <h4 class="font-bold text-sm text-stone-800">Desayuno Buffet</h4>
-                    <p class="text-xs text-stone-500 mt-1">Lunes - Viernes: 07:00 - 10:30</p>
-                    <p class="text-xs text-stone-500">Sábados - Domingos: 08:00 - 11:00</p>
-                </div>
-            </div>
-            <!-- Facilities Note -->
-            <div class="p-4 flex items-start gap-4 bg-stone-50">
-                <i data-lucide="info" class="w-5 h-5 text-stone-400 mt-1"></i>
-                <div>
-                    <h4 class="font-bold text-sm text-stone-800">Nota sobre instalaciones</h4>
-                    <p class="text-xs text-stone-500 mt-1">Estamos trabajando en un nuevo proyecto para renovar la zona de pistas deportivas. Disculpen las molestias.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 w-full bg-white border-t border-stone-200 py-3 px-6 flex justify-around items-center z-50 text-xs font-medium text-stone-400 safe-area-pb">
-        <a href="#inicio" class="flex flex-col items-center text-amber-600">
-            <i data-lucide="home" class="w-6 h-6 mb-1"></i>
-            Inicio
-        </a>
-        <a href="#" onclick="alert('Contacte con recepción para asistencia inmediata')" class="flex flex-col items-center hover:text-stone-800">
-            <i data-lucide="phone-call" class="w-6 h-6 mb-1"></i>
-            Ayuda
-        </a>
-        <a href="#info" class="flex flex-col items-center hover:text-stone-800">
-            <i data-lucide="info" class="w-6 h-6 mb-1"></i>
-            Info
-        </a>
-    </nav>
-
-    <!-- ================= MODALS ================= -->
-
-    <!-- Modal: Minibar -->
-    <div id="minibar-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="toggleModal('minibar-modal')"></div>
-        <div class="absolute bottom-0 w-full bg-white rounded-t-2xl max-h-[85vh] overflow-y-auto p-6 animate-slide-up">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold font-serif">Tarifas Minibar</h3>
-                <button onclick="toggleModal('minibar-modal')" class="p-2 bg-stone-100 rounded-full hover:bg-stone-200">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            
-            <div class="space-y-4">
-                <div>
-                    <h4 class="font-bold text-amber-600 mb-3 text-xs uppercase tracking-wide">Bebidas</h4>
-                    <div class="price-row"><span class="text-stone-700">Agua Mineral (50cl)</span> <span class="font-bold">2.50€</span></div>
-                    <div class="price-row"><span class="text-stone-700">Agua con Gas</span> <span class="font-bold">2.80€</span></div>
-                    <div class="price-row"><span class="text-stone-700">Refrescos (Cola, Naranja, Limón)</span> <span class="font-bold">3.00€</span></div>
-                    <div class="price-row"><span class="text-stone-700">Cerveza Nacional</span> <span class="font-bold">3.50€</span></div>
-                    <div class="price-row"><span class="text-stone-700">Cerveza Importación</span> <span class="font-bold">4.50€</span></div>
-                    <div class="price-row"><span class="text-stone-700">Zumo de Frutas</span> <span class="font-bold">2.80€</span></div>
-                    <div class="price-row"><span class="text-stone-700">Miniatura Licores (5cl)</span> <span class="font-bold">5.50€</span></div>
-                </div>
-
-                <div>
-                    <h4 class="font-bold text-amber-600 mb-3 text-xs uppercase tracking-wide">Snacks</h4>
-                    <div class="price-row"><span class="text-stone-700">Patatas Fritas</span> <span class="font-bold">2.50€</span></div>
-                    <div class="price-row"><span class="text-stone-700">Frutos Secos</span> <span class="font-bold">3.00€</span></div>
-                    <div class="price-row"><span class="text-stone-700">Chocolatina / Barrita</span> <span class="font-bold">2.50€</span></div>
-                </div>
-            </div>
-            <p class="text-xs text-stone-400 mt-6 text-center">Precios con IVA incluido. El consumo se cargará automáticamente a su cuenta.</p>
-        </div>
-    </div>
-
-    <!-- Modal: Lavandería -->
-    <div id="laundry-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="toggleModal('laundry-modal')"></div>
-        <div class="absolute bottom-0 w-full bg-white rounded-t-2xl max-h-[85vh] overflow-y-auto p-6 animate-slide-up">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold font-serif">Servicio de Lavandería</h3>
-                <button onclick="toggleModal('laundry-modal')" class="p-2 bg-stone-100 rounded-full hover:bg-stone-200">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            
-            <div class="bg-amber-50 p-4 rounded-lg mb-6 flex gap-3 items-start">
-                <i data-lucide="clock" class="text-amber-600 w-5 h-5 mt-0.5"></i>
-                <div>
-                    <h4 class="font-bold text-amber-800 text-sm">Horario de recogida</h4>
-                    <p class="text-xs text-amber-700 mt-1">Entregando antes de las 10:00h, devolución el mismo día a las 20:00h. Servicio Express (+50% recargo) en 4 horas.</p>
-                </div>
-            </div>
-
-            <div class="space-y-4">
-                <div>
-                    <h4 class="font-bold text-stone-800 mb-3 text-sm">Lavado y Planchado</h4>
-                    <div class="price-row"><span class="text-stone-700">Camisa / Blusa</span> <span class="font-bold">6.00€</span></div>
-                    <div class="price-row"><span class="text-stone-700">Pantalón / Falda</span> <span class="font-bold">7.00€</span></div>
-                    <div class="price-row"><span class="text-stone-700">Traje Completo (2 piezas)</span> <span class="font-bold">14.00€</span></div>
-                    <div class="price-row"><span class="text-stone-700">Vestido</span> <span class="font-bold">10.00€</span></div>
-                    <div class="price-row"><span class="text-stone-700">Ropa Interior / Calcetines</span> <span class="font-bold">2.50€</span></div>
-                    <div class="price-row"><span class="text-stone-700">Pijama</span> <span class="font-bold">5.00€</span></div>
-                </div>
-                <div>
-                    <h4 class="font-bold text-stone-800 mb-3 text-sm">Solo Planchado</h4>
-                    <div class="price-row"><span class="text-stone-700">Camisa / Blusa</span> <span class="font-bold">4.00€</span></div>
-                    <div class="price-row"><span class="text-stone-700">Pantalón</span> <span class="font-bold">4.50€</span></div>
-                </div>
-            </div>
-            <div class="mt-6 text-center">
-                 <button class="w-full bg-stone-900 text-white py-3 rounded-lg font-bold uppercase text-sm tracking-wide">Solicitar bolsa de recogida</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Spa -->
-    <div id="spa-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="toggleModal('spa-modal')"></div>
-        <div class="absolute bottom-0 w-full bg-white rounded-t-2xl max-h-[85vh] overflow-y-auto p-6 animate-slide-up">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold font-serif">Spa & Wellness</h3>
-                <button onclick="toggleModal('spa-modal')" class="p-2 bg-stone-100 rounded-full hover:bg-stone-200">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            
-            <!-- Circuit -->
-            <div class="mb-6">
-                <div class="relative h-32 rounded-lg overflow-hidden mb-3">
-                    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Spa" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
-                        <span class="text-white font-bold text-lg">Circuito Hidrotermal</span>
-                    </div>
-                </div>
-                <p class="text-sm text-stone-600 mb-2">Acceso a piscina climatizada, jacuzzi, sauna y baño turco. Gorro y chanclas obligatorios.</p>
-                <div class="price-row"><span class="text-stone-700">Sesión 60 min (Huéspedes)</span> <span class="font-bold">15.00€</span></div>
-                <div class="price-row"><span class="text-stone-700">Kit Spa (Gorro + Chanclas)</span> <span class="font-bold">5.00€</span></div>
-            </div>
-
-            <!-- Massages -->
-            <div>
-                <h4 class="font-bold text-amber-600 mb-3 text-xs uppercase tracking-wide">Carta de Masajes</h4>
-                <div class="price-row">
-                    <div class="flex flex-col">
-                        <span class="text-stone-800 font-semibold">Relajante Aromaterapia</span>
-                        <span class="text-xs text-stone-500">Masaje suave con aceites esenciales (50')</span>
-                    </div>
-                    <span class="font-bold">55€</span>
-                </div>
-                <div class="price-row">
-                    <div class="flex flex-col">
-                        <span class="text-stone-800 font-semibold">Descontracturante</span>
-                        <span class="text-xs text-stone-500">Intenso, zonas localizadas (30')</span>
-                    </div>
-                    <span class="font-bold">35€</span>
-                </div>
-                <div class="price-row">
-                    <div class="flex flex-col">
-                        <span class="text-stone-800 font-semibold">Ritual Facial</span>
-                        <span class="text-xs text-stone-500">Limpieza e hidratación profunda (45')</span>
-                    </div>
-                    <span class="font-bold">45€</span>
-                </div>
-            </div>
-
-            <div class="mt-6 text-center">
-                 <a href="tel:+34926000000" class="block w-full bg-amber-600 text-white py-3 rounded-lg font-bold uppercase text-sm tracking-wide">Reservar Cita</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Room Service Menu (Simplified for context) -->
-    <div id="menu-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="toggleModal('menu-modal')"></div>
-        <div class="absolute bottom-0 w-full bg-white rounded-t-2xl max-h-[85vh] overflow-y-auto p-6 animate-slide-up">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold font-serif">Room Service</h3>
-                <button onclick="toggleModal('menu-modal')" class="p-2 bg-stone-100 rounded-full hover:bg-stone-200">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <div class="space-y-4">
-                <div class="price-row"><span class="text-stone-700 font-bold">Sandwich Club</span> <span class="font-bold">12.00€</span></div>
-                <div class="price-row"><span class="text-stone-700 font-bold">Hamburguesa Cumbria</span> <span class="font-bold">14.00€</span></div>
-                <div class="price-row"><span class="text-stone-700 font-bold">Ensalada César</span> <span class="font-bold">10.00€</span></div>
-                <div class="price-row"><span class="text-stone-700 font-bold">Pasta Carbonara</span> <span class="font-bold">11.00€</span></div>
-                <div class="price-row"><span class="text-stone-700 font-bold">Fruta de temporada</span> <span class="font-bold">5.00€</span></div>
-                <a href="tel:+34926000000" class="block text-center w-full bg-stone-900 text-white py-3 rounded-lg font-bold uppercase text-sm tracking-wide mt-4">Llamar a cocina (Ext. 9)</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Guide -->
-    <div id="guide-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="toggleModal('guide-modal')"></div>
-        <div class="absolute bottom-0 w-full bg-white rounded-t-2xl max-h-[85vh] overflow-y-auto p-6 animate-slide-up">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold font-serif">Ubicación</h3>
-                <button onclick="toggleModal('guide-modal')" class="p-2 bg-stone-100 rounded-full hover:bg-stone-200">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <div class="bg-amber-50 p-4 rounded-lg mb-6 flex gap-4 items-start">
-                <i data-lucide="map-pin" class="text-amber-600 shrink-0 mt-1"></i>
-                <div>
-                    <h4 class="font-bold text-amber-800 text-sm">Plaza Mayor</h4>
-                    <p class="text-xs text-amber-700 mt-1">Recuerde: estamos a solo <span class="font-bold">20 minutos andando</span> del centro histórico.</p>
-                </div>
-            </div>
-            <a href="https://goo.gl/maps/placeholder" target="_blank" class="flex items-center gap-4 p-3 border border-stone-200 rounded-lg hover:border-amber-500 transition-colors">
-                <div class="bg-stone-100 p-2 rounded-md"><i data-lucide="navigation" class="w-5 h-5 text-stone-600"></i></div>
-                <div class="flex-1">
-                    <p class="font-bold text-sm">Abrir en Google Maps</p>
-                </div>
-                <i data-lucide="chevron-right" class="w-4 h-4 text-stone-300"></i>
+    <!-- ========== FIXED BOTTOM BAR ========== -->
+    <div class="fixed bottom-0 left-0 w-full p-4 z-50 pointer-events-none">
+        <nav
+            class="pointer-events-auto bg-stone-900/90 backdrop-filter backdrop-blur-xl text-white p-2 rounded-full shadow-2xl flex justify-between items-center max-w-sm mx-auto border border-white/10 safe-area-bottom">
+            <a href="#"
+                class="w-14 h-12 rounded-full flex flex-col items-center justify-center text-amber-500 bg-white/5">
+                <i data-lucide="home" class="w-5 h-5"></i>
             </a>
+            <button onclick="openModal('restaurante-modal')"
+                class="w-14 h-12 rounded-full flex flex-col items-center justify-center text-stone-400 hover:text-white transition">
+                <i data-lucide="utensils" class="w-5 h-5"></i>
+            </button>
+            <div class="w-[1px] h-6 bg-white/10"></div>
+            <button onclick="openModal('spa-modal')"
+                class="w-14 h-12 rounded-full flex flex-col items-center justify-center text-stone-400 hover:text-white transition">
+                <i data-lucide="droplets" class="w-5 h-5"></i>
+            </button>
+            <a href="tel:+34926000000"
+                class="w-14 h-12 rounded-full flex flex-col items-center justify-center text-stone-400 hover:bg-emerald-600 hover:text-white transition">
+                <i data-lucide="phone" class="w-5 h-5"></i>
+            </a>
+        </nav>
+    </div>
+
+
+    <!-- ========== MODALS ========== -->
+
+    <!-- TEMPLATE: Info Modal -->
+    <div id="info-modal" class="fixed inset-0 z-[60] flex items-end justify-center pointer-events-none">
+        <div class="absolute inset-0 bg-black/60 modal-backdrop" onclick="closeModal('info-modal')"></div>
+        <div
+            class="modal-content relative w-full h-[90vh] bg-stone-50 rounded-t-[2.5rem] overflow-hidden pointer-events-auto flex flex-col shadow-2xl">
+            <!-- Header -->
+            <div class="relative shrink-0 p-6 flex justify-between items-center bg-white z-20">
+                <h2 class="text-2xl font-serif font-bold text-stone-900">Información</h2>
+                <button onclick="closeModal('info-modal')"
+                    class="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-500 hover:bg-stone-200">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="flex-1 overflow-y-auto p-6 space-y-6 bg-stone-50 pb-24">
+
+                <p class="text-stone-600 text-sm text-center italic mb-4">
+                    "Es un placer recibirle. Esperamos que se sienta como en casa."
+                </p>
+
+                <!-- Reception -->
+                <div class="bg-white p-5 rounded-3xl shadow-sm">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="bg-stone-100 p-2 rounded-xl"><i data-lucide="bell"
+                                class="w-5 h-5 text-stone-700"></i></div>
+                        <h4 class="font-bold text-stone-800">Recepción 24h</h4>
+                    </div>
+                    <p class="text-sm text-stone-500 leading-relaxed mb-4" id="info-reception-text">...</p>
+                    <a href="tel:1198"
+                        class="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-100 text-sm font-bold text-stone-700">
+                        <span>Llamar <span id="info-reception-phone">...</span></span>
+                        <i data-lucide="phone-call" class="w-4 h-4 text-emerald-600"></i>
+                    </a>
+                </div>
+
+                <!-- Breakfast -->
+                <div class="bg-white p-5 rounded-3xl shadow-sm">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="bg-amber-100 p-2 rounded-xl"><i data-lucide="coffee"
+                                class="w-5 h-5 text-amber-700"></i></div>
+                        <h4 class="font-bold text-stone-800">Desayuno Buffet</h4>
+                    </div>
+                    <p class="text-xs text-stone-400 mb-3" id="info-breakfast-loc">...</p>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm border-b border-stone-100 pb-2">
+                            <span class="text-stone-500">Lunes - Viernes</span>
+                            <span class="font-bold text-stone-800" id="info-breakfast-week">...</span>
+                        </div>
+                        <div class="flex justify-between text-sm border-b border-stone-100 pb-2">
+                            <span class="text-stone-500">Fines de Semana</span>
+                            <span class="font-bold text-stone-800" id="info-breakfast-weekend">...</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-stone-500">Precio</span>
+                            <span class="font-bold text-amber-600"><span id="info-breakfast-price">...</span>€ /
+                                persona</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Restaurants & Bars Info -->
+                <div class="bg-white p-5 rounded-3xl shadow-sm space-y-4">
+                    <div>
+                        <h4 class="font-bold text-stone-800 text-sm mb-1">Restaurante</h4>
+                        <p class="text-xs text-stone-500" id="info-restaurant-lunch">Comidas: ...</p>
+                        <p class="text-xs text-stone-500" id="info-restaurant-dinner">Cenas: ...</p>
+                    </div>
+                    <div class="border-t pt-2">
+                        <h4 class="font-bold text-stone-800 text-sm mb-1">Cafetería</h4>
+                        <p class="text-xs text-stone-500" id="info-cafeteria-schedule">...</p>
+                    </div>
+                    <div class="border-t pt-2">
+                        <h4 class="font-bold text-stone-800 text-sm mb-1">Room Service</h4>
+                        <p class="text-xs text-stone-500" id="info-roomservice-schedule">...</p>
+                    </div>
+                </div>
+
+                <!-- Pool & Gym -->
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="bg-white p-5 rounded-3xl shadow-sm flex items-center gap-4">
+                        <div class="bg-cyan-50 p-2 rounded-xl"><i data-lucide="waves" class="w-5 h-5 text-cyan-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-stone-800 text-sm">Piscina</h4>
+                            <p class="text-xs text-stone-500 mt-1" id="info-pool-desc">...</p>
+                            <p class="text-xs text-stone-400" id="info-pool-schedule">...</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-3xl shadow-sm">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="bg-stone-100 p-2 rounded-xl"><i data-lucide="dumbbell"
+                                    class="w-5 h-5 text-stone-800"></i></div>
+                            <h4 class="font-bold text-stone-800 text-sm">Gimnasio</h4>
+                        </div>
+                        <p class="text-xs text-stone-500 mb-2 leading-relaxed" id="info-gym-desc">...</p>
+                        <p class="text-xs text-stone-400 font-mono" id="info-gym-schedule">...</p>
+                    </div>
+                </div>
+
+                <!-- Parking -->
+                <div class="bg-white p-5 rounded-3xl shadow-sm flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-stone-100 p-2 rounded-xl"><i data-lucide="car"
+                                class="w-5 h-5 text-stone-600"></i></div>
+                        <div>
+                            <h4 class="font-bold text-stone-800 text-sm">Parking</h4>
+                            <p class="text-xs text-stone-500 max-w-[200px]" id="info-parking-desc">...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- TEMPLATE: Restaurante Modal -->
+    <div id="restaurante-modal" class="fixed inset-0 z-[60] flex items-end justify-center pointer-events-none">
+        <div class="absolute inset-0 bg-black/60 modal-backdrop" onclick="closeModal('restaurante-modal')"></div>
+        <div
+            class="modal-content relative w-full h-[95vh] bg-stone-50 rounded-t-[2.5rem] overflow-hidden pointer-events-auto flex flex-col shadow-2xl">
+            <!-- Visual Header -->
+            <div class="relative h-60 shrink-0">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80"
+                    class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                <button onclick="closeModal('restaurante-modal')"
+                    class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-white hover:bg-white/30 z-20">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <div class="absolute bottom-6 left-6 text-white">
+                    <span
+                        class="px-2 py-1 border border-white/30 rounded text-[10px] uppercase font-bold tracking-widest mb-2 inline-block">Menú</span>
+                    <h2 class="text-3xl font-serif font-bold">Restaurante</h2>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="flex-1 overflow-y-auto p-6 bg-stone-50 space-y-8 pb-32">
+
+                <p class="text-stone-500 italic text-center font-serif text-lg px-4" id="restaurante-desc">
+                    Loading...
+                </p>
+
+                <!-- DYNAMIC CONTENT CONTAINER -->
+                <div id="restaurante-list" class="space-y-6"></div>
+
+                <div class="text-center text-xs text-stone-400 pb-4" id="restaurante-schedule">
+                    Horario: ...
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- TEMPLATE: Room Service Modal -->
+    <div id="room-service-modal" class="fixed inset-0 z-[60] flex items-end justify-center pointer-events-none">
+        <div class="absolute inset-0 bg-black/60 modal-backdrop" onclick="closeModal('room-service-modal')"></div>
+        <div
+            class="modal-content relative w-full h-[95vh] bg-stone-50 rounded-t-[2.5rem] overflow-hidden pointer-events-auto flex flex-col shadow-2xl">
+            <!-- Header -->
+            <div class="bg-stone-900 p-6 pt-8 text-white rounded-b-[2rem] shadow-lg relative z-10">
+                <button onclick="closeModal('room-service-modal')"
+                    class="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="p-2 bg-amber-500 rounded-lg"><i data-lucide="bell-ring" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-amber-500" id="rs-ext">Extensión
+                        ...</span>
+                </div>
+                <h2 class="text-3xl font-serif font-bold">Room Service</h2>
+            </div>
+
+            <!-- Content -->
+            <div class="flex-1 overflow-y-auto p-6 bg-stone-50 space-y-6 pb-24">
+
+                <!-- DYNAMIC CONTENT CONTAINER -->
+                <div id="rs-list" class="space-y-6"></div>
+
+                <p class="text-[10px] text-center text-stone-400" id="rs-surcharge">Suplemento servicio habitaciones:
+                    ...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEMPLATE: Cafeteria Modal -->
+    <div id="cafeteria-modal" class="fixed inset-0 z-[60] flex items-end justify-center pointer-events-none">
+        <div class="absolute inset-0 bg-black/60 modal-backdrop" onclick="closeModal('cafeteria-modal')"></div>
+        <div
+            class="modal-content relative w-full h-[60vh] bg-stone-50 rounded-t-[2.5rem] overflow-hidden pointer-events-auto flex flex-col shadow-2xl">
+            <!-- Header -->
+            <div class="p-6 bg-white border-b border-stone-100 flex justify-between items-center">
+                <h2 class="text-2xl font-serif font-bold text-stone-900">Cafetería</h2>
+                <button onclick="closeModal('cafeteria-modal')"
+                    class="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-500 hover:bg-stone-200">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-6 bg-stone-50 space-y-6">
+                <div class="bg-amber-50 p-4 rounded-2xl flex items-center gap-4">
+                    <div class="bg-white p-2 rounded-full shadow-sm"><i data-lucide="clock"
+                            class="w-5 h-5 text-amber-600"></i></div>
+                    <div>
+                        <p class="font-bold text-amber-900 text-sm">Abierto todos los días</p>
+                        <p class="text-xs text-amber-700" id="cafe-schedule">...</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 shadow-sm space-y-3" id="cafe-list">
+                    <!-- Dynamic -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEMPLATE: Spa Modal -->
+    <div id="spa-modal" class="fixed inset-0 z-[60] flex items-end justify-center pointer-events-none">
+        <div class="absolute inset-0 bg-black/60 modal-backdrop" onclick="closeModal('spa-modal')"></div>
+        <div
+            class="modal-content relative w-full h-[95vh] bg-stone-50 rounded-t-[2.5rem] overflow-hidden pointer-events-auto flex flex-col shadow-2xl">
+            <!-- Header Image -->
+            <div class="relative h-64 shrink-0">
+                <img src="https://images.unsplash.com/photo-1600334089648-b0d9d302427f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-stone-900 via-transparent to-transparent"></div>
+                <!-- Close -->
+                <button onclick="closeModal('spa-modal')"
+                    class="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/20 backdrop-blur flex items-center justify-center text-white hover:bg-black/40 z-20">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <div class="absolute bottom-6 left-6 text-white w-full pr-12">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="droplets" class="w-5 h-5 text-cyan-300"></i>
+                        <span class="text-cyan-100 text-xs font-bold uppercase tracking-widest">Wellness Zone</span>
+                    </div>
+                    <h2 class="text-3xl font-serif font-bold">Circuito Termal</h2>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="flex-1 overflow-y-auto p-6 bg-stone-50 space-y-8 pb-32">
+
+                <p class="text-stone-600 leading-relaxed text-sm">
+                    "Un santuario de paz. Recorrido hidrotermal diseñado para detoxificar, relajar la musculatura y
+                    reactivar la circulación."
+                </p>
+
+                <!-- Facilities -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white p-4 rounded-2xl shadow-sm text-center">
+                        <i data-lucide="waves" class="w-6 h-6 text-cyan-600 mx-auto mb-2"></i>
+                        <span class="text-xs font-bold text-stone-700">Hidromasaje</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm text-center">
+                        <i data-lucide="thermometer-sun" class="w-6 h-6 text-orange-500 mx-auto mb-2"></i>
+                        <span class="text-xs font-bold text-stone-700">Sauna</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm text-center">
+                        <i data-lucide="cloud-fog" class="w-6 h-6 text-stone-400 mx-auto mb-2"></i>
+                        <span class="text-xs font-bold text-stone-700">Baño Turco</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm text-center">
+                        <i data-lucide="snowflake" class="w-6 h-6 text-blue-400 mx-auto mb-2"></i>
+                        <span class="text-xs font-bold text-stone-700">Hielo</span>
+                    </div>
+                </div>
+
+                <!-- Prices -->
+                <div class="bg-stone-900 rounded-3xl p-6 text-white shadow-lg">
+                    <h3 class="font-serif font-bold text-lg mb-4 text-center">Tarifas Circuito (1h)</h3>
+                    <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-4">
+                        <div class="text-left">
+                            <span class="block font-bold text-amber-500 text-sm">Lunes - Jueves</span>
+                            <span class="text-[10px] text-stone-400">Días laborables</span>
+                        </div>
+                        <span class="text-2xl font-bold" id="spa-price-week">--€</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="text-left">
+                            <span class="block font-bold text-white text-sm">Viernes - Domingo</span>
+                            <span class="text-[10px] text-stone-400">Festivos incluidos</span>
+                        </div>
+                        <span class="text-2xl font-bold" id="spa-price-weekend">--€</span>
+                    </div>
+                </div>
+
+                <div class="bg-orange-50 p-4 rounded-xl border border-orange-100 flex gap-3 items-start">
+                    <i data-lucide="info" class="w-5 h-5 text-orange-500 shrink-0 mt-0.5"></i>
+                    <p class="text-xs text-orange-800 leading-snug">
+                        <strong>Importante:</strong> Uso obligatorio de gorro (<span id="spa-cap">...</span>€) y
+                        chanclas (<span id="spa-flip">...</span>€). Disponibles para compra o alquiler.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- CTA -->
+            <div class="absolute bottom-0 w-full p-6 bg-gradient-to-t from-stone-50 via-stone-50 to-transparent">
+                <a href="https://wa.me/34926250404" target="_blank"
+                    class="block w-full py-4 bg-[#25D366] rounded-xl text-white font-bold text-center shadow-lg shadow-green-500/20 hover:brightness-105 transition">
+                    Reservar por WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEMPLATE: Minibar Modal -->
+    <div id="minibar-modal" class="fixed inset-0 z-[60] flex items-end justify-center pointer-events-none">
+        <div class="absolute inset-0 bg-black/60 modal-backdrop" onclick="closeModal('minibar-modal')"></div>
+        <div
+            class="modal-content relative w-full h-[60vh] bg-stone-50 rounded-t-[2.5rem] overflow-hidden pointer-events-auto flex flex-col shadow-2xl">
+            <div class="p-6 bg-white border-b border-stone-100 flex justify-between items-center">
+                <h2 class="text-2xl font-serif font-bold text-stone-900">Minibar</h2>
+                <button onclick="closeModal('minibar-modal')"
+                    class="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-500 hover:bg-stone-200">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-6 bg-stone-50 space-y-6">
+                <p id="minibar-desc" class="text-sm text-stone-600 italic text-center"></p>
+                <!-- Dynamic -->
+                <div id="minibar-list" class="space-y-6"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEMPLATE: Tourism Modal -->
+    <div id="tourism-modal" class="fixed inset-0 z-[60] flex items-end justify-center pointer-events-none">
+        <div class="absolute inset-0 bg-black/80 modal-backdrop" onclick="closeModal('tourism-modal')"></div>
+        <div
+            class="modal-content relative w-full h-[50vh] bg-stone-900 rounded-t-[2.5rem] overflow-hidden pointer-events-auto flex flex-col shadow-2xl">
+            <div class="p-6 bg-stone-900 border-b border-white/10 flex justify-between items-center shrink-0">
+                <h2 class="text-xl font-serif font-bold text-white flex items-center gap-2">
+                    <i data-lucide="youtube" class="w-5 h-5 text-red-500"></i> Turismo en Ciudad Real
+                </h2>
+                <button onclick="closeModal('tourism-modal')"
+                    class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="flex-1 bg-black flex items-center justify-center relative">
+                <iframe id="tourism-frame" class="w-full h-full absolute inset-0" src="" title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEMPLATE: Laundry Modal -->
+    <div id="laundry-modal" class="fixed inset-0 z-[60] flex items-end justify-center pointer-events-none">
+        <div class="absolute inset-0 bg-black/60 modal-backdrop" onclick="closeModal('laundry-modal')"></div>
+        <div
+            class="modal-content relative w-full h-[60vh] bg-stone-50 rounded-t-[2.5rem] overflow-hidden pointer-events-auto flex flex-col shadow-2xl">
+            <div class="p-6 bg-white border-b border-stone-100 flex justify-between items-center">
+                <h2 class="text-2xl font-serif font-bold text-stone-900">Lavandería</h2>
+                <button onclick="closeModal('laundry-modal')"
+                    class="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-500 hover:bg-stone-200">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-6 bg-stone-50 space-y-6">
+
+                <div class="bg-blue-50 p-4 rounded-2xl flex gap-3 items-center">
+                    <i data-lucide="zap" class="w-5 h-5 text-blue-600"></i>
+                    <p class="text-xs font-bold text-blue-900">Servicio Express disponible (+50%)</p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 shadow-sm space-y-3" id="laundry-list">
+                    <!-- Dynamic -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEMPLATE: Tourism Modal -->
+    <div id="tourism-modal" class="fixed inset-0 z-[60] flex items-end justify-center pointer-events-none">
+        <div class="absolute inset-0 bg-black/80 modal-backdrop" onclick="closeModal('tourism-modal')"></div>
+        <div
+            class="modal-content relative w-full h-[50vh] bg-stone-900 rounded-t-[2.5rem] overflow-hidden pointer-events-auto flex flex-col shadow-2xl">
+            <div class="p-6 bg-stone-900 border-b border-white/10 flex justify-between items-center shrink-0">
+                <h2 class="text-xl font-serif font-bold text-white flex items-center gap-2">
+                    <i data-lucide="youtube" class="w-5 h-5 text-red-500"></i> Turismo en Ciudad Real
+                </h2>
+                <button onclick="closeModal('tourism-modal')"
+                    class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="flex-1 bg-black flex items-center justify-center relative">
+                <iframe id="tourism-frame" class="w-full h-full absolute inset-0" src="" title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- SCRIPTS -->
+    <script src="db.js"></script>
     <script>
         lucide.createIcons();
 
-        function copyWifi() {
-            navigator.clipboard.writeText("Bienvenido2025");
-            alert("Contraseña copiada");
+        // ====== DYNAMIC DATA LOADING ======
+        const appData = DB.get();
+
+        function renderApp() {
+            // Restaurante
+            document.getElementById('restaurante-desc').textContent = `"${appData.restaurante.desc}"`;
+            document.getElementById('restaurante-schedule').textContent = `Horario: ${appData.restaurante.schedule}`;
+            renderCategories('restaurante-list', appData.restaurante.categories);
+
+            // Room Service
+            document.getElementById('rs-ext').textContent = `Extensión ${appData.roomService.ext}`;
+            document.getElementById('rs-surcharge').textContent = `Suplemento servicio habitaciones: ${appData.roomService.surcharge}€`;
+            renderCategories('rs-list', appData.roomService.categories);
+
+            // Cafeteria
+            document.getElementById('cafe-schedule').textContent = appData.cafeteria.schedule;
+            renderSimpleList('cafe-list', appData.cafeteria.items);
+
+            // Minibar
+            if (appData.minibar.desc) {
+                document.getElementById('minibar-desc').textContent = appData.minibar.desc;
+                document.getElementById('minibar-desc').style.display = 'block';
+            } else {
+                document.getElementById('minibar-desc').style.display = 'none';
+            }
+            renderCategories('minibar-list', appData.minibar.categories);
+
+            // Laundry
+            renderSimpleList('laundry-list', appData.laundry.items);
+
+            // Spa
+            document.getElementById('spa-price-week').textContent = `${appData.spa.prices.week}€`;
+            document.getElementById('spa-price-weekend').textContent = `${appData.spa.prices.weekend}€`;
+            document.getElementById('spa-cap').textContent = appData.spa.prices.cap;
+            document.getElementById('spa-flip').textContent = appData.spa.prices.flipflops;
+
+            // Info (New)
+            if (appData.info) {
+                // Reception
+                document.getElementById('info-reception-text').textContent = appData.info.reception.text;
+                document.getElementById('info-reception-phone').textContent = appData.info.reception.phone;
+
+                // Breakfast
+                document.getElementById('info-breakfast-week').textContent = appData.info.breakfast.schedule_week;
+                document.getElementById('info-breakfast-weekend').textContent = appData.info.breakfast.schedule_weekend;
+                document.getElementById('info-breakfast-price').textContent = appData.info.breakfast.price;
+                document.getElementById('info-breakfast-loc').textContent = appData.info.breakfast.location;
+
+                // Pool & Gym
+                document.getElementById('info-pool-desc').textContent = appData.info.pool.text;
+                document.getElementById('info-pool-schedule').textContent = appData.info.pool.schedule;
+                document.getElementById('info-gym-desc').textContent = appData.info.gym.text;
+                document.getElementById('info-gym-schedule').textContent = `${appData.info.gym.schedule_week} | ${appData.info.gym.schedule_weekend}`;
+
+                // Parking
+                document.getElementById('info-parking-desc').textContent = appData.info.parking.text;
+
+                // Others (Schedules)
+                document.getElementById('info-restaurant-lunch').textContent = `Comidas: ${appData.info.restaurant.schedule_lunch}`;
+                document.getElementById('info-restaurant-dinner').textContent = `Cenas: ${appData.info.restaurant.schedule_dinner}`;
+                document.getElementById('info-cafeteria-schedule').textContent = appData.info.cafeteria.schedule;
+                document.getElementById('info-roomservice-schedule').textContent = appData.info.roomService.schedule;
+            }
+
+            // Tourism
+            if (appData.tourism && appData.tourism.videoUrl) {
+                document.getElementById('tourism-frame').src = appData.tourism.videoUrl;
+            }
         }
 
-        function toggleModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.toggle('hidden');
+        // Helpers for rendering
+        function renderCategories(containerId, categories) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = categories.map(cat => `
+                <div class="bg-white rounded-3xl p-5 shadow-sm">
+                    <h3 class="font-bold text-lg text-stone-800 mb-4 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-amber-500"></span> ${cat.name}
+                    </h3>
+                    <div class="space-y-4">
+                        ${cat.items.map(item => `
+                            <div>
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-bold text-stone-800 text-sm">${item.name}</h4>
+                                        ${item.desc ? `<p class="text-xs text-stone-500 mt-0.5">${item.desc}</p>` : ''}
+                                    </div>
+                                    <span class="font-bold text-amber-700 text-sm shrink-0 ml-2">${item.price}€</span>
+                                </div>
+                                <div class="w-full h-[1px] bg-stone-100 mt-2"></div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderSimpleList(containerId, items) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = items.map(item => `
+                <div class="price-dotted">
+                    <span class="text-sm font-bold text-stone-800">${item.name}</span>
+                    <span class="dots"></span>
+                    <span class="text-sm font-bold text-stone-500">${item.price}€</span>
+                </div>
+             `).join('');
+        }
+
+        // Initial Render
+        renderApp();
+
+        // Listen for storage changes (Admin updates)
+        window.addEventListener('storage', () => {
+            Object.assign(appData, DB.get()); // Reload data
+            renderApp();
+            console.log("Data updated from Admin");
+        });
+
+
+        // ====== MODAL LOGIC ======
+        function copyWifi() {
+            navigator.clipboard.writeText("Cumbria_Guest");
+            alert("Contraseña WI-FI Copiada: Cumbria_Guest");
+        }
+
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (!modal) return;
+
+            const backdrop = modal.querySelector('.modal-backdrop');
+            const content = modal.querySelector('.modal-content');
+
+            modal.classList.remove('pointer-events-none');
+
+            backdrop.classList.add('open');
+            content.classList.add('open');
+
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (!modal) return;
+
+            const backdrop = modal.querySelector('.modal-backdrop');
+            const content = modal.querySelector('.modal-content');
+
+            backdrop.classList.remove('open');
+            content.classList.remove('open');
+
+            setTimeout(() => {
+                modal.classList.add('pointer-events-none');
+                document.body.style.overflow = '';
+            }, 300);
         }
     </script>
 </body>
+
 </html>

@@ -72,27 +72,31 @@
         </button>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="firebase-config.js"></script>
-    <script src="db.js"></script>
-    <script>
-        lucide.createIcons();
-        let appData = null;
-        let currentTab = 'restaurante';
+    <script type="module" src="db.js"></script>
+    <script type="module">
+        import { DB } from './db.js';
 
-        // Initialize
+        // Globals needed for HTML onclick handlers and appData binding
+        window.appData = null;
+        window.currentTab = 'restaurante';
+
+        // Initialize icons
+        lucide.createIcons();
+
+        // Initialize App
         (async function init() {
             const editor = document.getElementById('editor-area');
             if (editor) editor.innerHTML = '<div class="text-center p-10"><i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto mb-2"></i><p>Cargando datos...</p></div>';
-            lucide.createIcons();
 
-            appData = await DB.get();
-            switchTab(currentTab); // Render and set active tab state
+            window.appData = await DB.get();
+            switchTab(window.currentTab);
         })();
 
-        function switchTab(tab) {
-            currentTab = tab;
+        // --- GLOBAL FUNCTIONS ---
+
+        window.switchTab = function (tab) {
+            window.currentTab = tab;
             document.querySelectorAll('.tab-btn').forEach(b => {
                 b.classList.remove('bg-amber-500', 'text-white');
                 b.classList.add('bg-white', 'text-gray-800');
@@ -104,19 +108,18 @@
             renderEditor();
         }
 
-        function renderEditor() {
+        window.renderEditor = function () {
             const container = document.getElementById('editor-area');
-            const data = appData[currentTab];
+            const data = window.appData[window.currentTab];
 
             if (!data) {
-                container.innerHTML = `<p class="text-red-500">Error: No se encontraron datos para la pestaña ${currentTab}. Intenta reiniciar los datos.</p>`;
+                container.innerHTML = `<p class="text-red-500">Error: No se encontraron datos para la pestaña ${window.currentTab}. Intenta reiniciar los datos.</p>`;
                 return;
             }
 
             let html = '';
 
             // Master Toggle (Active/Inactive)
-            // Use flex-row-reverse or justify-between to place it well
             html += `
                 <div class="mb-6 p-4 bg-stone-50 rounded-xl border border-stone-200 flex justify-between items-center">
                     <div>
@@ -126,7 +129,7 @@
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" 
                                ${data.active ? 'checked' : ''} 
-                               onchange="appData.${currentTab}.active = this.checked; saveChanges();" 
+                               onchange="appData.${window.currentTab}.active = this.checked; saveChanges();" 
                                class="sr-only peer">
                         <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
                     </label>
@@ -134,20 +137,20 @@
             `;
 
             // Common Fields
-            if (data.desc !== undefined && currentTab !== 'minibar' && currentTab !== 'laundry') html += field('Descripción', `appData.${currentTab}.desc`, data.desc, 'textarea');
-            if (data.info !== undefined && currentTab === 'laundry') html += field('Información', `appData.${currentTab}.info`, data.info, 'textarea');
-            if (data.schedule !== undefined) html += field('Horario', `appData.${currentTab}.schedule`, data.schedule);
-            if (data.ext !== undefined) html += field('Extensión Telefónica', `appData.${currentTab}.ext`, data.ext);
-            if (data.surcharge !== undefined) html += field('Suplemento (€)', `appData.${currentTab}.surcharge`, data.surcharge);
+            if (data.desc !== undefined && window.currentTab !== 'minibar' && window.currentTab !== 'laundry') html += field('Descripción', `appData.${window.currentTab}.desc`, data.desc, 'textarea');
+            if (data.info !== undefined && window.currentTab === 'laundry') html += field('Información', `appData.${window.currentTab}.info`, data.info, 'textarea');
+            if (data.schedule !== undefined) html += field('Horario', `appData.${window.currentTab}.schedule`, data.schedule);
+            if (data.ext !== undefined) html += field('Extensión Telefónica', `appData.${window.currentTab}.ext`, data.ext);
+            if (data.surcharge !== undefined) html += field('Suplemento (€)', `appData.${window.currentTab}.surcharge`, data.surcharge);
 
             // Special: Tourism
-            if (currentTab === 'tourism') {
+            if (window.currentTab === 'tourism') {
                 html += field('URL Video YouTube', `appData.tourism.videoUrl`, data.videoUrl);
                 html += `<p class="text-xs text-gray-500 mt-2">Usar formato embed: https://www.youtube.com/embed/VIDEO_ID</p>`;
             }
 
             // Special: Spa Prices
-            if (currentTab === 'spa') {
+            if (window.currentTab === 'spa') {
                 html += `<h3 class="font-bold mt-6 mb-4 border-b pb-2">Tarifas</h3>`;
                 html += field('Semana', `appData.spa.prices.week`, data.prices.week);
                 html += field('Fin de Semana', `appData.spa.prices.weekend`, data.prices.weekend);
@@ -156,7 +159,7 @@
             }
 
             // Special: Info
-            if (currentTab === 'info') {
+            if (window.currentTab === 'info') {
                 html += `<h3 class="font-bold mt-6 mb-4 border-b pb-2">Recepción</h3>`;
                 html += field('Texto', `appData.info.reception.text`, data.reception.text, 'textarea');
                 html += field('Teléfono', `appData.info.reception.phone`, data.reception.phone);
@@ -183,23 +186,19 @@
             }
 
             // Categories & Items (Restaurant, Room Service, Minibar)
-            if (currentTab === 'restaurante') {
+            if (window.currentTab === 'restaurante') {
                 const menu = data.dailyMenu || { active: false, price: '', date: '', includes: '', starters: [], mains: [] };
 
-                // Initialize if missing in data but present in default
-                if (!appData.restaurante.dailyMenu) {
-                    if (typeof DEFAULT_DATA !== 'undefined' && DEFAULT_DATA.restaurante.dailyMenu) {
-                        appData.restaurante.dailyMenu = JSON.parse(JSON.stringify(DEFAULT_DATA.restaurante.dailyMenu));
-                    } else {
-                        appData.restaurante.dailyMenu = {
-                            active: false,
-                            price: "20,00",
-                            date: "",
-                            includes: "Incluido postre, pan, y una bebida\n(Agua, refresco, copa de vino o caña)",
-                            starters: [],
-                            mains: []
-                        };
-                    }
+                // Ensure data structure
+                if (!window.appData.restaurante.dailyMenu) {
+                    window.appData.restaurante.dailyMenu = {
+                        active: false,
+                        price: "20,00",
+                        date: "",
+                        includes: "Incluido postre, pan, y una bebida\n(Agua, refresco, copa de vino o caña)",
+                        starters: [],
+                        mains: []
+                    };
                 }
 
                 html += `
@@ -263,7 +262,7 @@
             }
 
             // Categories & Items (Restaurant, Room Service, Minibar)
-            if (data.categories && currentTab !== 'laundry') {
+            if (data.categories && window.currentTab !== 'laundry') {
                 data.categories.forEach((cat, catIdx) => {
                     html += `
                         <div class="mt-8 border p-4 rounded-xl bg-gray-50 relative group">
@@ -273,7 +272,7 @@
                             </h3>
 
                             <div class="space-y-4">
-                                ${cat.items.map((item, itemIdx) => itemRow(currentTab, catIdx, itemIdx, item)).join('')}
+                                ${cat.items.map((item, itemIdx) => itemRow(window.currentTab, catIdx, itemIdx, item)).join('')}
                             </div>
 
                             <button onclick="addItem(${catIdx})" class="mt-4 w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 font-bold hover:border-amber-500 hover:text-amber-500 transition flex items-center justify-center gap-2">
@@ -285,7 +284,7 @@
             }
 
             // Special: Laundry Categories
-            if (data.categories && currentTab === 'laundry') {
+            if (data.categories && window.currentTab === 'laundry') {
                 data.categories.forEach((cat, catIdx) => {
                     html += `
                         <div class="mt-8 border p-4 rounded-xl bg-gray-50 relative group">
@@ -300,19 +299,18 @@
                             <div class="space-y-2">
                                 ${cat.items.map((item, itemIdx) => itemRowLaundry(catIdx, itemIdx, item)).join('')}
                             </div>
-                            <!-- No add button for now to keep simple, fixed list per user request -->
                         </div>
                     `;
                 });
             }
 
             // Simple Items List (Cafeteria)
-            if (data.items && currentTab !== 'laundry') {
+            if (data.items && window.currentTab !== 'laundry') {
                 html += `
                     <div class="mt-8 border p-4 rounded-xl bg-gray-50">
                         <h3 class="font-bold text-lg text-amber-600 mb-2">Artículos</h3>
                         <div class="space-y-4">
-                            ${data.items.map((item, itemIdx) => itemRowSimple(currentTab, itemIdx, item)).join('')}
+                            ${data.items.map((item, itemIdx) => itemRowSimple(window.currentTab, itemIdx, item)).join('')}
                         </div>
                         <button onclick="addItemSimple()" class="mt-4 w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 font-bold hover:border-amber-500 hover:text-amber-500 transition flex items-center justify-center gap-2">
                             <i data-lucide="plus" class="w-4 h-4"></i> Añadir Artículo
@@ -322,10 +320,10 @@
             }
 
             container.innerHTML = html;
-            lucide.createIcons(); // Refresh icons after render
+            lucide.createIcons();
         }
 
-        function field(label, path, value, type = 'text') {
+        window.field = function (label, path, value, type = 'text') {
             return `
                 <div class="mb-4">
                     <label class="block text-sm font-bold text-gray-600 mb-1">${label}</label>
@@ -336,7 +334,7 @@
 
         // --- ROW TEMPLATES ---
 
-        function itemRow(tab, catIdx, itemIdx, item) {
+        window.itemRow = function (tab, catIdx, itemIdx, item) {
             return `
                 <div class="flex gap-2 items-start bg-white p-2 rounded shadow-sm group/item">
                     <div class="flex-1">
@@ -353,7 +351,7 @@
             `;
         }
 
-        function itemRowSimple(tab, itemIdx, item) {
+        window.itemRowSimple = function (tab, itemIdx, item) {
             return `
                 <div class="flex gap-2 items-start bg-white p-2 rounded shadow-sm group/item">
                     <div class="flex-1">
@@ -369,7 +367,7 @@
             `;
         }
 
-        function itemRowLaundry(catIdx, itemIdx, item) {
+        window.itemRowLaundry = function (catIdx, itemIdx, item) {
             return `
                 <div class="grid grid-cols-12 gap-2 items-center bg-white p-2 rounded shadow-sm">
                     <div class="col-span-6">
@@ -379,7 +377,7 @@
                         <input value="${item.priceWash}" onchange="appData.laundry.categories[${catIdx}].items[${itemIdx}].priceWash = this.value" class="w-full text-right text-xs font-mono bg-stone-50 rounded px-1 py-0.5 border border-transparent focus:border-blue-500">
                     </div>
                     <div class="col-span-3">
-                         <input value="${item.priceIron}" onchange="appData.laundry.categories[${catIdx}].items[${itemIdx}].priceIron = this.value" class="w-full text-right text-xs font-mono bg-stone-50 rounded px-1 py-0.5 border border-transparent focus:border-blue-500">
+                        <input value="${item.priceIron}" onchange="appData.laundry.categories[${catIdx}].items[${itemIdx}].priceIron = this.value" class="w-full text-right text-xs font-mono bg-stone-50 rounded px-1 py-0.5 border border-transparent focus:border-blue-500">
                     </div>
                 </div>
             `;
@@ -387,48 +385,50 @@
 
         // --- ACTIONS ---
 
-        function addItem(catIdx) {
+        window.addItem = function (catIdx) {
             const newItem = { name: "Nuevo Plato", desc: "Descripción...", price: "0.00" };
-            appData[currentTab].categories[catIdx].items.push(newItem);
+            window.appData[window.currentTab].categories[catIdx].items.push(newItem);
             renderEditor();
         }
 
-        function deleteItem(catIdx, itemIdx) {
+        window.deleteItem = function (catIdx, itemIdx) {
             if (confirm('¿Eliminar este plato?')) {
-                appData[currentTab].categories[catIdx].items.splice(itemIdx, 1);
+                window.appData[window.currentTab].categories[catIdx].items.splice(itemIdx, 1);
                 renderEditor();
             }
         }
 
-        function addItemSimple() {
+        window.addItemSimple = function () {
             const newItem = { name: "Nuevo Artículo", price: "0.00" };
-            appData[currentTab].items.push(newItem);
+            window.appData[window.currentTab].items.push(newItem);
             renderEditor();
         }
 
-        function deleteItemSimple(itemIdx) {
+        window.deleteItemSimple = function (itemIdx) {
             if (confirm('¿Eliminar este artículo?')) {
-                appData[currentTab].items.splice(itemIdx, 1);
+                window.appData[window.currentTab].items.splice(itemIdx, 1);
                 renderEditor();
             }
         }
 
-        async function saveChanges() {
+        window.saveChanges = async function () {
             const btn = document.querySelector('button[onclick="saveChanges()"]');
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i data-lucide="loader-2" class="w-6 h-6 animate-spin"></i> Guardando...';
 
             try {
                 // Save Main Data
-                await DB.save(appData);
+                await DB.save(window.appData);
 
                 // Save History if we are in Restaurant tab
-                if (currentTab === 'restaurante' && appData.restaurante.dailyMenu.active) {
-                    await DB.saveMenuHistory(appData.restaurante.dailyMenu);
+
+                if (window.currentTab === 'restaurante' && window.appData.restaurante.dailyMenu.active) {
+                    await DB.saveMenuHistory(window.appData.restaurante.dailyMenu);
                 }
 
                 alert('¡Cambios guardados! Sincronizado con la nube.');
             } catch (err) {
+                console.error(err);
                 alert('Error al guardar: ' + err.message);
             } finally {
                 btn.innerHTML = originalText;
@@ -436,7 +436,7 @@
             }
         }
 
-        function setTodayDate() {
+        window.setTodayDate = function () {
             const date = new Date();
             const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
             const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
@@ -445,34 +445,27 @@
             const str = `Ciudad Real, ${date.getDate()} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
 
             // Update Data
-            if (appData && appData.restaurante && appData.restaurante.dailyMenu) {
-                appData.restaurante.dailyMenu.date = str;
+            if (window.appData && window.appData.restaurante && window.appData.restaurante.dailyMenu) {
+                window.appData.restaurante.dailyMenu.date = str;
             }
 
             // Update Input View: Find input that syncs with dailyMenu.date
-            const inputs = document.querySelectorAll('input');
-            inputs.forEach(input => {
-                if (input.getAttribute('onchange') && input.getAttribute('onchange').includes('dailyMenu.date')) {
-                    input.value = str;
-                }
-            });
+            // Re-render essentially
+            renderEditor();
         }
 
-        function updateMenuArray(key, value) {
+        window.updateMenuArray = function (key, value) {
             // Split by newline and remove empty lines
             const arr = value.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-            appData.restaurante.dailyMenu[key] = arr;
+            window.appData.restaurante.dailyMenu[key] = arr;
         }
 
-        function resetData() {
+        window.resetData = function () {
             if (confirm('¿Reiniciar todos los datos a fábrica?')) {
-                appData = DB.reset();
+                window.appData = DB.reset();
                 renderEditor();
             }
         }
-
-        // Init
-        // switchTab call removed to prevent race condition with async load
     </script>
 </body>
 

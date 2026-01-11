@@ -1,14 +1,15 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
 /**
  * db.js
  * Handles data persistence for Cumbria Guest Portal
- * Uses Firebase Firestore to sync between Admin and Guest View
+ * Uses Firebase Firestore v9 (Modular)
  */
-
-// We assume firebaseConfig is already loaded from firebase-config.js
-// and Firebase SDKs are loaded in the HTML
 
 const DB_KEY = 'cumbria_services_v1';
 const DB_COLLECTION = 'hotels'; // Structure: hotels/cumbria/services/general
+const HISTORY_COLLECTION = 'menu_history'; // Subcollection for history
 
 const DEFAULT_DATA = {
     restaurante: {
@@ -188,7 +189,6 @@ const DEFAULT_DATA = {
     tourism: {
         active: true,
         videoUrl: "https://www.youtube.com/embed/40fgsb3EbrE?list=PLCvAsDau1uLP8E-YGMIV3asYjlwlw5uV2",
-
         excursions: [
             {
                 title: "Almagro: Escapada Cultural",
@@ -264,46 +264,50 @@ const DEFAULT_DATA = {
     }
 };
 
-let db = null; // Firestore instance
+let app = null;
+let db = null;
 
 const DB = {
     // Initialize Firebase
-    init: () => {
-        if (!window.firebase || !window.firebaseConfig) {
-            console.warn("Firebase not loaded or configured. Using default/local data only.");
+    init: (config = null) => {
+        // Prefer passed config, then global, then error
+        const cfg = config || window.firebaseConfig;
+
+        if (!cfg) {
+            console.warn("Firebase config not found.");
             return;
         }
 
-        // Prevent double init
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+        if (!app) {
+            try {
+                app = initializeApp(cfg);
+                db = getFirestore(app);
+                console.log("🔥 Firestore Initialized (v9 Modular)");
+            } catch (e) {
+                console.error("Error initializing Firebase:", e);
+            }
         }
-        db = firebase.firestore();
-        console.log("🔥 Firestore Initialized");
     },
 
     // Load data (Async)
     get: async () => {
-        if (!db) DB.init(); // Try to init if not already
+        DB.init();
 
-        if (!db || !window.firebaseConfig || window.firebaseConfig.apiKey === "PEGAR_TU_API_KEY_AQUI") {
-            // Fallback to localStorage if no Firebase
-            console.warn("Using LocalStorage Fallback (No Firebase Config)");
+        if (!db) {
+            console.warn("Using LocalStorage Fallback (No Firebase)");
             const stored = localStorage.getItem(DB_KEY);
-            let data = stored ? JSON.parse(stored) : null;
-            return DB.mergeDefaults(data);
+            return DB.mergeDefaults(stored ? JSON.parse(stored) : null);
         }
 
         try {
-            const docRef = db.collection(DB_COLLECTION).doc('cumbria').collection('services').doc('general');
-            const doc = await docRef.get();
-            if (doc.exists) {
+            const docRef = doc(db, DB_COLLECTION, 'cumbria', 'services', 'general');
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
                 console.log("✅ Data loaded from Firestore");
-                return DB.mergeDefaults(doc.data());
+                return DB.mergeDefaults(docSnap.data());
             } else {
                 console.log("ℹ️ No remote data found, checking local...");
-
-                // Check local storage before falling back to defaults
                 const stored = localStorage.getItem(DB_KEY);
                 let dataToUpload;
 
@@ -315,16 +319,12 @@ const DB = {
                     dataToUpload = JSON.parse(JSON.stringify(DEFAULT_DATA));
                 }
 
-                // Ensure data structure is up to date
                 dataToUpload = DB.mergeDefaults(dataToUpload);
-
-                // Save initial data to cloud
-                await docRef.set(dataToUpload);
+                await setDoc(docRef, dataToUpload);
                 return dataToUpload;
             }
         } catch (error) {
             console.error("Error loading from Firestore:", error);
-            // Fallback
             const stored = localStorage.getItem(DB_KEY);
             return DB.mergeDefaults(stored ? JSON.parse(stored) : null);
         }
@@ -332,18 +332,17 @@ const DB = {
 
     // Save data (Async)
     save: async (data) => {
-        if (!db) DB.init();
-
-        // Always save to localStorage as backup/cache
+        DB.init();
         localStorage.setItem(DB_KEY, JSON.stringify(data));
 
-        if (!db || !window.firebaseConfig || window.firebaseConfig.apiKey === "PEGAR_TU_API_KEY_AQUI") {
-            alert("Guardado en LOCAL. \u26A0\uFE0F CLAVES NO CONFIGURADAS. \n\nEdita 'firebase-config.js' para sincronizar con la nube.");
+        if (!db) {
+            alert("Guardado en LOCAL. \u26A0\uFE0F CLAVES NO CONFIGURADAS O ERROR DE CONEXIÓN.");
             return;
         }
 
         try {
-            await db.collection(DB_COLLECTION).doc('cumbria').collection('services').doc('general').set(data);
+            const docRef = doc(db, DB_COLLECTION, 'cumbria', 'services', 'general');
+            await setDoc(docRef, data);
             console.log("✅ Data saved to Firestore");
         } catch (error) {
             console.error("Error saving to Firestore:", error);
@@ -351,34 +350,49 @@ const DB = {
         }
     },
 
+    // Save Menu History
+    saveMenuHistory: async (menuData) => {
+        DB.init();
+        if (!db) return;
+
+        try {
+            const historyRef = collection(db, DB_COLLECTION, 'cumbria', HISTORY_COLLECTION);
+            await addDoc(historyRef, {
+                ...menuData,
+                savedAt: serverTimestamp()
+            });
+            console.log("📜 Menu history saved");
+        } catch (e) {
+            console.error("Error saving menu history:", e);
+            // Don't throw, failing history shouldn't block main save
+        }
+    },
+
     // Helper to merge old data with new structure defaults
     mergeDefaults: (data) => {
         if (!data) return JSON.parse(JSON.stringify(DEFAULT_DATA));
-
-        let updated = false;
-        // Deep merge logic simplified for our specific top-level keys
+        // Simple merge logic
         for (const key in DEFAULT_DATA) {
             if (data[key] === undefined) {
                 data[key] = DEFAULT_DATA[key];
-                updated = true;
-            }
-            // Ensure 'active' property exists
-            if (data[key] && typeof data[key] === 'object' && data[key].active === undefined) {
-                data[key].active = true;
-                updated = true;
+            } else if (typeof DEFAULT_DATA[key] === 'object' && DEFAULT_DATA[key] !== null) {
+                // Shallow merge 2nd level for safety
+                for (const subKey in DEFAULT_DATA[key]) {
+                    if (data[key][subKey] === undefined) {
+                        data[key][subKey] = DEFAULT_DATA[key][subKey];
+                    }
+                }
             }
         }
-
-        // Specific migrations
-        if (data.restaurante && data.restaurante.showCarta === undefined) {
-            data.restaurante.showCarta = true;
-        }
-
         return data;
     },
 
     reset: () => {
         localStorage.setItem(DB_KEY, JSON.stringify(DEFAULT_DATA));
-        return DEFAULT_DATA;
+        return JSON.parse(JSON.stringify(DEFAULT_DATA));
     }
 };
+
+// Make it global for admin.html to use, AND export it for module usage
+window.DB = DB;
+export { DB };

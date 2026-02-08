@@ -146,95 +146,149 @@
 
             // Special: Tourism
             if (window.currentTab === 'tourism') {
-                html += `<div class="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6">
-                            <h3 class="font-bold text-lg mb-4 text-amber-600 border-b border-amber-200 pb-2">Contenido Principal</h3>
-                            ${field('Descripción de la Guía', `appData.tourism.desc`, data.desc || '', 'textarea')}
-                         </div>`;
 
-                html += `<div class="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6">
-                            <h3 class="font-bold text-lg mb-4 text-blue-600 border-b border-blue-200 pb-2">Videos Destacados</h3>
-                            
-                            <div class="mb-4">
-                                ${field('Video Principal (Cabecera - Spa)', `appData.tourism.videoUrl`, data.videoUrl)}
-                                <p class="text-xs text-gray-500 -mt-2 mb-2">Se muestra en grande al inicio de la página.</p>
+                // 1. Cabecera (Videos y Visuales) - Toggleable
+                html += `<details class="bg-blue-50 rounded-xl border border-blue-200 mb-6 group" open>
+                            <summary class="font-bold text-lg p-4 text-blue-800 cursor-pointer list-none flex justify-between items-center outline-none">
+                                <span>Portada & Multimedia</span>
+                                <i data-lucide="chevron-down" class="w-5 h-5 text-blue-500 transition-transform group-open:rotate-180"></i>
+                            </summary>
+                            <div class="p-4 pt-0 border-t border-blue-200/50 mt-2">
+                                <div class="mb-4">
+                                    ${field('Video de Cabecera (Fondo Portada)', `appData.tourism.videoUrl`, data.videoUrl)}
+                                    <p class="text-xs text-gray-500 -mt-2 mb-2">Video de fondo a pantalla completa en la página principal de Turismo.</p>
+                                </div>
+                                <div class="mb-4">
+                                    ${field('Video Promocional (Miniatura)', `appData.tourism.videoUrlPromo`, data.videoUrlPromo || '')}
+                                    <p class="text-xs text-gray-500 -mt-2 mb-2">Se muestra en pequeño junto al texto introductorio.</p>
+                                </div>
+                                <p class="text-xs text-gray-400 italic">Usar formato embed de YouTube: https://www.youtube.com/embed/VIDEO_ID</p>
                             </div>
+                         </details>`;
 
-                            <div class="mb-4">
-                                ${field('Video Promocional (Contenido - Turismo)', `appData.tourism.videoUrlPromo`, data.videoUrlPromo || '')}
-                                <p class="text-xs text-gray-500 -mt-2 mb-2">Se muestra pequeño junto al texto descriptivo.</p>
+                // 2. Contenido de Texto - Toggleable
+                html += `<details class="bg-amber-50 rounded-xl border border-amber-200 mb-6 group">
+                            <summary class="font-bold text-lg p-4 text-amber-800 cursor-pointer list-none flex justify-between items-center outline-none">
+                                <span>Texto Introductorio General</span>
+                                <i data-lucide="chevron-down" class="w-5 h-5 text-amber-500 transition-transform group-open:rotate-180"></i>
+                            </summary>
+                            <div class="p-4 pt-0 border-t border-amber-200/50 mt-2">
+                                ${field('Descripción de la Guía', `appData.tourism.desc`, data.desc || '', 'textarea')}
                             </div>
-                            
-                            <p class="text-xs text-gray-400 italic">Usar formato embed de YouTube: https://www.youtube.com/embed/VIDEO_ID</p>
-                         </div>`;
+                         </details>`;
 
-                // Excursions Manager
+                // 3. Excursions Manager (Accordion Style)
                 html += `<div class="mt-8 border-t pt-6">
-                            <h3 class="font-bold text-lg text-stone-700 mb-4 flex items-center gap-2">
-                                <i data-lucide="map-pin" class="w-5 h-5"></i> Experiencias y Excursiones
+                            <h3 class="font-bold text-lg text-stone-700 mb-4 flex items-center justify-between">
+                                <span class="flex items-center gap-2"><i data-lucide="map-pin" class="w-5 h-5"></i> Experiencias y Excursiones</span>
+                                <span class="text-xs font-normal text-gray-400">${(data.excursions || []).length} experiencias</span>
                             </h3>
                             
-                            <div class="space-y-4">
+                            <div class="space-y-3">
                                 ${(data.excursions || []).map((exc, idx) => `
-                                    <div class="border rounded-xl bg-white p-4 shadow-sm">
+                                    <details class="border rounded-xl bg-white shadow-sm group hover:shadow-md transition duration-200 ${!exc.active ? 'opacity-70 bg-gray-50' : ''}">
                                         
                                         <!-- Header / Summary -->
-                                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                                        <summary class="p-4 cursor-pointer list-none flex justify-between items-center outline-none">
                                             <div class="flex items-center gap-3">
-                                                <span class="font-mono text-xs bg-stone-100 px-2 py-1 rounded text-stone-500">#${exc.id || 'new'}</span>
-                                                <input value="${exc.title}" onchange="appData.tourism.excursions[${idx}].title = this.value" class="font-bold text-lg text-stone-800 bg-transparent border-b border-transparent focus:border-amber-500 focus:outline-none">
+                                                <div class="w-2 h-2 rounded-full ${exc.active ? 'bg-emerald-500' : 'bg-gray-300'}"></div>
+                                                <span class="font-bold text-stone-800 text-lg">${exc.title || 'Nueva Excursión'}</span>
+                                                <span class="font-mono text-xs bg-stone-100 px-2 py-0.5 rounded text-stone-500 hidden sm:inline-block">#${exc.id || 'id'}</span>
                                             </div>
-                                            <button onclick="deleteExcursion(${idx})" class="p-2 text-gray-300 hover:text-red-500 transition" title="Eliminar Excursión">
-                                                <i data-lucide="trash-2" class="w-5 h-5"></i>
-                                            </button>
-                                        </div>
+                                            <div class="flex items-center gap-4">
+                                                <span class="text-xs text-gray-400 group-open:hidden max-w-[150px] truncate">${exc.subtitle || ''}</span>
+                                                <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform group-open:rotate-180"></i>
+                                            </div>
+                                        </summary>
 
-                                        <!-- Fields -->
-                                        <div class="grid grid-cols-2 gap-4 mb-4">
-                                            ${field('ID Texto (Slug)', `appData.tourism.excursions[${idx}].id`, exc.id)}
-                                            ${field('Subtítulo', `appData.tourism.excursions[${idx}].subtitle`, exc.subtitle || '')}
-                                        </div>
-                                        
-                                        <div class="mb-4">
-                                            ${field('Descripción Corta (Lista)', `appData.tourism.excursions[${idx}].description`, exc.description || exc.shortDesc || '', 'textarea')}
-                                        </div>
+                                        <!-- Body -->
+                                        <div class="p-4 pt-0 border-t border-gray-100 mt-2">
+                                            
+                                            <!-- Controls Row -->
+                                            <div class="flex justify-between items-center mb-6 bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                                <div class="flex items-center gap-4">
+                                                    <label class="flex items-center cursor-pointer gap-2 select-none">
+                                                        <span class="text-xs font-bold text-gray-600 uppercase">Visible en App</span>
+                                                        <div class="relative inline-flex items-center">
+                                                            <input type="checkbox" ${exc.active !== false ? 'checked' : ''} onchange="appData.tourism.excursions[${idx}].active = this.checked; renderEditor();" class="sr-only peer">
+                                                            <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="flex gap-2">
+                                                     <button onclick="deleteExcursion(${idx})" class="text-xs flex items-center gap-1 text-red-400 hover:text-red-600 px-3 py-1.5 hover:bg-red-50 rounded transition">
+                                                        <i data-lucide="trash-2" class="w-3 h-3"></i> Eliminar
+                                                    </button>
+                                                </div>
+                                            </div>
 
-                                        <div class="mb-4">
-                                            <label class="block text-sm font-bold text-gray-600 mb-1">Color Tema</label>
-                                            <select onchange="appData.tourism.excursions[${idx}].color = this.value" class="w-full p-2 border rounded-lg bg-white">
-                                                <option value="amber" ${exc.color === 'amber' ? 'selected' : ''}>Ámbar (Cultura/General)</option>
-                                                <option value="emerald" ${exc.color === 'emerald' ? 'selected' : ''}>Esmeralda (Naturaleza)</option>
-                                                <option value="rose" ${exc.color === 'rose' ? 'selected' : ''}>Rosa (Teatro/Arte)</option>
-                                                <option value="blue" ${exc.color === 'blue' ? 'selected' : ''}>Azul (Agua/Relax)</option>
-                                            </select>
-                                        </div>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                                <div class="space-y-4">
+                                                    ${field('Título', `appData.tourism.excursions[${idx}].title`, exc.title)}
+                                                    ${field('Subtítulo', `appData.tourism.excursions[${idx}].subtitle`, exc.subtitle || '')}
+                                                    ${field('ID Texto (Slug)', `appData.tourism.excursions[${idx}].id`, exc.id)}
+                                                </div>
+                                                <div class="space-y-4">
+                                                     <div class="mb-4">
+                                                        <label class="block text-sm font-bold text-gray-600 mb-1">Color Tema (Categoría Visual)</label>
+                                                        <select onchange="appData.tourism.excursions[${idx}].color = this.value" class="w-full p-2 border rounded-lg bg-white focus:ring-2 focus:ring-amber-500 outline-none">
+                                                            <option value="amber" ${exc.color === 'amber' ? 'selected' : ''}>🔸 Ámbar (Cultura/General)</option>
+                                                            <option value="emerald" ${exc.color === 'emerald' ? 'selected' : ''}>🌿 Esmeralda (Naturaleza)</option>
+                                                            <option value="rose" ${exc.color === 'rose' ? 'selected' : ''}>🎭 Rosa (Teatro/Arte)</option>
+                                                            <option value="blue" ${exc.color === 'blue' ? 'selected' : ''}>💧 Azul (Agua/Relax)</option>
+                                                            <option value="indigo" ${exc.color === 'indigo' ? 'selected' : ''}>🌌 Índigo (Nocturno)</option>
+                                                        </select>
+                                                    </div>
+                                                    ${field('Tipo (Etiqueta)', `appData.tourism.excursions[${idx}].type`, exc.type || '')}
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Descriptions -->
+                                            <div class="grid grid-cols-1 gap-6 mb-6">
+                                                <div>
+                                                    ${field('Descripción Corta (Resumen para listado)', `appData.tourism.excursions[${idx}].description`, exc.description || exc.shortDesc || '', 'textarea')}
+                                                </div>
+                                                
+                                                <div class="relative">
+                                                     <label class="block text-sm font-bold text-amber-700 mb-1 flex justify-between">
+                                                        <span>Descripción Larga (Detalle de la página)</span>
+                                                        <span class="text-[10px] font-normal text-amber-600 bg-amber-50 px-2 py-0.5 rounded">Formato Automático (Párrafos)</span>
+                                                     </label>
+                                                     <textarea rows="10" 
+                                                        onchange="appData.tourism.excursions[${idx}].fullDesc = this.value" 
+                                                        class="w-full p-3 border border-amber-200 rounded-lg font-mono text-sm text-stone-700 bg-amber-50/30 focus:bg-white focus:ring-2 focus:ring-amber-500 transition shadow-inner" 
+                                                        placeholder="Escribe aquí toda la información detallada...">${exc.fullDesc || ''}</textarea>
+                                                </div>
+                                            </div>
 
-                                        <div class="grid grid-cols-2 gap-4 mb-4">
-                                            ${field('Imagen Listado', `appData.tourism.excursions[${idx}].image`, exc.image || '')}
-                                            ${field('Imagen Hero (Cabecera)', `appData.tourism.excursions[${idx}].heroImage`, exc.heroImage || exc.image || '')}
-                                        </div>
+                                            <!-- Images & Media -->
+                                            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 mb-4">
+                                                <h4 class="font-bold text-sm text-gray-500 uppercase mb-3 border-b pb-1">Multimedia</h4>
+                                                
+                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                                    ${field('Imagen Listado (URL)', `appData.tourism.excursions[${idx}].image`, exc.image || '')}
+                                                    ${field('Imagen Hero (Cabecera Detalle)', `appData.tourism.excursions[${idx}].heroImage`, exc.heroImage || exc.image || '')}
+                                                </div>
 
-                                        <div class="mb-4">
-                                            <label class="block text-sm font-bold text-gray-600 mb-1">Descripción Completa (HTML permitido)</label>
-                                            <textarea rows="6" onchange="appData.tourism.excursions[${idx}].fullDesc = this.value" class="w-full p-2 border rounded-lg font-mono text-xs text-stone-600">${exc.fullDesc || ''}</textarea>
-                                        </div>
+                                                <div class="mb-4">
+                                                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Galería de Imágenes (URLs separadas por coma)</label>
+                                                    <textarea rows="3" onchange="appData.tourism.excursions[${idx}].gallery = this.value.split(',').map(s => s.trim()).filter(Boolean)" class="w-full p-2 border rounded text-xs text-blue-600 font-mono">${(exc.gallery || []).join(', ')}</textarea>
+                                                </div>
 
-                                        <!-- Gallery Mini Manager -->
-                                        <div class="bg-stone-50 p-3 rounded-lg mb-4">
-                                            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Galería de Imágenes (URLs separadas por coma)</label>
-                                            <textarea rows="2" onchange="appData.tourism.excursions[${idx}].gallery = this.value.split(',').map(s => s.trim()).filter(Boolean)" class="w-full p-2 border rounded text-xs">${(exc.gallery || []).join(', ')}</textarea>
-                                        </div>
+                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    ${field('Video URL (YouTube Embed)', `appData.tourism.excursions[${idx}].videoUrl`, exc.videoUrl || '')}
+                                                    ${field('Enlace Externo (Web)', `appData.tourism.excursions[${idx}].linkUrl`, exc.linkUrl || '')}
+                                                </div>
+                                            </div>
 
-                                        <div class="grid grid-cols-2 gap-4">
-                                            ${field('Video URL (YouTube Embed)', `appData.tourism.excursions[${idx}].videoUrl`, exc.videoUrl || '')}
-                                            ${field('Enlace Externo (Web)', `appData.tourism.excursions[${idx}].linkUrl`, exc.linkUrl || '')}
                                         </div>
-
-                                    </div>
+                                    </details>
                                 `).join('')}
                             </div>
 
-                            <button onclick="addExcursion()" class="mt-6 w-full py-3 bg-stone-800 text-white rounded-xl font-bold hover:bg-stone-700 transition flex items-center justify-center gap-2">
-                                <i data-lucide="plus-circle" class="w-5 h-5"></i> Añadir Nueva Experiencia
+                            <button onclick="addExcursion()" class="mt-8 w-full py-4 bg-stone-800 text-white rounded-xl font-bold hover:bg-stone-700 transition flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                                <i data-lucide="plus-circle" class="w-6 h-6"></i> 
+                                <span>Añadir Nueva Experiencia</span>
                             </button>
                         </div>`;
             }

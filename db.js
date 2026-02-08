@@ -251,22 +251,13 @@ const DEFAULT_DATA = {
         excursions: [
             {
                 id: "almagro",
+                active: true,
                 title: "Almagro",
                 subtitle: "Joya Manchega",
                 image: "Imagenes/plaza mayor de almagro.jpg",
                 heroImage: "Imagenes/plaza mayor de almagro.jpg",
                 description: "Historia viva, teatro clásico y gastronomía única en un entorno monumental.",
-                fullDesc: `
-                    <p class="leading-relaxed text-stone-300 text-lg mb-4 text-justify">
-                        <strong class="text-amber-500">Almagro</strong> es una ciudad declarada <strong>Conjunto Histórico-Artístico</strong>, conocida por su impresionante <strong>Corral de Comedias</strong>, uno de los teatros al aire libre más antiguos de Europa, construido en el siglo XVII.
-                    </p>
-                    <p class="leading-relaxed text-stone-300 text-lg text-justify mb-6">
-                        Además de su legado teatral, Almagro destaca por sus calles empedradas, sus edificios renacentistas y barrocos, y su atmósfera tranquila.
-                    </p>
-                    
-                    <h3 class="text-xl font-serif font-bold text-white mb-3">La Plaza Mayor</h3>
-                    <p class="mb-4 text-stone-400">El corazón de la villa, única por sus galerías acristaladas.</p>
-                `,
+                fullDesc: "Almagro es una ciudad declarada Conjunto Histórico-Artístico, conocida por su impresionante Corral de Comedias, uno de los teatros al aire libre más antiguos de Europa, construido en el siglo XVII.\n\nAdemás de su legado teatral, Almagro destaca por sus calles empedradas, sus edificios renacentistas y barrocos, y su atmósfera tranquila.\n\nLa Plaza Mayor: El corazón de la villa, única por sus galerías acristaladas.",
                 type: "Destino Cultura",
                 color: "amber",
                 gallery: [
@@ -279,84 +270,13 @@ const DEFAULT_DATA = {
             },
             {
                 id: "cabaneros",
+                active: true,
                 title: "Parque Nacional de Cabañeros",
                 subtitle: "La Sabana Europea",
                 image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Parque_Nacional_de_Caba%C3%B1eros.jpg/320px-Parque_Nacional_de_Caba%C3%B1eros.jpg",
                 heroImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Parque_Nacional_de_Caba%C3%B1eros.jpg/1280px-Parque_Nacional_de_Caba%C3%B1eros.jpg",
                 description: "Un paraíso silvestre y refugio de fauna única.",
-                fullDesc: `
-                    <div class="space-y-6">
-                        <p class="leading-relaxed text-stone-300 text-lg text-justify italic border-l-2 border-emerald-500 pl-4">
-                            "En Cumbria Spa & Hotel, su refugio de relax y bienestar en plena naturaleza, queremos invitarle a
-                            una experiencia inolvidable en uno de los espacios naturales más impresionantes de España."
-                        </p>
-                        <div>
-                            <h2 class="text-2xl font-serif text-white mb-3">¿Qué es Cabañeros?</h2>
-                            <p class="leading-relaxed text-stone-300 text-lg mb-4 text-justify">
-                                El <strong>Parque Nacional de Cabañeros</strong> es un santuario natural que abarca más de
-                                38.000 hectáreas de bosques mediterráneos, prados, ríos y montañas. Este ecosistema único
-                                alberga una increíble biodiversidad y se considera la <strong>"sabana europea"</strong>, debido
-                                a sus paisajes ondulados y su flora característica.
-                            </p>
-                            <p class="leading-relaxed text-stone-300 text-lg text-justify">
-                                Este parque no solo es un lugar de belleza escénica, sino también un refugio vital para especies
-                                amenazadas como el <strong>lince ibérico</strong>, el urogallo cantábrico y el águila imperial
-                                ibérica. Además, forma parte de la Red Natura 2000 y ha sido reconocido por la UNESCO como
-                                Reserva de la Biosfera.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="space-y-6 text-base text-stone-300 leading-relaxed bg-stone-800/30 p-5 rounded-2xl border border-white/5 mt-6">
-                        <h2 class="text-2xl font-serif text-emerald-500 mb-2">Por qué visitarlo</h2>
-                        <ul class="space-y-4">
-                            <li class="flex gap-3">
-                                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2.5 shrink-0"></div>
-                                <span><strong class="text-white">Belleza salvaje:</strong> Disfrute de paisajes espectaculares
-                                    que combinan bosques densos, valles profundos y altiplanos soleados.</span>
-                            </li>
-                            <li class="flex gap-3">
-                                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2.5 shrink-0"></div>
-                                <span><strong class="text-white">Fauna única:</strong> Hogar de especies emblemáticas como el
-                                    lince ibérico, el ciervo, el jabalí y el zorro. Ideal para observar aves rapaces.</span>
-                            </li>
-                            <li class="flex gap-3">
-                                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2.5 shrink-0"></div>
-                                <span><strong class="text-white">Senderismo y actividades:</strong> Explore numerosas rutas
-                                    señalizadas, ciclismo o safaris fotográficos guiados.</span>
-                            </li>
-                            <li class="flex gap-3">
-                                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2.5 shrink-0"></div>
-                                <span><strong class="text-white">Centros de interpretación:</strong> Aprenda sobre historia y
-                                    ecología en los centros de información del parque.</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="bg-stone-800/80 p-5 rounded-2xl border border-emerald-500/20 mt-6">
-                        <h3 class="text-2xl font-serif font-bold text-white mb-6 flex items-center gap-3">
-                            <i data-lucide="map" class="text-emerald-500"></i>
-                            Cómo planificar su visita
-                        </h3>
-                        <div class="text-stone-300 space-y-4 text-justify">
-                            <ul class="space-y-3 list-none">
-                                <li class="flex gap-3">
-                                    <i data-lucide="clock" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i>
-                                    <span><strong>Reserve tiempo suficiente</strong> (un día completo o más) para explorar
-                                        diferentes áreas.</span>
-                                </li>
-                                <li class="flex gap-3">
-                                    <i data-lucide="footprints" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i>
-                                    <span>Lleve <strong>calzado cómodo</strong>, agua, protector solar y equipo
-                                        fotográfico.</span>
-                                </li>
-                                <li class="flex gap-3">
-                                    <i data-lucide="utensils" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i>
-                                    <span><strong>Combine su visita</strong> con degustaciones de productos gastronómicos
-                                        manchegos o recorridos por pueblos cercanos.</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                `,
+                fullDesc: "En Cumbria Spa & Hotel, su refugio de relax y bienestar en plena naturaleza, queremos invitarle a una experiencia inolvidable en uno de los espacios naturales más impresionantes de España.\n\n¿Qué es Cabañeros?\nEl Parque Nacional de Cabañeros es un santuario natural que abarca más de 38.000 hectáreas de bosques mediterráneos, prados, ríos y montañas. Este ecosistema único alberga una increíble biodiversidad y se considera la \"sabana europea\", debido a sus paisajes ondulados y su flora característica.\n\nEste parque no solo es un lugar de belleza escénica, sino también un refugio vital para especies amenazadas como el lince ibérico, el urogallo cantábrico y el águila imperial ibérica. Además, forma parte de la Red Natura 2000 y ha sido reconocido por la UNESCO como Reserva de la Biosfera.\n\nPor qué visitarlo:\n- Belleza salvaje: Disfrute de paisajes espectaculares que combinan bosques densos, valles profundos y altiplanos soleados.\n- Fauna única: Hogar de especies emblemáticas como el lince ibérico, el ciervo, el jabalí y el zorro. Ideal para observar aves rapaces.\n- Senderismo y actividades: Explore numerosas rutas señalizadas, ciclismo o safaris fotográficos guiados.\n- Centros de interpretación: Aprenda sobre historia y ecología en los centros de información del parque.",
                 type: "Naturaleza",
                 color: "emerald",
                 gallery: [
@@ -367,58 +287,19 @@ const DEFAULT_DATA = {
             },
             {
                 id: "teatro-quijano",
+                active: true,
                 title: "Teatro Municipal Quijano",
-                subtitle: "El corazón cultural",
+                subtitle: "El corazón cultural de Ciudad Real",
                 image: "Imagenes/Logo-Qijano.png",
-                heroImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Ciudad_Real_-_Teatro_Cervantes_-_fachada.jpg/1024px-Ciudad_Real_-_Teatro_Cervantes_-_fachada.jpg",
-                description: "Escenario principal de la cultura. Teatro, danza y música.",
-                fullDesc: `
-                    <div class="flex flex-col items-center text-center">
-                        <img src="Imagenes/Logo-Qijano.png" class="h-24 object-contain mb-6 filter drop-shadow-lg opacity-90 p-2 bg-white/5 rounded-xl">
-                        <div class="leading-relaxed text-stone-300 text-lg space-y-4">
-                            <p>
-                                El <strong class="text-rose-500 font-serif text-xl">Teatro Municipal Quijano</strong>, está
-                                situado en pleno centro de Ciudad Real.
-                            </p>
-                            <div class="grid grid-cols-2 gap-4 my-6">
-                                <div class="bg-stone-800/50 p-4 rounded-xl border border-rose-500/20">
-                                    <span class="block text-2xl font-bold text-white">535</span>
-                                    <span class="text-xs text-stone-400 uppercase tracking-wider">Patio</span>
-                                </div>
-                                <div class="bg-stone-800/50 p-4 rounded-xl border border-rose-500/20">
-                                    <span class="block text-2xl font-bold text-white">371</span>
-                                    <span class="text-xs text-stone-400 uppercase tracking-wider">Anfiteatro</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="space-y-6 text-base text-stone-300 leading-relaxed border-l-2 border-stone-800 pl-4 py-2 mt-4">
-                        <p>
-                            Representa uno de los principales centros neurálgicos de la cultura ciudadrealeña, en el que se
-                            llevan a cabo todo tipo de actuaciones musicales, representaciones teatrales, siempre de plena
-                            actualidad.
-                        </p>
-                    </div>
-                    <div class="mt-8 bg-stone-800/40 p-1 rounded-2xl border border-white/5 overflow-hidden">
-                        <div class="bg-stone-900/50 px-4 py-3 border-b border-white/5 flex items-center justify-between">
-                            <h3 class="text-lg font-serif font-bold text-white flex items-center gap-2">
-                                <i data-lucide="calendar" class="text-rose-500 w-5 h-5"></i>
-                                Cartelera
-                            </h3>
-                            <a href="https://teatroquijano.com/proximos-estrenos/" target="_blank"
-                                class="text-xs text-rose-400 flex items-center hover:underline">
-                                Ver Web Oficial
-                            </a>
-                        </div>
-                        <div class="relative w-full h-[400px] bg-white">
-                            <iframe src="https://teatroquijano.com/proximos-estrenos/" class="w-full h-full border-0"
-                                title="Programación"></iframe>
-                        </div>
-                    </div>
-                `,
+                heroImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Ciudad_Real_-_Teatro_Cervantes_-_fachada.jpg/1280px-Ciudad_Real_-_Teatro_Cervantes_-_fachada.jpg",
+                description: "Escenario principal de la cultura. Teatro, danza y música en el centro de la ciudad.",
+                fullDesc: "El Teatro Municipal Quijano es el epicentro de las artes escénicas en Ciudad Real. Situado en el corazón de la ciudad, junto al Parque de Gasset, este emblemático edificio es el hogar de la cultura, acogiendo desde grandes producciones teatrales hasta conciertos íntimos, ópera y danza contemporánea.\n\nInstalaciones y Aforo:\n- Patio de Butacas: 535 localidades con excelente visibilidad y acústica renovada.\n- Anfiteatro: 371 butacas que ofrecen una perspectiva panorámica única del escenario.\n- Capacidad Total: 906 espectadores disfrutando del arte en vivo.\n\nHistoria y Arquitectura:\nInaugurado como referente cultural, el edificio destaca por su fachada singular y su interior acogedor, diseñado para maximizar la experiencia del espectador. Es el escenario habitual de la prestigiosa Muestra de Teatro Contemporáneo y del Festival de Cortometrajes de Ciudad Real.\n\nProgramación:\nCada temporada, el telón se alza para ofrecer una agenda vibrante que incluye estrenos nacionales, humor, espectáculos infantiles y conciertos de la orquesta filarmónica. Es, sin duda, una parada obligatoria para quienes buscan enriquecer su visita con experiencias culturales auténticas.",
                 type: "Cultura",
                 color: "rose",
-                gallery: [],
+                gallery: [
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Ciudad_Real_-_Teatro_Cervantes_-_fachada.jpg/1280px-Ciudad_Real_-_Teatro_Cervantes_-_fachada.jpg",
+                    "Imagenes/Logo-Qijano.png"
+                ],
                 videoUrl: "",
                 linkUrl: "https://teatroquijano.com/proximos-estrenos/"
             }

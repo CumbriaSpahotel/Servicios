@@ -31,77 +31,97 @@
 <body class="min-h-screen flex flex-col bg-stone-900">
 
     <!-- Floating Nav (Back) -->
-    <div class="fixed top-0 left-0 w-full z-50 p-6 flex justify-between items-center pointer-events-none">
+    <div class="fixed top-6 left-6 z-50 animate-enter">
         <a href="turismo.html"
-            class="pointer-events-auto w-10 h-10 rounded-full bg-black/30 backdrop-blur-md flex items-center justify-center text-white hover:bg-black/50 transition border border-white/10">
-            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-white hover:bg-white/10 transition group shadow-2xl backdrop-blur-md border border-white/10">
+            <i data-lucide="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition duration-300"></i>
         </a>
     </div>
 
     <div id="loading" class="flex flex-col items-center justify-center min-h-screen">
-        <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-amber-500 mb-2"></i>
-        <p class="text-stone-500">Cargando...</p>
+        <div class="w-16 h-16 border-4 border-amber-500/30 border-t-amber-500 rounded-full animate-spin mb-4"></div>
     </div>
 
     <!-- Content Hidden until loaded -->
     <div id="content" class="hidden">
 
-        <!-- Hero Image Section -->
-        <div class="relative w-full h-[40vh] sticky top-0 z-0">
-            <img id="hero-img" src="" class="w-full h-full object-cover">
-            <div
-                class="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/40 to-transparent pointer-events-none">
-            </div>
+        <!-- Hero Section Parallax -->
+        <div class="relative w-full h-[50vh] md:h-[65vh] overflow-hidden">
+            <!-- Image -->
+            <img id="hero-img" src=""
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-[2s] scale-105">
 
-            <!-- Hero Text -->
-            <div class="absolute bottom-0 left-0 p-8 pb-12 w-full z-10">
-                <div class="flex items-center gap-2 mb-2">
+            <!-- Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-stone-950/90"></div>
+
+            <!-- Hero Text Content -->
+            <div
+                class="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-16 md:pb-24 flex flex-col items-center text-center z-10">
+                <div class="mb-3 md:mb-6 animate-enter delay-100">
                     <span id="hero-tag"
-                        class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border bg-black/40 backdrop-blur-sm"></span>
+                        class="px-3 py-1 md:px-5 md:py-2 rounded-full text-[10px] md:text-sm font-bold uppercase tracking-[0.2em] border backdrop-blur-md shadow-lg"></span>
                 </div>
-                <h1 id="hero-title" class="text-3xl font-bold text-white leading-tight shadow-black drop-shadow-lg">
+                <h1 id="hero-title"
+                    class="animate-enter delay-200 text-4xl md:text-7xl font-serif font-bold text-white leading-[0.9] drop-shadow-2xl mb-3 md:mb-4 max-w-5xl tracking-tight">
                 </h1>
-                <p id="hero-subtitle" class="text-stone-300 text-lg font-serif italic mt-1"></p>
+                <p id="hero-subtitle"
+                    class="animate-enter delay-300 text-stone-300 text-lg md:text-2xl font-light italic max-w-3xl text-shadow-sm">
+                </p>
             </div>
         </div>
 
-        <!-- Main Content Container -->
+        <!-- Main Content (Editorial Style) -->
         <div
-            class="relative z-10 -mt-8 flex-1 flex flex-col bg-stone-900 rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.5)] min-h-[60vh]">
+            class="relative z-20 bg-stone-950 -mt-10 px-4 md:px-0 pb-20 md:pb-32 max-w-5xl mx-auto rounded-t-[2.5rem] md:rounded-t-[4rem] shadow-[0_-20px_60px_rgba(0,0,0,0.8)] border-t border-white/5 pt-10 md:pt-16 min-h-[50vh]">
 
-            <div class="w-12 h-1 bg-white/10 rounded-full mx-auto mt-4 mb-8"></div>
+            <!-- Decorative Element -->
+            <div class="flex justify-center mb-8 md:mb-12">
+                <div
+                    class="w-16 md:w-24 h-1 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent rounded-full">
+                </div>
+            </div>
 
-            <div class="px-6 pb-12 space-y-8">
+            <div class="space-y-10 md:space-y-16 px-2 md:px-12">
 
                 <!-- Dynamic Description -->
-                <div id="full-desc" class="prose prose-invert prose-stone max-w-none">
+                <div id="full-desc"
+                    class="prose prose-invert prose-lg md:prose-xl prose-headings:font-serif prose-headings:font-normal prose-p:text-stone-300 prose-p:leading-8 prose-li:text-stone-300 max-w-none text-justify">
                     <!-- HTML content from db.js -->
                 </div>
 
-                <!-- Gallery -->
-                <div id="gallery-section" class="hidden">
-                    <h3 class="text-xl font-serif font-bold text-white mb-4 flex items-center gap-2">
-                        <i data-lucide="images" class="w-5 h-5 text-stone-400"></i> Galería
-                    </h3>
-                    <div id="gallery-grid" class="grid grid-cols-2 gap-2">
-                        <!-- Images -->
+                <!-- Gallery Grid (Modern Mosaic) -->
+                <div id="gallery-section" class="hidden pt-8 md:pt-12 border-t border-white/5">
+                    <h3 class="text-2xl md:text-4xl font-serif text-white mb-6 md:mb-10 text-center italic">Galería
+                        Visual</h3>
+                    <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                        <!-- Images injected here -->
                     </div>
                 </div>
 
-                <!-- Video -->
-                <div id="video-section"
-                    class="hidden bg-stone-800/20 p-1 rounded-2xl border border-white/5 overflow-hidden">
-                    <div class="relative w-full aspect-video bg-black">
+                <!-- Video Section (Cinematic) -->
+                <div id="video-section" class="hidden pt-8 md:pt-12 border-t border-white/5">
+                    <h3 class="text-2xl md:text-4xl font-serif text-white mb-6 md:mb-10 text-center italic">Video
+                        Experiencia</h3>
+                    <div
+                        class="relative w-full aspect-video rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-white/10 group">
                         <iframe id="video-frame" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+                        <div
+                            class="absolute inset-0 pointer-events-none rounded-2xl md:rounded-3xl ring-1 ring-inset ring-white/10">
+                        </div>
                     </div>
                 </div>
 
-                <!-- Link Button -->
-                <div id="link-section" class="hidden pt-4">
+                <!-- Action Button -->
+                <div id="link-section" class="hidden pt-8 md:pt-12 flex justify-center">
                     <a id="ext-link" href="#" target="_blank"
-                        class="block w-full py-3 bg-stone-800 border border-stone-700 rounded-xl text-center text-stone-300 font-bold hover:bg-stone-700 hover:text-white transition flex items-center justify-center gap-2">
-                        <span id="link-text">Ver más información</span>
-                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                        class="group relative inline-flex items-center gap-3 px-8 py-4 md:px-10 md:py-5 bg-stone-900 text-white rounded-full overflow-hidden border border-stone-800 hover:border-amber-500/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(245,158,11,0.2)]">
+                        <span class="relative z-10 text-xs md:text-sm font-bold uppercase tracking-widest">Sitio Web
+                            Oficial</span>
+                        <i data-lucide="arrow-up-right"
+                            class="w-4 h-4 text-stone-500 group-hover:text-amber-500 transition relative z-10 group-hover:translate-x-1 group-hover:-translate-y-1"></i>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-stone-800 to-stone-900 opacity-0 group-hover:opacity-100 transition duration-500">
+                        </div>
                     </a>
                 </div>
 
@@ -119,17 +139,22 @@
             const id = params.get('id');
 
             if (!id) {
-                alert("Excursión no especificada");
-                window.location.href = 'turismo.html';
+                console.error("Excursión no especificada");
+                document.getElementById('loading').innerHTML = '<p class="text-red-500">ID no especificado</p>';
                 return;
             }
 
             const appData = await DB.get();
+            if (!appData || !appData.tourism || !appData.tourism.excursions) {
+                console.error("No hay datos de turismo");
+                return;
+            }
+
             const excursion = appData.tourism.excursions.find(e => e.id === id);
 
             if (!excursion) {
-                alert("Excursión no encontrada");
-                window.location.href = 'turismo.html';
+                console.error("Excursión no encontrada: " + id);
+                document.getElementById('loading').innerHTML = '<p class="text-red-500">Excursión no encontrada</p>';
                 return;
             }
 
@@ -164,7 +189,29 @@
             tag.className = `px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border bg-black/40 backdrop-blur-sm ${colors[color] || colors.amber}`;
 
             // Desc
-            document.getElementById('full-desc').innerHTML = data.fullDesc;
+            // Desc
+            if (data.fullDesc) {
+                // If it looks like HTML, use it. If not, auto-format paragraphs.
+                if (data.fullDesc.trim().startsWith('<')) {
+                    document.getElementById('full-desc').innerHTML = data.fullDesc;
+                } else {
+                    const paragraphs = data.fullDesc.split('\n').filter(p => p.trim().length > 0);
+                    const html = paragraphs.map(p => {
+                        // Check if it's a list item (starts with -)
+                        if (p.trim().startsWith('-')) {
+                            return `<li class="ml-4 list-disc text-stone-300 mb-2 pl-2">${p.replace('-', '').trim()}</li>`;
+                        }
+                        // Check if it's a header (short and ends with :)
+                        if (p.trim().endsWith(':') && p.trim().length < 50) {
+                            return `<h3 class="text-xl font-serif font-bold text-white mt-6 mb-3">${p.trim().replace(':', '')}</h3>`;
+                        }
+                        return `<p class="leading-relaxed text-stone-300 text-lg mb-4 text-justify">${p}</p>`;
+                    }).join('');
+                    document.getElementById('full-desc').innerHTML = html;
+                }
+            } else {
+                document.getElementById('full-desc').innerHTML = `<p>${data.description}</p>`;
+            }
 
             // Gallery
             if (data.gallery && data.gallery.length > 0) {

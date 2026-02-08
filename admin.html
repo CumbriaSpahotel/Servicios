@@ -355,7 +355,10 @@
                 <div class="flex gap-2 items-start bg-white p-2 rounded shadow-sm group/item">
                     <div class="flex-1">
                         <input placeholder="Nombre" value="${item.name}" onchange="appData.${tab}.categories[${catIdx}].items[${itemIdx}].name = this.value" class="w-full font-bold border-b mb-1 focus:outline-none focus:border-amber-500">
-                        <input placeholder="Descripción" value="${item.desc || ''}" onchange="appData.${tab}.categories[${catIdx}].items[${itemIdx}].desc = this.value" class="w-full text-sm text-gray-500 focus:outline-none focus:text-gray-800">
+                        <div class="flex gap-2">
+                            <input placeholder="Descripción" value="${item.desc || ''}" onchange="appData.${tab}.categories[${catIdx}].items[${itemIdx}].desc = this.value" class="flex-1 text-sm text-gray-500 focus:outline-none focus:text-gray-800 border-b border-transparent hover:border-gray-200">
+                            <input placeholder="Alérgenos (ej: 1,4)" value="${item.allergens || ''}" onchange="appData.${tab}.categories[${catIdx}].items[${itemIdx}].allergens = this.value" class="w-32 text-xs text-gray-500 focus:outline-none focus:text-amber-600 border-b border-transparent hover:border-amber-200 text-right" title="Códigos de alérgenos">
+                        </div>
                     </div>
                     <div class="w-24">
                         <input type="text" value="${item.price}" onchange="appData.${tab}.categories[${catIdx}].items[${itemIdx}].price = this.value" class="w-full p-1 border rounded text-right font-mono focus:ring-2 focus:ring-amber-500" placeholder="0.00">

@@ -1168,11 +1168,23 @@
             }
 
             const pass = prompt("Contraseña:");
-            if (pass === "cumbria2024") {
-                window.location.href = "admin.html";
-            } else {
-                alert("Contraseña incorrecta");
-            }
+            if (!pass) return;
+
+            // Simple SHA-256 hash check to avoid plain text password
+            sha256(pass).then(hash => {
+                if (hash === "3fc0739dc16e977a01b14945df68f5d8e327844da476ee2ee8d586e00f214cb3") {
+                    window.location.href = "admin.html";
+                } else {
+                    alert("Contraseña incorrecta");
+                }
+            });
+        }
+
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
         // Initial Render not needed here, called by module

@@ -246,9 +246,9 @@ const DEFAULT_DATA = {
     tourism: {
         active: true,
         desc: "En Cumbria Spa & Hotel, su refugio de relax y bienestar en plena naturaleza, queremos invitarle a una experiencia inolvidable en uno de los espacios naturales más impresionantes de España: el Parque Nacional de Cabañeros, un paraíso silvestre situado entre las provincias de Ciudad Real y Toledo.\n\nAdemás, le invitamos a descubrir la riqueza cultural de Almagro y nuestro propio Teatro Quijano.",
-        videoUrl: "https://www.youtube.com/embed/lE6RYpe9IT0?rel=0&modestbranding=1",
+        videoUrl: "https://player.vimeo.com/video/1758569",
         videoUrlPromo: "https://www.youtube.com/embed/40fgsb3EbrE?list=PLCvAsDau1uLP8E-YGMIV3asYjlwlw5uV2",
-        coverImage: "https://github.com/CumbriaSpahotel/Servicios/blob/main/Imagenes/CIUDAD%20REAL%20GIGANTES,%20CASTILLOS%20Y%20NATURALEZA.png?raw=true",
+        coverImage: "",
         excursions: [
             {
                 id: "almagro",

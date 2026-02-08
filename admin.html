@@ -77,6 +77,12 @@
     <script type="module" src="db.js"></script>
     <script type="module">
         import { DB } from './db.js';
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+        // Initialize separate app instance for Storage if needed, or share config
+        const app = initializeApp(window.firebaseConfig, "StorageApp");
+        const storage = getStorage(app);
 
         // Globals needed for HTML onclick handlers and appData binding
         window.appData = null;
@@ -84,6 +90,75 @@
 
         // Initialize icons
         lucide.createIcons();
+
+        // --- UPLOAD FUNCTION ---
+        window.triggerUpload = function (fieldPath) {
+            // Create a temp invisible file input
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const btn = document.getElementById(`btn-${fieldPath}`);
+                if (btn) btn.innerHTML = '<i data-lucide="loader-2" class="animate-spin w-4 h-4"></i> Subiendo...';
+                if (window.lucide) window.lucide.createIcons();
+
+                try {
+                    // Path: uploads/{timestamp}_{filename}
+                    const storageRef = ref(storage, `uploads/${Date.now()}_${file.name}`);
+                    const snapshot = await uploadBytes(storageRef, file);
+                    const url = await getDownloadURL(snapshot.ref);
+
+                    // Update Data
+                    // fieldPath is like "appData.tourism.coverImage"
+                    // We need to set the value. 
+                    // Safe approach: execute assignment
+                    // Since we use global appData, we can use a Function or eval (careful) or walk the object.
+                    // Let's use a helper to set value by path.
+                    setByPath(window.appData, fieldPath.replace('appData.', ''), url);
+
+                    // Update Input UI
+                    // Find input with the onclick listener or matching value? 
+                    // Actually renderEditor will refresh everything with new value.
+                    renderEditor();
+
+                    alert("Imagen subida correctamente!");
+
+                } catch (error) {
+                    console.error("Upload failed", error);
+                    alert("Error al subir imagen: " + error.message);
+                } finally {
+                    if (btn) btn.innerHTML = '<i data-lucide="upload" class="w-4 h-4"></i> Subir';
+                    if (window.lucide) window.lucide.createIcons();
+                }
+            };
+            input.click();
+        }
+
+        function setByPath(obj, path, value) {
+            const parts = path.split('.');
+            let current = obj;
+            for (let i = 0; i < parts.length - 1; i++) {
+                // If array index
+                if (parts[i].includes('[')) {
+                    const [name, idx] = parts[i].split('[');
+                    const index = parseInt(idx.replace(']', ''));
+                    current = current[name][index];
+                } else {
+                    current = current[parts[i]];
+                }
+            }
+            const lastPart = parts[parts.length - 1];
+            if (lastPart.includes('[')) {
+                const [name, idx] = lastPart.split('[');
+                const index = parseInt(idx.replace(']', ''));
+                current[name][index] = value;
+            } else {
+                current[lastPart] = value;
+            }
+        }
 
         // Initialize App
         (async function init() {
@@ -590,10 +665,14 @@
         }
 
         window.field = function (label, path, value, type = 'text') {
+            const safeValue = value === undefined || value === null ? '' : value;
             return `
                 <div class="mb-4">
                     <label class="block text-sm font-bold text-gray-600 mb-1">${label}</label>
-                    <input type="${type}" value="${value}" onchange="${path} = this.value" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-amber-500 options-input">
+                    ${type === 'textarea'
+                    ? `<textarea onchange="${path} = this.value" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-amber-500 options-input" rows="4">${safeValue}</textarea>`
+                    : `<input type="${type}" value="${safeValue}" onchange="${path} = this.value" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-amber-500 options-input">`
+                }
                 </div>
             `;
         }

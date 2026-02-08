@@ -186,13 +186,18 @@
 
         <!-- EXCURSIONS MASONRY -->
         <div class="space-y-8">
-            <div class="flex items-end justify-between px-2 animate-enter delay-300 border-b border-white/10 pb-4">
+            <div
+                class="flex flex-col md:flex-row items-start md:items-end justify-between px-2 animate-enter delay-300 border-b border-white/10 pb-4 gap-4">
                 <div>
                     <span
                         class="text-amber-500 text-[10px] md:text-xs font-bold uppercase tracking-widest block mb-2">Destinos</span>
                     <h2 class="text-3xl md:text-4xl font-serif font-bold text-white">Experiencias Únicas</h2>
                 </div>
-                <!-- <div class="w-24 h-[1px] bg-amber-500/50 mb-2"></div> -->
+
+                <!-- Filters -->
+                <div id="filter-container" class="flex flex-wrap gap-2">
+                    <!-- Injected via JS -->
+                </div>
             </div>
 
             <div id="excursions-grid"
@@ -243,7 +248,15 @@
                 tFrame.classList.add('hidden');
             } else if (data.videoUrl) {
                 // Show Video, Hide Image
-                tFrame.src = data.videoUrl + "&autoplay=1&mute=1&loop=1&playlist=lE6RYpe9IT0&controls=0&showinfo=0";
+                let src = data.videoUrl;
+                if (src.includes('vimeo')) {
+                    // Vimeo embed parameters
+                    src += "?background=1&autoplay=1&loop=1&byline=0&title=0";
+                } else {
+                    // YouTube embed parameters
+                    src += "&autoplay=1&mute=1&loop=1&playlist=lE6RYpe9IT0&controls=0&showinfo=0";
+                }
+                tFrame.src = src;
                 tFrame.classList.remove('hidden');
                 tImg.classList.add('hidden');
             }
@@ -255,16 +268,51 @@
             const pFrame = document.getElementById('promo-frame');
             if (data.videoUrlPromo) pFrame.src = data.videoUrlPromo;
 
-            // 4. Grid
+            // 4. Grid & Filters
             const grid = document.getElementById('excursions-grid');
+            const filterContainer = document.getElementById('filter-container');
+
             grid.innerHTML = '';
+            filterContainer.innerHTML = '';
 
             if (data.excursions && data.excursions.length > 0) {
+                // Collect Unique Types
+                const types = ['Todos', ...new Set(data.excursions.map(item => item.type || 'Otros').filter(t => t))];
+
+                // Render Filters
+                types.forEach(type => {
+                    const btn = document.createElement('button');
+                    btn.textContent = type;
+                    btn.className = `px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border transition ${type === 'Todos' ? 'bg-amber-500 text-stone-900 border-amber-500' : 'bg-transparent text-stone-400 border-stone-700 hover:border-amber-500 hover:text-white'}`;
+
+                    btn.onclick = () => {
+                        // Update Active State
+                        Array.from(filterContainer.children).forEach(b => {
+                            b.className = `px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border transition bg-transparent text-stone-400 border-stone-700 hover:border-amber-500 hover:text-white`;
+                        });
+                        btn.className = `px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border transition bg-amber-500 text-stone-900 border-amber-500`;
+
+                        // Filter Grid
+                        const cards = grid.children;
+                        Array.from(cards).forEach(card => {
+                            if (type === 'Todos' || card.dataset.type === type) {
+                                card.classList.remove('hidden');
+                                card.classList.add('block');
+                            } else {
+                                card.classList.add('hidden');
+                                card.classList.remove('block');
+                            }
+                        });
+                    };
+                    filterContainer.appendChild(btn);
+                });
+
                 data.excursions.forEach((item, index) => {
                     if (!item.id) return; // Skip items with missing ID
 
                     const el = document.createElement('a');
                     el.href = `excursion.html?id=${item.id}`;
+                    el.dataset.type = item.type || 'Otros';
                     // Responsive heights: h-80 mobile, h-96 desktop
                     el.className = "block relative w-full h-80 md:h-96 rounded-[2rem] overflow-hidden group shadow-2xl transition hover:shadow-amber-900/20 card-hover brightness-90 hover:brightness-100 ring-1 ring-white/5";
 

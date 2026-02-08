@@ -250,74 +250,82 @@ const DEFAULT_DATA = {
         videoUrlPromo: "https://www.youtube.com/embed/40fgsb3EbrE?list=PLCvAsDau1uLP8E-YGMIV3asYjlwlw5uV2",
         excursions: [
             {
-                title: "Almagro: Escapada Cultural",
-                image: "Imagenes/ALMAGRO VISITA GUIADA.jpg",
-                shortDesc: "Historia viva, teatro clásico y gastronomía única en un entorno monumental.",
+                id: "almagro",
+                title: "Almagro",
+                subtitle: "Joya Manchega",
+                image: "Imagenes/Almagro.peg.jpeg", // Main Hero
+                heroImage: "Imagenes/Almagro.peg.jpeg",
+                description: "Historia viva, teatro clásico y gastronomía única en un entorno monumental.",
                 fullDesc: `
-                <p class="mb-6 leading-relaxed text-stone-300">
-                    <strong class="text-amber-500 text-lg">Almagro</strong> le invita a un viaje en el tiempo. Declarada Conjunto Histórico-Artístico, esta villa manchega es conocida mundialmente como la <em>"Ciudad del Teatro"</em>.
-                </p>
-
-                <!-- 1. Plaza Mayor Header -->
-                <div class="mb-8 rounded-xl overflow-hidden shadow-lg border border-white/10">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Almagro_-_Plaza_Mayor_001.jpg/1024px-Almagro_-_Plaza_Mayor_001.jpg" alt="Plaza Mayor" class="w-full h-48 object-cover">
-                </div>
-
-                <div class="space-y-6 text-sm text-stone-300 leading-relaxed">
-                    
-                    <div>
-                        <h3 class="flex items-center gap-2 text-lg font-serif font-bold text-white mb-2">
-                            <i data-lucide="landmark" class="w-5 h-5 text-amber-500"></i>
-                            Qué visitar
-                        </h3>
-                        <p class="mb-3">
-                            La <strong>Plaza Mayor</strong> es el corazón de la villa, única por sus galerías acristaladas. No se pierda el <strong>Palacio de los Fúcares</strong> ni el <strong>Museo Nacional del Teatro</strong>.
-                        </p>
-                        <p>
-                            El <strong>Corral de Comedias</strong> es el monumento más emblemático. Construido en 1628, es el único del s. XVII que se conserva intacto y en activo en todo el mundo.
-                        </p>
-                    </div>
-
-                    <div class="border-t border-white/10 my-6"></div>
-
-                    <!-- Flex Layout (Cleaner & More Stable) -->
-                    <div class="bg-stone-800/50 p-4 rounded-xl border border-white/5">
-                        <h3 class="text-xl font-serif font-bold text-white mb-4">Cómo planificar su visita</h3>
-                        
-                        <div class="flex flex-col sm:flex-row gap-5 items-start">
-                            <!-- Image -->
-                            <img src="Imagenes/ALMAGRO VISITA GUIADA.jpg" class="w-full sm:w-40 rounded-lg shadow-lg border border-white/5 shrink-0" alt="Folleto Visita">
-                            
-                            <!-- Text Content -->
-                            <div class="text-stone-300 text-sm space-y-3">
-                                <p class="text-white/90 font-medium">Para una excursión memorable:</p>
-                                
-                                <ul class="space-y-2 list-disc pl-4 marker:text-amber-500">
-                                    <li>
-                                        <strong>Reserve tiempo suficiente</strong> (media jornada) para recorrer los puntos clave con calma.
-                                    </li>
-                                    <li>
-                                        Si puede, visite durante el <strong>Festival de Teatro Clásico</strong> (julio) para vivir su máxima expresión.
-                                    </li>
-                                    <li>
-                                        Lleve <strong>calzado cómodo</strong> para el empedrado y cámara para los rincones únicos.
-                                    </li>
-                                    <li>
-                                        <strong>Combine la visita</strong> con una cata de vinos o tapas en la zona.
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="mt-8 pt-6 border-t border-white/10">
-                    <p class="text-sm text-stone-400 italic">
-                        En <strong>Cumbria Spa & Hotel</strong>, nos comprometemos a ofrecerle no solo alojamiento de calidad, sino también experiencias enriquecedoras que complementen su estancia.
+                    <p class="leading-relaxed text-stone-300 text-lg mb-4 text-justify">
+                        <strong class="text-amber-500">Almagro</strong> es una ciudad declarada <strong>Conjunto Histórico-Artístico</strong>, conocida por su impresionante <strong>Corral de Comedias</strong>, uno de los teatros al aire libre más antiguos de Europa, construido en el siglo XVII.
                     </p>
-                </div>
-                `
+                    <p class="leading-relaxed text-stone-300 text-lg text-justify mb-6">
+                        Además de su legado teatral, Almagro destaca por sus calles empedradas, sus edificios renacentistas y barrocos, y su atmósfera tranquila.
+                    </p>
+                    
+                    <h3 class="text-xl font-serif font-bold text-white mb-3">La Plaza Mayor</h3>
+                    <p class="mb-4 text-stone-400">El corazón de la villa, única por sus galerías acristaladas.</p>
+                `,
+                type: "Destino Cultura",
+                color: "amber",
+                gallery: [
+                    "Imagenes/plaza mayor de almagro.jpg",
+                    "Imagenes/ALMAGRO VISITA GUIADA.jpg",
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Almagro_-_Plaza_Mayor_001.jpg/1024px-Almagro_-_Plaza_Mayor_001.jpg"
+                ],
+                videoUrl: "",
+                linkUrl: "https://www.google.com/maps/search/Plaza+Mayor+Almagro"
+            },
+            {
+                id: "cabaneros",
+                title: "Parque Nacional de Cabañeros",
+                subtitle: "La Sabana Europea",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Parque_Nacional_de_Caba%C3%B1eros.jpg/320px-Parque_Nacional_de_Caba%C3%B1eros.jpg",
+                heroImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Parque_Nacional_de_Caba%C3%B1eros.jpg/1280px-Parque_Nacional_de_Caba%C3%B1eros.jpg",
+                description: "Un paraíso silvestre y refugio de fauna única.",
+                fullDesc: `
+                    <p class="leading-relaxed text-stone-300 text-lg text-justify italic border-l-2 border-emerald-500 pl-4 mb-6">
+                        "En Cumbria Spa & Hotel, su refugio de relax y bienestar en plena naturaleza, queremos invitarle a una experiencia inolvidable."
+                    </p>
+                    <p class="leading-relaxed text-stone-300 text-lg mb-4 text-justify">
+                        El <strong>Parque Nacional de Cabañeros</strong> es un santuario natural que abarca más de 38.000 hectáreas de bosque mediterráneo. Considerado la <strong>"sabana europea"</strong>.
+                    </p>
+                    <p class="leading-relaxed text-stone-300 text-lg text-justify">
+                        Hogar de especies amenazadas como el <strong>lince ibérico</strong>, el urogallo cantábrico y el águila imperial ibérica.
+                    </p>
+                `,
+                type: "Naturaleza",
+                color: "emerald",
+                gallery: [
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Parque_Nacional_de_Caba%C3%B1eros.jpg/1280px-Parque_Nacional_de_Caba%C3%B1eros.jpg"
+                ],
+                videoUrl: "",
+                linkUrl: "https://www.miteco.gob.es/es/red-parques-nacionales/nuestros-parques/cabaneros.html"
+            },
+            {
+                id: "teatro-quijano",
+                title: "Teatro Municipal Quijano",
+                subtitle: "El corazón cultural",
+                image: "Imagenes/Logo-Qijano.png",
+                heroImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Ciudad_Real_-_Teatro_Cervantes_-_fachada.jpg/1024px-Ciudad_Real_-_Teatro_Cervantes_-_fachada.jpg",
+                description: "Escenario principal de la cultura. Teatro, danza y música.",
+                fullDesc: `
+                    <div class="flex flex-col items-center text-center mb-6">
+                        <img src="Imagenes/Logo-Qijano.png" class="h-24 object-contain mb-6 filter drop-shadow-lg opacity-90">
+                        <p class="leading-relaxed text-stone-300 text-lg">
+                             El <strong class="text-rose-500 font-serif text-xl">Teatro Municipal Quijano</strong>, situado en pleno centro, dispone de <strong>906 butacas</strong>.
+                        </p>
+                    </div>
+                    <p class="text-base text-stone-300 leading-relaxed border-l-2 border-stone-800 pl-4 py-2">
+                        Representa uno de los principales centros neurálgicos de la cultura ciudadrealeña con una amplia programación.
+                    </p>
+                `,
+                type: "Cultura",
+                color: "rose",
+                gallery: [],
+                videoUrl: "",
+                linkUrl: "https://teatroquijano.com/proximos-estrenos/"
             }
         ]
     }

@@ -166,6 +166,77 @@
                             
                             <p class="text-xs text-gray-400 italic">Usar formato embed de YouTube: https://www.youtube.com/embed/VIDEO_ID</p>
                          </div>`;
+
+                // Excursions Manager
+                html += `<div class="mt-8 border-t pt-6">
+                            <h3 class="font-bold text-lg text-stone-700 mb-4 flex items-center gap-2">
+                                <i data-lucide="map-pin" class="w-5 h-5"></i> Experiencias y Excursiones
+                            </h3>
+                            
+                            <div class="space-y-4">
+                                ${(data.excursions || []).map((exc, idx) => `
+                                    <div class="border rounded-xl bg-white p-4 shadow-sm">
+                                        
+                                        <!-- Header / Summary -->
+                                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                                            <div class="flex items-center gap-3">
+                                                <span class="font-mono text-xs bg-stone-100 px-2 py-1 rounded text-stone-500">#${exc.id || 'new'}</span>
+                                                <input value="${exc.title}" onchange="appData.tourism.excursions[${idx}].title = this.value" class="font-bold text-lg text-stone-800 bg-transparent border-b border-transparent focus:border-amber-500 focus:outline-none">
+                                            </div>
+                                            <button onclick="deleteExcursion(${idx})" class="p-2 text-gray-300 hover:text-red-500 transition" title="Eliminar Excursión">
+                                                <i data-lucide="trash-2" class="w-5 h-5"></i>
+                                            </button>
+                                        </div>
+
+                                        <!-- Fields -->
+                                        <div class="grid grid-cols-2 gap-4 mb-4">
+                                            ${field('ID Texto (Slug)', `appData.tourism.excursions[${idx}].id`, exc.id)}
+                                            ${field('Subtítulo', `appData.tourism.excursions[${idx}].subtitle`, exc.subtitle || '')}
+                                        </div>
+                                        
+                                        <div class="mb-4">
+                                            ${field('Descripción Corta (Lista)', `appData.tourism.excursions[${idx}].description`, exc.description || exc.shortDesc || '', 'textarea')}
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label class="block text-sm font-bold text-gray-600 mb-1">Color Tema</label>
+                                            <select onchange="appData.tourism.excursions[${idx}].color = this.value" class="w-full p-2 border rounded-lg bg-white">
+                                                <option value="amber" ${exc.color === 'amber' ? 'selected' : ''}>Ámbar (Cultura/General)</option>
+                                                <option value="emerald" ${exc.color === 'emerald' ? 'selected' : ''}>Esmeralda (Naturaleza)</option>
+                                                <option value="rose" ${exc.color === 'rose' ? 'selected' : ''}>Rosa (Teatro/Arte)</option>
+                                                <option value="blue" ${exc.color === 'blue' ? 'selected' : ''}>Azul (Agua/Relax)</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="grid grid-cols-2 gap-4 mb-4">
+                                            ${field('Imagen Listado', `appData.tourism.excursions[${idx}].image`, exc.image || '')}
+                                            ${field('Imagen Hero (Cabecera)', `appData.tourism.excursions[${idx}].heroImage`, exc.heroImage || exc.image || '')}
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label class="block text-sm font-bold text-gray-600 mb-1">Descripción Completa (HTML permitido)</label>
+                                            <textarea rows="6" onchange="appData.tourism.excursions[${idx}].fullDesc = this.value" class="w-full p-2 border rounded-lg font-mono text-xs text-stone-600">${exc.fullDesc || ''}</textarea>
+                                        </div>
+
+                                        <!-- Gallery Mini Manager -->
+                                        <div class="bg-stone-50 p-3 rounded-lg mb-4">
+                                            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Galería de Imágenes (URLs separadas por coma)</label>
+                                            <textarea rows="2" onchange="appData.tourism.excursions[${idx}].gallery = this.value.split(',').map(s => s.trim()).filter(Boolean)" class="w-full p-2 border rounded text-xs">${(exc.gallery || []).join(', ')}</textarea>
+                                        </div>
+
+                                        <div class="grid grid-cols-2 gap-4">
+                                            ${field('Video URL (YouTube Embed)', `appData.tourism.excursions[${idx}].videoUrl`, exc.videoUrl || '')}
+                                            ${field('Enlace Externo (Web)', `appData.tourism.excursions[${idx}].linkUrl`, exc.linkUrl || '')}
+                                        </div>
+
+                                    </div>
+                                `).join('')}
+                            </div>
+
+                            <button onclick="addExcursion()" class="mt-6 w-full py-3 bg-stone-800 text-white rounded-xl font-bold hover:bg-stone-700 transition flex items-center justify-center gap-2">
+                                <i data-lucide="plus-circle" class="w-5 h-5"></i> Añadir Nueva Experiencia
+                            </button>
+                        </div>`;
             }
 
             // Special: Spa
@@ -649,6 +720,55 @@
         window.resetData = function () {
             if (confirm('¿Reiniciar todos los datos a fábrica?')) {
                 window.appData = DB.reset();
+                renderEditor();
+            }
+        }
+        window.addSpaImage = function () {
+            const url = prompt("URL de la nueva imagen:");
+            if (url) {
+                if (!window.appData.spa.images) window.appData.spa.images = [];
+                window.appData.spa.images.push(url);
+                renderEditor();
+            }
+        }
+
+        window.deleteSpaImage = function (idx) {
+            if (confirm("¿Borrar esta imagen?")) {
+                window.appData.spa.images.splice(idx, 1);
+                renderEditor();
+            }
+        }
+
+        window.addExcursion = function () {
+            const id = prompt("ID único para la excursión (ej: tablas-daimiel):");
+            if (!id) return;
+
+            // Check uniqueness
+            if (window.appData.tourism.excursions.some(e => e.id === id)) {
+                alert("Ya existe una excursión con ese ID.");
+                return;
+            }
+
+            const newExc = {
+                id: id.toLowerCase().replace(/\s+/g, '-'),
+                title: "Nueva Excursión",
+                subtitle: "",
+                shortDesc: "Descripción corta...",
+                fullDesc: "<p>Descripción detallada...</p>",
+                image: "https://via.placeholder.com/400x300",
+                heroImage: "https://via.placeholder.com/800x600",
+                videoUrl: "",
+                gallery: [],
+                color: "amber"
+            };
+
+            window.appData.tourism.excursions.push(newExc);
+            renderEditor();
+        }
+
+        window.deleteExcursion = function (idx) {
+            if (confirm("¿Seguro que quieres eliminar esta excursión? Esta acción no se puede deshacer.")) {
+                window.appData.tourism.excursions.splice(idx, 1);
                 renderEditor();
             }
         }

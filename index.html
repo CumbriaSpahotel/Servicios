@@ -617,7 +617,7 @@
             class="modal-content relative w-full h-[95vh] bg-stone-50 rounded-t-[2.5rem] overflow-hidden pointer-events-auto flex flex-col shadow-2xl">
             <!-- Header Image -->
             <div class="relative h-64 shrink-0">
-                <img src="Imagenes/spa.jpg" class="w-full h-full object-cover">
+                <img id="spa-header-img" src="Imagenes/spa.jpg" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-stone-900 via-transparent to-transparent"></div>
                 <!-- Close -->
                 <button onclick="closeModal('spa-modal')"
@@ -702,7 +702,7 @@
                 <!-- Video -->
                 <div
                     class="relative w-full aspect-video rounded-2xl overflow-hidden shadow-lg bg-black ring-4 ring-stone-100">
-                    <iframe class="absolute top-0 left-0 w-full h-full"
+                    <iframe id="spa-video-frame" class="absolute top-0 left-0 w-full h-full"
                         src="https://www.youtube.com/embed/lE6RYpe9IT0?rel=0&modestbranding=1" title="Spa Relax"
                         frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -1109,13 +1109,55 @@
             if (appData.tourism) {
                 if (appData.tourism.videoUrl) {
                     const tourFrame = document.getElementById('tourism-frame');
-                    if (tourFrame) tourFrame.src = appData.tourism.videoUrl;
+                    if (tourFrame) tourFrame.src = convertToEmbed(appData.tourism.videoUrl);
                 }
                 if (appData.tourism.desc) {
                     const tourDesc = document.getElementById('tourism-desc');
                     if (tourDesc) tourDesc.textContent = appData.tourism.desc;
                 }
             }
+
+            // Spa
+            if (appData.spa) {
+                if (appData.spa.headerImage) {
+                    const spaImg = document.getElementById('spa-header-img');
+                    if (spaImg) spaImg.src = appData.spa.headerImage;
+                }
+                if (appData.spa.videoUrl) {
+                    const spaFrame = document.getElementById('spa-video-frame');
+                    if (spaFrame) spaFrame.src = convertToEmbed(appData.spa.videoUrl);
+                }
+            }
+        }
+
+        // Helper to convert diverse YouTube URLs to Embed format
+        // Helper to convert diverse YouTube URLs to Embed format
+        function convertToEmbed(url) {
+            if (!url) return '';
+
+            // Already embed format?
+            if (url.includes('/embed/')) return url;
+
+            let videoId = '';
+
+            try {
+                // Handle https://youtu.be/ID
+                if (url.includes('youtu.be/')) {
+                    videoId = url.split('youtu.be/')[1].split(/[?&]/)[0];
+                }
+                // Handle https://www.youtube.com/watch?v=ID
+                else if (url.includes('v=')) {
+                    videoId = url.split('v=')[1].split(/[?&]/)[0];
+                }
+            } catch (e) {
+                console.error("Error parsing YouTube URL:", url);
+            }
+
+            if (videoId) {
+                return `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
+            }
+
+            return url; // Fallback
         }
 
         // Helpers for rendering

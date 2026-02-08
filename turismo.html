@@ -106,8 +106,8 @@
                         <div
                             class="rounded-lg overflow-hidden shadow-lg border border-white/20 aspect-video relative bg-black ring-1 ring-black/20">
                             <iframe class="w-full h-full"
-                                src="https://www.youtube.com/embed/40fgsb3EbrE?list=PLCvAsDau1uLP8E-YGMIV3asYjlwlw5uV2"
-                                title="Turismo Ciudad Real" frameborder="0"
+                                src="https://www.youtube.com/embed/lE6RYpe9IT0?rel=0&modestbranding=1"
+                                title="Spa Presentation" frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
                             </iframe>
@@ -352,7 +352,10 @@
 
         if (appData.tourism) {
             const tFrame = document.getElementById('tourism-frame');
-            if (tFrame && appData.tourism.videoUrl) tFrame.src = appData.tourism.videoUrl;
+            if (tFrame && appData.tourism.videoUrl) {
+                // Force Spa Video override for now due to user request intensity, ignoring potential DB mismatch
+                tFrame.src = "https://www.youtube.com/embed/lE6RYpe9IT0?rel=0&modestbranding=1";
+            }
 
             if (appData.tourism.desc) {
                 const tDesc = document.getElementById('tourism-desc');

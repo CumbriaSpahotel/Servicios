@@ -268,7 +268,9 @@
                         <div class="mt-8 border p-4 rounded-xl bg-gray-50 relative group">
                             <h3 class="font-bold text-lg text-amber-600 mb-2 flex justify-between items-center">
                                 ${cat.name}
-                                <span class="text-xs text-gray-400 font-normal">Categoría</span>
+                                <button onclick="deleteCategory(${catIdx})" class="text-xs text-red-300 hover:text-red-500 transition px-2 py-1 rounded hover:bg-red-50" title="Eliminar Categoría">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
                             </h3>
 
                             <div class="space-y-4">
@@ -315,8 +317,19 @@
                         <div class="space-y-4">
                             ${data.items.map((item, itemIdx) => itemRowSimple(window.currentTab, itemIdx, item)).join('')}
                         </div>
-                        <button onclick="addItemSimple()" class="mt-4 w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 font-bold hover:border-amber-500 hover:text-amber-500 transition flex items-center justify-center gap-2">
+                            <button onclick="addItemSimple()" class="mt-4 w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 font-bold hover:border-amber-500 hover:text-amber-500 transition flex items-center justify-center gap-2">
                             <i data-lucide="plus" class="w-4 h-4"></i> Añadir Artículo
+                        </button>
+                    </div>
+                `;
+            }
+
+            // ADD CATEGORY BUTTON (New)
+            if (data.categories) {
+                html += `
+                    <div class="mt-8 border-t pt-6">
+                        <button onclick="addCategory()" class="w-full py-3 bg-stone-100 rounded-xl text-stone-600 font-bold hover:bg-stone-200 transition flex items-center justify-center gap-2">
+                             <i data-lucide="folder-plus" class="w-5 h-5"></i> Crear Nueva Categoría
                         </button>
                     </div>
                 `;
@@ -392,6 +405,24 @@
         }
 
         // --- ACTIONS ---
+
+        window.addCategory = function () {
+            const name = prompt("Nombre de la nueva categoría:");
+            if (name) {
+                window.appData[window.currentTab].categories.push({
+                    name: name,
+                    items: []
+                });
+                renderEditor();
+            }
+        }
+
+        window.deleteCategory = function (catIdx) {
+            if (confirm("¿Estás seguro de eliminar esta categoría y todos sus ítems?")) {
+                window.appData[window.currentTab].categories.splice(catIdx, 1);
+                renderEditor();
+            }
+        }
 
         window.addItem = function (catIdx) {
             const newItem = { name: "Nuevo Plato", desc: "Descripción...", price: "0.00" };

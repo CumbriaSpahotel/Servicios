@@ -1132,7 +1132,7 @@
                                 <div class="flex justify-between items-start">
                                     <div>
                                         <h4 class="font-bold text-stone-800 text-sm">${item.name}</h4>
-                                        ${item.desc ? `<p class="text-xs text-stone-500 mt-0.5">${item.desc}</p>` : ''}
+                                        ${item.desc ? `<p class="text-xs text-stone-500 mt-0.5 description-text">${item.desc.replace(/\(([\d\/,]+)\)/g, '<sup class="text-[10px] font-bold text-stone-400 ml-1">($1)</sup>')}</p>` : ''}
                                     </div>
                                     <span class="font-bold text-amber-700 text-sm shrink-0 ml-2">${item.price}€</span>
                                 </div>
@@ -1142,6 +1142,14 @@
                     </div>
                 </div>
             `).join('');
+
+            // Add Allergen Legend at the bottom
+            container.innerHTML += `
+                <div class="mt-8 opacity-90 w-full px-4 text-center">
+                    <p class="text-[10px] text-stone-400 mb-2 uppercase tracking-widest font-bold">Información de Alérgenos</p>
+                    <img src="Imagenes/Alergenos-removebg-preview.png" class="w-full object-contain max-h-24 mx-auto style="mix-blend-mode: multiply;">
+                </div>
+            `;
         }
 
         function renderLaundryList(containerId, categories) {

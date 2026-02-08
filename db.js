@@ -187,6 +187,9 @@ const DEFAULT_DATA = {
     },
     spa: {
         active: true,
+        headerImage: "Imagenes/spa.jpg",
+        videoUrl: "https://www.youtube.com/embed/lE6RYpe9IT0?rel=0&modestbranding=1",
+        images: [],
         prices: {
             week: "12",
             weekend: "18",

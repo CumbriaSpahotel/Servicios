@@ -168,13 +168,51 @@
                          </div>`;
             }
 
-            // Special: Spa Prices
+            // Special: Spa
             if (window.currentTab === 'spa') {
+                html += `<div class="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6">
+                            <h3 class="font-bold text-lg mb-4 text-cyan-600 border-b border-cyan-200 pb-2">Contenido Visual</h3>
+                            <div class="mb-4">
+                                ${field('Imagen de Cabecera (URL)', `appData.spa.headerImage`, data.headerImage || 'Imagenes/spa.jpg')}
+                                <div class="mt-2 h-32 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 relative">
+                                    <img src="${data.headerImage || 'Imagenes/spa.jpg'}" class="w-full h-full object-cover opacity-80">
+                                    <p class="absolute inset-0 flex items-center justify-center text-xs text-gray-500 font-bold bg-white/50 backdrop-blur-sm opacity-0 hover:opacity-100 transition">Vista previa</p>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                ${field('Video Presentación (URL YouTube)', `appData.spa.videoUrl`, data.videoUrl || '')}
+                            </div>
+                         </div>`;
+
                 html += `<h3 class="font-bold mt-6 mb-4 border-b pb-2">Tarifas</h3>`;
                 html += field('Semana', `appData.spa.prices.week`, data.prices.week);
                 html += field('Fin de Semana', `appData.spa.prices.weekend`, data.prices.weekend);
                 html += field('Gorro', `appData.spa.prices.cap`, data.prices.cap);
                 html += field('Chanclas', `appData.spa.prices.flipflops`, data.prices.flipflops);
+
+                // Gallery Manager
+                html += `<div class="mt-8 border-t pt-6">
+                            <h3 class="font-bold text-lg text-stone-700 mb-4 flex items-center gap-2">
+                                <i data-lucide="images" class="w-5 h-5"></i> Galería de Fotos
+                            </h3>
+                            <div id="spa-gallery-list" class="space-y-3">
+                                ${(data.images || []).map((img, idx) => `
+                                    <div class="flex gap-2 items-center bg-white p-2 rounded shadow-sm group">
+                                        <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-300 cursor-grab handle-img hover:text-cyan-500"></i>
+                                        <div class="w-16 h-10 bg-gray-100 rounded overflow-hidden shrink-0 border border-gray-200">
+                                            <img src="${img}" class="w-full h-full object-cover">
+                                        </div>
+                                        <input value="${img}" onchange="appData.spa.images[${idx}] = this.value; renderEditor();" class="flex-1 text-sm bg-transparent border-b border-transparent focus:border-cyan-500 focus:outline-none" placeholder="URL de la imagen">
+                                        <button onclick="deleteSpaImage(${idx})" class="p-2 text-gray-300 hover:text-red-500 transition" title="Eliminar">
+                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <button onclick="addSpaImage()" class="mt-4 w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 font-bold hover:border-cyan-500 hover:text-cyan-500 transition flex items-center justify-center gap-2">
+                                <i data-lucide="plus" class="w-4 h-4"></i> Añadir Foto
+                            </button>
+                         </div>`;
             }
 
             // Special: Info

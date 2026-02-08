@@ -299,6 +299,9 @@
                             <div class="space-y-2">
                                 ${cat.items.map((item, itemIdx) => itemRowLaundry(catIdx, itemIdx, item)).join('')}
                             </div>
+                            <button onclick="addLaundryItem(${catIdx})" class="mt-4 w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 font-bold hover:border-blue-500 hover:text-blue-500 transition flex items-center justify-center gap-2">
+                                <i data-lucide="plus" class="w-4 h-4"></i> Añadir Prenda
+                            </button>
                         </div>
                     `;
                 });
@@ -369,15 +372,20 @@
 
         window.itemRowLaundry = function (catIdx, itemIdx, item) {
             return `
-                <div class="grid grid-cols-12 gap-2 items-center bg-white p-2 rounded shadow-sm">
-                    <div class="col-span-6">
-                        <input value="${item.name}" onchange="appData.laundry.categories[${catIdx}].items[${itemIdx}].name = this.value" class="w-full font-bold text-sm bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none">
+                <div class="grid grid-cols-12 gap-1 items-center bg-white p-2 rounded shadow-sm">
+                    <div class="col-span-5">
+                        <input value="${item.name}" onchange="appData.laundry.categories[${catIdx}].items[${itemIdx}].name = this.value" class="w-full font-bold text-sm bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none" placeholder="Nombre">
                     </div>
                     <div class="col-span-3">
-                        <input value="${item.priceWash}" onchange="appData.laundry.categories[${catIdx}].items[${itemIdx}].priceWash = this.value" class="w-full text-right text-xs font-mono bg-stone-50 rounded px-1 py-0.5 border border-transparent focus:border-blue-500" type="text">
+                        <input value="${item.priceWash}" onchange="appData.laundry.categories[${catIdx}].items[${itemIdx}].priceWash = this.value" class="w-full text-right text-xs font-mono bg-blue-50/50 rounded px-1 py-1 border border-transparent focus:border-blue-500" type="text" placeholder="Lav">
                     </div>
                     <div class="col-span-3">
-                        <input value="${item.priceIron}" onchange="appData.laundry.categories[${catIdx}].items[${itemIdx}].priceIron = this.value" class="w-full text-right text-xs font-mono bg-stone-50 rounded px-1 py-0.5 border border-transparent focus:border-blue-500" type="text">
+                        <input value="${item.priceIron}" onchange="appData.laundry.categories[${catIdx}].items[${itemIdx}].priceIron = this.value" class="w-full text-right text-xs font-mono bg-stone-50 rounded px-1 py-1 border border-transparent focus:border-blue-500" type="text" placeholder="Pla">
+                    </div>
+                    <div class="col-span-1 text-center">
+                         <button onclick="deleteLaundryItem(${catIdx}, ${itemIdx})" class="p-1 text-gray-300 hover:text-red-500 transition" title="Eliminar">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
                     </div>
                 </div>
             `;
@@ -394,6 +402,19 @@
         window.deleteItem = function (catIdx, itemIdx) {
             if (confirm('¿Eliminar este plato?')) {
                 window.appData[window.currentTab].categories[catIdx].items.splice(itemIdx, 1);
+                renderEditor();
+            }
+        }
+
+        window.addLaundryItem = function (catIdx) {
+            const newItem = { name: "Nueva Prenda", priceWash: "0,00", priceIron: "0,00" };
+            window.appData.laundry.categories[catIdx].items.push(newItem);
+            renderEditor();
+        }
+
+        window.deleteLaundryItem = function (catIdx, itemIdx) {
+            if (confirm('¿Eliminar esta prenda?')) {
+                window.appData.laundry.categories[catIdx].items.splice(itemIdx, 1);
                 renderEditor();
             }
         }

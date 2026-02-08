@@ -105,9 +105,8 @@
                     <div class="shrink-0 w-full sm:w-48 group self-center sm:self-start">
                         <div
                             class="rounded-lg overflow-hidden shadow-lg border border-white/20 aspect-video relative bg-black ring-1 ring-black/20">
-                            <iframe class="w-full h-full"
-                                src="https://www.youtube.com/embed/lE6RYpe9IT0?rel=0&modestbranding=1"
-                                title="Spa Presentation" frameborder="0"
+                            <iframe id="promo-frame" class="w-full h-full" src="" title="Spa Presentation"
+                                frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
                             </iframe>
@@ -351,19 +350,23 @@
         }
 
         if (appData.tourism) {
+            // 1. Main Hero Video
             const tFrame = document.getElementById('tourism-frame');
             if (tFrame && appData.tourism.videoUrl) {
-                // Force Spa Video override for now due to user request intensity, ignoring potential DB mismatch
-                tFrame.src = "https://www.youtube.com/embed/lE6RYpe9IT0?rel=0&modestbranding=1";
+                tFrame.src = appData.tourism.videoUrl;
             }
 
+            // 2. Description Text
             if (appData.tourism.desc) {
                 const tDesc = document.getElementById('tourism-desc');
                 if (tDesc) tDesc.textContent = appData.tourism.desc;
             }
 
-            // Excursions logic is now handled by the static button calling openExcursion(0)
-            // No need to render a list anymore since we iconified it.
+            // 3. Small Promo Video
+            const promoFrame = document.getElementById('promo-frame');
+            if (promoFrame && appData.tourism.videoUrlPromo) {
+                promoFrame.src = appData.tourism.videoUrlPromo;
+            }
         }
 
         function openExcursion(idx) {

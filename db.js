@@ -242,7 +242,7 @@ const DEFAULT_DATA = {
     },
     tourism: {
         active: true,
-        videoUrl: "https://www.youtube.com/embed/40fgsb3EbrE?list=PLCvAsDau1uLP8E-YGMIV3asYjlwlw5uV2",
+        videoUrl: "https://www.youtube.com/embed/lE6RYpe9IT0?rel=0&modestbranding=1",
         excursions: [
             {
                 title: "Almagro: Escapada Cultural",

@@ -253,8 +253,8 @@ const DEFAULT_DATA = {
                 id: "almagro",
                 title: "Almagro",
                 subtitle: "Joya Manchega",
-                image: "Imagenes/Almagro.peg.jpeg", // Main Hero
-                heroImage: "Imagenes/Almagro.peg.jpeg",
+                image: "Imagenes/plaza mayor de almagro.jpg",
+                heroImage: "Imagenes/plaza mayor de almagro.jpg",
                 description: "Historia viva, teatro clásico y gastronomía única en un entorno monumental.",
                 fullDesc: `
                     <p class="leading-relaxed text-stone-300 text-lg mb-4 text-justify">
@@ -285,15 +285,77 @@ const DEFAULT_DATA = {
                 heroImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Parque_Nacional_de_Caba%C3%B1eros.jpg/1280px-Parque_Nacional_de_Caba%C3%B1eros.jpg",
                 description: "Un paraíso silvestre y refugio de fauna única.",
                 fullDesc: `
-                    <p class="leading-relaxed text-stone-300 text-lg text-justify italic border-l-2 border-emerald-500 pl-4 mb-6">
-                        "En Cumbria Spa & Hotel, su refugio de relax y bienestar en plena naturaleza, queremos invitarle a una experiencia inolvidable."
-                    </p>
-                    <p class="leading-relaxed text-stone-300 text-lg mb-4 text-justify">
-                        El <strong>Parque Nacional de Cabañeros</strong> es un santuario natural que abarca más de 38.000 hectáreas de bosque mediterráneo. Considerado la <strong>"sabana europea"</strong>.
-                    </p>
-                    <p class="leading-relaxed text-stone-300 text-lg text-justify">
-                        Hogar de especies amenazadas como el <strong>lince ibérico</strong>, el urogallo cantábrico y el águila imperial ibérica.
-                    </p>
+                    <div class="space-y-6">
+                        <p class="leading-relaxed text-stone-300 text-lg text-justify italic border-l-2 border-emerald-500 pl-4">
+                            "En Cumbria Spa & Hotel, su refugio de relax y bienestar en plena naturaleza, queremos invitarle a
+                            una experiencia inolvidable en uno de los espacios naturales más impresionantes de España."
+                        </p>
+                        <div>
+                            <h2 class="text-2xl font-serif text-white mb-3">¿Qué es Cabañeros?</h2>
+                            <p class="leading-relaxed text-stone-300 text-lg mb-4 text-justify">
+                                El <strong>Parque Nacional de Cabañeros</strong> es un santuario natural que abarca más de
+                                38.000 hectáreas de bosques mediterráneos, prados, ríos y montañas. Este ecosistema único
+                                alberga una increíble biodiversidad y se considera la <strong>"sabana europea"</strong>, debido
+                                a sus paisajes ondulados y su flora característica.
+                            </p>
+                            <p class="leading-relaxed text-stone-300 text-lg text-justify">
+                                Este parque no solo es un lugar de belleza escénica, sino también un refugio vital para especies
+                                amenazadas como el <strong>lince ibérico</strong>, el urogallo cantábrico y el águila imperial
+                                ibérica. Además, forma parte de la Red Natura 2000 y ha sido reconocido por la UNESCO como
+                                Reserva de la Biosfera.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="space-y-6 text-base text-stone-300 leading-relaxed bg-stone-800/30 p-5 rounded-2xl border border-white/5 mt-6">
+                        <h2 class="text-2xl font-serif text-emerald-500 mb-2">Por qué visitarlo</h2>
+                        <ul class="space-y-4">
+                            <li class="flex gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2.5 shrink-0"></div>
+                                <span><strong class="text-white">Belleza salvaje:</strong> Disfrute de paisajes espectaculares
+                                    que combinan bosques densos, valles profundos y altiplanos soleados.</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2.5 shrink-0"></div>
+                                <span><strong class="text-white">Fauna única:</strong> Hogar de especies emblemáticas como el
+                                    lince ibérico, el ciervo, el jabalí y el zorro. Ideal para observar aves rapaces.</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2.5 shrink-0"></div>
+                                <span><strong class="text-white">Senderismo y actividades:</strong> Explore numerosas rutas
+                                    señalizadas, ciclismo o safaris fotográficos guiados.</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2.5 shrink-0"></div>
+                                <span><strong class="text-white">Centros de interpretación:</strong> Aprenda sobre historia y
+                                    ecología en los centros de información del parque.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-stone-800/80 p-5 rounded-2xl border border-emerald-500/20 mt-6">
+                        <h3 class="text-2xl font-serif font-bold text-white mb-6 flex items-center gap-3">
+                            <i data-lucide="map" class="text-emerald-500"></i>
+                            Cómo planificar su visita
+                        </h3>
+                        <div class="text-stone-300 space-y-4 text-justify">
+                            <ul class="space-y-3 list-none">
+                                <li class="flex gap-3">
+                                    <i data-lucide="clock" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i>
+                                    <span><strong>Reserve tiempo suficiente</strong> (un día completo o más) para explorar
+                                        diferentes áreas.</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <i data-lucide="footprints" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i>
+                                    <span>Lleve <strong>calzado cómodo</strong>, agua, protector solar y equipo
+                                        fotográfico.</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <i data-lucide="utensils" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i>
+                                    <span><strong>Combine su visita</strong> con degustaciones de productos gastronómicos
+                                        manchegos o recorridos por pueblos cercanos.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 `,
                 type: "Naturaleza",
                 color: "emerald",
@@ -311,15 +373,48 @@ const DEFAULT_DATA = {
                 heroImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Ciudad_Real_-_Teatro_Cervantes_-_fachada.jpg/1024px-Ciudad_Real_-_Teatro_Cervantes_-_fachada.jpg",
                 description: "Escenario principal de la cultura. Teatro, danza y música.",
                 fullDesc: `
-                    <div class="flex flex-col items-center text-center mb-6">
-                        <img src="Imagenes/Logo-Qijano.png" class="h-24 object-contain mb-6 filter drop-shadow-lg opacity-90">
-                        <p class="leading-relaxed text-stone-300 text-lg">
-                             El <strong class="text-rose-500 font-serif text-xl">Teatro Municipal Quijano</strong>, situado en pleno centro, dispone de <strong>906 butacas</strong>.
+                    <div class="flex flex-col items-center text-center">
+                        <img src="Imagenes/Logo-Qijano.png" class="h-24 object-contain mb-6 filter drop-shadow-lg opacity-90 p-2 bg-white/5 rounded-xl">
+                        <div class="leading-relaxed text-stone-300 text-lg space-y-4">
+                            <p>
+                                El <strong class="text-rose-500 font-serif text-xl">Teatro Municipal Quijano</strong>, está
+                                situado en pleno centro de Ciudad Real.
+                            </p>
+                            <div class="grid grid-cols-2 gap-4 my-6">
+                                <div class="bg-stone-800/50 p-4 rounded-xl border border-rose-500/20">
+                                    <span class="block text-2xl font-bold text-white">535</span>
+                                    <span class="text-xs text-stone-400 uppercase tracking-wider">Patio</span>
+                                </div>
+                                <div class="bg-stone-800/50 p-4 rounded-xl border border-rose-500/20">
+                                    <span class="block text-2xl font-bold text-white">371</span>
+                                    <span class="text-xs text-stone-400 uppercase tracking-wider">Anfiteatro</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-6 text-base text-stone-300 leading-relaxed border-l-2 border-stone-800 pl-4 py-2 mt-4">
+                        <p>
+                            Representa uno de los principales centros neurálgicos de la cultura ciudadrealeña, en el que se
+                            llevan a cabo todo tipo de actuaciones musicales, representaciones teatrales, siempre de plena
+                            actualidad.
                         </p>
                     </div>
-                    <p class="text-base text-stone-300 leading-relaxed border-l-2 border-stone-800 pl-4 py-2">
-                        Representa uno de los principales centros neurálgicos de la cultura ciudadrealeña con una amplia programación.
-                    </p>
+                    <div class="mt-8 bg-stone-800/40 p-1 rounded-2xl border border-white/5 overflow-hidden">
+                        <div class="bg-stone-900/50 px-4 py-3 border-b border-white/5 flex items-center justify-between">
+                            <h3 class="text-lg font-serif font-bold text-white flex items-center gap-2">
+                                <i data-lucide="calendar" class="text-rose-500 w-5 h-5"></i>
+                                Cartelera
+                            </h3>
+                            <a href="https://teatroquijano.com/proximos-estrenos/" target="_blank"
+                                class="text-xs text-rose-400 flex items-center hover:underline">
+                                Ver Web Oficial
+                            </a>
+                        </div>
+                        <div class="relative w-full h-[400px] bg-white">
+                            <iframe src="https://teatroquijano.com/proximos-estrenos/" class="w-full h-full border-0"
+                                title="Programación"></iframe>
+                        </div>
+                    </div>
                 `,
                 type: "Cultura",
                 color: "rose",

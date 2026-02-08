@@ -124,11 +124,65 @@ const DEFAULT_DATA = {
     },
     laundry: {
         active: true,
-        items: [
-            { name: "Camisa / Blusa", price: "6.00" },
-            { name: "Pantalón", price: "7.00" },
-            { name: "Traje Completo", price: "14.00" },
-            { name: "Ropa Interior", price: "2.50" }
+        info: `**¿Cómo solicitar el servicio?**
+1. Introduce tu ropa sucia en una bolsa.
+2. Completa el recibo que encontrarás en tu habitación, indicando las prendas y el servicio que deseas.
+3. Deja la bolsa en recepción antes de las 14:00 (Lunes a Domingo).
+*La ropa entregada después de esta hora se procesará al día siguiente.*
+
+**Información Adicional:**
+• Precios con IVA incluido.
+• Necesidades específicas pueden tener coste extra.
+• El hotel no se hace responsable de encogida, decoloración o daños en botones/hebillas/cremalleras.`,
+        categories: [
+            {
+                name: "Caballeros / Gentlemen",
+                items: [
+                    { name: "Camisa / Shirt", priceWash: "5,00", priceIron: "4,00" },
+                    { name: "Camiseta / Polo", priceWash: "4,50", priceIron: "3,50" },
+                    { name: "Chaqueta / Jacket", priceWash: "7,00", priceIron: "5,00" },
+                    { name: "Jersey / Pullover", priceWash: "6,00", priceIron: "5,00" },
+                    { name: "Pantalón / Trousers", priceWash: "7,00", priceIron: "5,00" },
+                    { name: "Pantalón Corto / Shorts", priceWash: "4,00", priceIron: "3,00" },
+                    { name: "Corbata / Tie", priceWash: "4,00", priceIron: "2,00" },
+                    { name: "Ropa Interior / Underwear", priceWash: "2,00", priceIron: "N/A" },
+                    { name: "Calcetines / Socks", priceWash: "2,00", priceIron: "N/A" },
+                    { name: "Pijama / Pyjamas", priceWash: "5,00", priceIron: "3,00" }
+                ]
+            },
+            {
+                name: "Señoras / Ladies",
+                items: [
+                    { name: "Blusa / Camisa", priceWash: "5,00", priceIron: "4,00" },
+                    { name: "Camiseta / Polo", priceWash: "4,50", priceIron: "3,50" },
+                    { name: "Chaqueta / Jacket", priceWash: "7,00", priceIron: "5,00" },
+                    { name: "Falda / Skirt", priceWash: "7,00", priceIron: "5,00" },
+                    { name: "Falda Plisada / Pleated", priceWash: "7,00", priceIron: "5,00" },
+                    { name: "Pantalón / Trousers", priceWash: "7,00", priceIron: "5,00" },
+                    { name: "Pantalón Corto / Shorts", priceWash: "4,00", priceIron: "3,00" },
+                    { name: "Mono / Jumpsuit", priceWash: "7,00", priceIron: "7,00" },
+                    { name: "Vestido / Dress", priceWash: "CONSULTAR", priceIron: "7,00" },
+                    { name: "Vestido Fiesta / Evening", priceWash: "CONSULTAR", priceIron: "7,00" },
+                    { name: "Ropa Interior / Panties", priceWash: "2,00", priceIron: "N/A" },
+                    { name: "Sostén / Bra", priceWash: "2,00", priceIron: "N/A" },
+                    { name: "Camisón / Night Dress", priceWash: "5,00", priceIron: "3,00" },
+                    { name: "Pijama / Pyjamas", priceWash: "5,00", priceIron: "3,00" }
+                ]
+            },
+            {
+                name: "Niños / Children",
+                items: [
+                    { name: "Camisa / Shirt", priceWash: "5,00", priceIron: "4,00" },
+                    { name: "Camiseta / Polo", priceWash: "4,50", priceIron: "3,50" },
+                    { name: "Jersey / Pullover", priceWash: "6,00", priceIron: "5,00" },
+                    { name: "Calcetines / Socks", priceWash: "2,00", priceIron: "N/A" },
+                    { name: "Falda / Skirt", priceWash: "5,00", priceIron: "4,00" },
+                    { name: "Pantalón / Trousers", priceWash: "6,00", priceIron: "5,00" },
+                    { name: "Vestido / Dress", priceWash: "CONSULTAR", priceIron: "5,00" },
+                    { name: "Ropa Interior / Underwear", priceWash: "4,00", priceIron: "N/A" },
+                    { name: "Pijama / Pyjamas", priceWash: "4,00", priceIron: "3,00" }
+                ]
+            }
         ]
     },
     spa: {

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Cabañeros - Guía de Viaje</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #1c1917;
+            color: white;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', serif;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col bg-stone-900">
+
+    <!-- Floating Nav (Back) -->
+    <div class="fixed top-0 left-0 w-full z-50 p-6 flex justify-between items-center pointer-events-none">
+        <a href="turismo.html"
+            class="pointer-events-auto w-10 h-10 rounded-full bg-black/30 backdrop-blur-md flex items-center justify-center text-white hover:bg-black/50 transition border border-white/10">
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        </a>
+    </div>
+
+    <!-- Hero Image Section -->
+    <div class="relative w-full h-[40vh] sticky top-0 z-0 bg-stone-800">
+        <!-- Using a placeholder or the provided general image since no specific Cabañeros image was found -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Parque_Nacional_de_Caba%C3%B1eros.jpg/1280px-Parque_Nacional_de_Caba%C3%B1eros.jpg"
+            class="w-full h-full object-cover">
+        <div
+            class="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/40 to-transparent pointer-events-none">
+        </div>
+
+        <!-- Hero Text -->
+        <div class="absolute bottom-0 left-0 p-8 pb-12 w-full z-10">
+            <div class="flex items-center gap-2 mb-2">
+                <span
+                    class="px-2 py-0.5 rounded text-emerald-500 text-[10px] font-bold uppercase tracking-wider border border-emerald-500/20 bg-black/40 backdrop-blur-sm">
+                    Naturaleza
+                </span>
+            </div>
+            <h1 class="text-4xl font-bold text-white leading-tight shadow-black drop-shadow-lg">Parque Nacional de
+                Cabañeros</h1>
+            <p class="text-stone-300 text-lg font-serif italic mt-1">La Sabana Europea</p>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div
+        class="relative z-10 -mt-8 flex-1 flex flex-col bg-stone-900 rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+
+        <div class="w-12 h-1 bg-white/10 rounded-full mx-auto mt-4 mb-8"></div>
+
+        <div class="px-6 pb-12 space-y-8">
+
+            <!-- Intro Section -->
+            <div class="space-y-6">
+                <p
+                    class="leading-relaxed text-stone-300 text-lg text-justify italic border-l-2 border-emerald-500 pl-4">
+                    "En Cumbria Spa & Hotel, su refugio de relax y bienestar en plena naturaleza, queremos invitarle a
+                    una experiencia inolvidable en uno de los espacios naturales más impresionantes de España."
+                </p>
+                <div>
+                    <h2 class="text-2xl font-serif text-white mb-3">¿Qué es Cabañeros?</h2>
+                    <p class="leading-relaxed text-stone-300 text-lg mb-4 text-justify">
+                        El <strong>Parque Nacional de Cabañeros</strong> es un santuario natural que abarca más de
+                        38.000 hectáreas de bosques mediterráneos, prados, ríos y montañas. Este ecosistema único
+                        alberga una increíble biodiversidad y se considera la <strong>"sabana europea"</strong>, debido
+                        a sus paisajes ondulados y su flora característica.
+                    </p>
+                    <p class="leading-relaxed text-stone-300 text-lg text-justify">
+                        Este parque no solo es un lugar de belleza escénica, sino también un refugio vital para especies
+                        amenazadas como el <strong>lince ibérico</strong>, el urogallo cantábrico y el águila imperial
+                        ibérica. Además, forma parte de la Red Natura 2000 y ha sido reconocido por la UNESCO como
+                        Reserva de la Biosfera.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Reasons to Visit Section -->
+            <div
+                class="space-y-6 text-base text-stone-300 leading-relaxed bg-stone-800/30 p-5 rounded-2xl border border-white/5">
+                <h2 class="text-2xl font-serif text-emerald-500 mb-2">Por qué visitarlo</h2>
+
+                <ul class="space-y-4">
+                    <li class="flex gap-3">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2.5 shrink-0"></div>
+                        <span><strong class="text-white">Belleza salvaje:</strong> Disfrute de paisajes espectaculares
+                            que combinan bosques densos, valles profundos y altiplanos soleados.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2.5 shrink-0"></div>
+                        <span><strong class="text-white">Fauna única:</strong> Hogar de especies emblemáticas como el
+                            lince ibérico, el ciervo, el jabalí y el zorro. Ideal para observar aves rapaces.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2.5 shrink-0"></div>
+                        <span><strong class="text-white">Senderismo y actividades:</strong> Explore numerosas rutas
+                            señalizadas, ciclismo o safaris fotográficos guiados.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2.5 shrink-0"></div>
+                        <span><strong class="text-white">Centros de interpretación:</strong> Aprenda sobre historia y
+                            ecología en los centros de información del parque.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Planning Section -->
+            <div class="bg-stone-800/80 p-5 rounded-2xl border border-emerald-500/20">
+                <h3 class="text-2xl font-serif font-bold text-white mb-6 flex items-center gap-3">
+                    <i data-lucide="map" class="text-emerald-500"></i>
+                    Cómo planificar su visita
+                </h3>
+
+                <div class="text-stone-300 space-y-4 text-justify">
+                    <ul class="space-y-3 list-none">
+                        <li class="flex gap-3">
+                            <i data-lucide="clock" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i>
+                            <span><strong>Reserve tiempo suficiente</strong> (un día completo o más) para explorar
+                                diferentes áreas.</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <i data-lucide="footprints" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i>
+                            <span>Lleve <strong>calzado cómodo</strong>, agua, protector solar y equipo
+                                fotográfico.</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <i data-lucide="calendar" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i>
+                            <span>Consulte horarios y condiciones en la <a
+                                    href="https://www.miteco.gob.es/es/red-parques-nacionales/nuestros-parques/cabaneros.html"
+                                    target="_blank" class="text-emerald-400 underline">página oficial</a> antes de su
+                                llegada.</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <i data-lucide="utensils" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i>
+                            <span><strong>Combine su visita</strong> con degustaciones de productos gastronómicos
+                                manchegos o recorridos por pueblos cercanos.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Note -->
+            <div class="text-center text-sm text-stone-500 italic pt-6 pb-6">
+                Recomendación exclusiva de Cumbria Spa & Hotel
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

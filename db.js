@@ -283,7 +283,7 @@ const DEFAULT_DATA = {
                 gallery: [
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Parque_Nacional_de_Caba%C3%B1eros.jpg/1280px-Parque_Nacional_de_Caba%C3%B1eros.jpg"
                 ],
-                videoUrl: "",
+                videoUrl: "https://www.youtube.com/embed/VGdxHj-Mxoc",
                 linkUrl: "https://www.miteco.gob.es/es/red-parques-nacionales/nuestros-parques/cabaneros.html"
             },
             {

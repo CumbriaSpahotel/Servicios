@@ -7,6 +7,7 @@
     <title>Admin - Hotel Cumbria</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     <style>
         body {
             font-family: system-ui, sans-serif;
@@ -263,17 +264,19 @@
 
             // Categories & Items (Restaurant, Room Service, Minibar)
             if (data.categories && window.currentTab !== 'laundry') {
+                html += `<div id="sortable-categories">`;
                 data.categories.forEach((cat, catIdx) => {
                     html += `
-                        <div class="mt-8 border p-4 rounded-xl bg-gray-50 relative group">
-                            <h3 class="font-bold text-lg text-amber-600 mb-2 flex justify-between items-center">
-                                ${cat.name}
+                        <div class="mt-8 border p-4 rounded-xl bg-gray-50 relative group sortable-category" data-id="${catIdx}">
+                            <div class="flex items-center gap-2 mb-4">
+                                <i data-lucide="grip-vertical" class="w-5 h-5 text-gray-400 cursor-grab handle-cat hover:text-amber-500"></i>
+                                <input value="${cat.name}" onchange="appData.${window.currentTab}.categories[${catIdx}].name = this.value" class="font-bold text-lg text-amber-600 bg-transparent border-b border-transparent focus:border-amber-500 focus:outline-none flex-1">
                                 <button onclick="deleteCategory(${catIdx})" class="text-xs text-red-300 hover:text-red-500 transition px-2 py-1 rounded hover:bg-red-50" title="Eliminar Categoría">
                                     <i data-lucide="trash-2" class="w-4 h-4"></i>
                                 </button>
-                            </h3>
+                            </div>
 
-                            <div class="space-y-4">
+                            <div class="space-y-4 sortable-items" data-cat="${catIdx}">
                                 ${cat.items.map((item, itemIdx) => itemRow(window.currentTab, catIdx, itemIdx, item)).join('')}
                             </div>
 
@@ -283,22 +286,30 @@
                         </div>
                     `;
                 });
+                html += `</div>`;
             }
 
             // Special: Laundry Categories
             if (data.categories && window.currentTab === 'laundry') {
+                html += `<div id="sortable-categories">`;
                 data.categories.forEach((cat, catIdx) => {
                     html += `
-                        <div class="mt-8 border p-4 rounded-xl bg-gray-50 relative group">
-                            <h3 class="font-bold text-lg text-blue-600 mb-2 flex justify-between items-center">
-                                ${cat.name}
-                            </h3>
-                            <div class="grid grid-cols-12 gap-2 text-xs font-bold text-gray-400 mb-2 px-2">
-                                <div class="col-span-6">Prenda</div>
+                        <div class="mt-8 border p-4 rounded-xl bg-gray-50 relative group sortable-category" data-id="${catIdx}">
+                            <div class="flex items-center gap-2 mb-4">
+                                <i data-lucide="grip-vertical" class="w-5 h-5 text-gray-400 cursor-grab handle-cat hover:text-blue-500"></i>
+                                <input value="${cat.name}" onchange="appData.laundry.categories[${catIdx}].name = this.value" class="font-bold text-lg text-blue-600 bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none flex-1">
+                                <button onclick="deleteCategory(${catIdx})" class="text-xs text-red-300 hover:text-red-500 transition px-2 py-1 rounded hover:bg-red-50" title="Eliminar Categoría">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="grid grid-cols-12 gap-2 text-xs font-bold text-gray-400 mb-2 px-2 pl-8">
+                                <div class="col-span-1"></div>
+                                <div class="col-span-5">Prenda</div>
                                 <div class="col-span-3 text-right">Lav+Plan</div>
                                 <div class="col-span-3 text-right">Plancha</div>
                             </div>
-                            <div class="space-y-2">
+                            <div class="space-y-2 sortable-items" data-cat="${catIdx}">
                                 ${cat.items.map((item, itemIdx) => itemRowLaundry(catIdx, itemIdx, item)).join('')}
                             </div>
                             <button onclick="addLaundryItem(${catIdx})" class="mt-4 w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 font-bold hover:border-blue-500 hover:text-blue-500 transition flex items-center justify-center gap-2">
@@ -307,6 +318,7 @@
                         </div>
                     `;
                 });
+                html += `</div>`;
             }
 
             // Simple Items List (Cafeteria)
@@ -314,10 +326,10 @@
                 html += `
                     <div class="mt-8 border p-4 rounded-xl bg-gray-50">
                         <h3 class="font-bold text-lg text-amber-600 mb-2">Artículos</h3>
-                        <div class="space-y-4">
+                        <div class="space-y-4 sortable-list" id="simple-items-list">
                             ${data.items.map((item, itemIdx) => itemRowSimple(window.currentTab, itemIdx, item)).join('')}
                         </div>
-                            <button onclick="addItemSimple()" class="mt-4 w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 font-bold hover:border-amber-500 hover:text-amber-500 transition flex items-center justify-center gap-2">
+                        <button onclick="addItemSimple()" class="mt-4 w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 font-bold hover:border-amber-500 hover:text-amber-500 transition flex items-center justify-center gap-2">
                             <i data-lucide="plus" class="w-4 h-4"></i> Añadir Artículo
                         </button>
                     </div>
@@ -337,6 +349,60 @@
 
             container.innerHTML = html;
             lucide.createIcons();
+            initSortable();
+        }
+
+        window.initSortable = function () {
+            // Sort Categories
+            const catContainer = document.getElementById('sortable-categories');
+            if (catContainer) {
+                new Sortable(catContainer, {
+                    animation: 150,
+                    handle: '.handle-cat',
+                    onEnd: function (evt) {
+                        const tab = window.currentTab;
+                        const arr = window.appData[tab].categories;
+                        // Move item in array and Update
+                        const [movedItem] = arr.splice(evt.oldIndex, 1);
+                        arr.splice(evt.newIndex, 0, movedItem);
+                        renderEditor(); // Re-render to update indices
+                    }
+                });
+            }
+
+            // Sort Items within Categories
+            document.querySelectorAll('.sortable-items').forEach(el => {
+                const catIdx = el.dataset.cat;
+                new Sortable(el, {
+                    animation: 150,
+                    handle: '.handle-item',
+                    onEnd: function (evt) {
+                        const tab = window.currentTab;
+                        if (!window.appData[tab].categories[catIdx]) return; // Safety check
+
+                        const arr = window.appData[tab].categories[catIdx].items;
+                        const [movedItem] = arr.splice(evt.oldIndex, 1);
+                        arr.splice(evt.newIndex, 0, movedItem);
+                        renderEditor();
+                    }
+                });
+            });
+
+            // Sort Simple List
+            const simpleList = document.getElementById('simple-items-list');
+            if (simpleList) {
+                new Sortable(simpleList, {
+                    animation: 150,
+                    handle: '.handle-item',
+                    onEnd: function (evt) {
+                        const tab = window.currentTab;
+                        const arr = window.appData[tab].items;
+                        const [movedItem] = arr.splice(evt.oldIndex, 1);
+                        arr.splice(evt.newIndex, 0, movedItem);
+                        renderEditor();
+                    }
+                });
+            }
         }
 
         window.field = function (label, path, value, type = 'text') {
@@ -353,11 +419,16 @@
         window.itemRow = function (tab, catIdx, itemIdx, item) {
             return `
                 <div class="flex gap-2 items-start bg-white p-2 rounded shadow-sm group/item">
-                    <div class="flex-1">
+                    <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-300 mt-3 cursor-grab handle-item hover:text-amber-500"></i>
+                    <div class="flex-1 space-y-2">
                         <input placeholder="Nombre" value="${item.name}" onchange="appData.${tab}.categories[${catIdx}].items[${itemIdx}].name = this.value" class="w-full font-bold border-b mb-1 focus:outline-none focus:border-amber-500">
                         <div class="flex gap-2">
-                            <input placeholder="Descripción" value="${item.desc || ''}" onchange="appData.${tab}.categories[${catIdx}].items[${itemIdx}].desc = this.value" class="flex-1 text-sm text-gray-500 focus:outline-none focus:text-gray-800 border-b border-transparent hover:border-gray-200">
-                            <input placeholder="Alérgenos (ej: 1,4)" value="${item.allergens || ''}" onchange="appData.${tab}.categories[${catIdx}].items[${itemIdx}].allergens = this.value" class="w-32 text-xs text-gray-500 focus:outline-none focus:text-amber-600 border-b border-transparent hover:border-amber-200 text-right" title="Códigos de alérgenos">
+                             <input placeholder="Descripción" value="${item.desc || ''}" onchange="appData.${tab}.categories[${catIdx}].items[${itemIdx}].desc = this.value" class="flex-1 text-sm text-gray-500 focus:outline-none focus:text-gray-800 border-b border-transparent hover:border-gray-200">
+                             <input placeholder="Alérgenos (ej: 1,4)" value="${item.allergens || ''}" onchange="appData.${tab}.categories[${catIdx}].items[${itemIdx}].allergens = this.value" class="w-32 text-xs text-gray-500 focus:outline-none focus:text-amber-600 border-b border-transparent hover:border-amber-200 text-right" title="Códigos de alérgenos">
+                        </div>
+                        <div class="flex gap-2 items-center">
+                            <i data-lucide="image" class="w-3 h-3 text-gray-300"></i>
+                            <input placeholder="URL Imagen (opcional)" value="${item.image || ''}" onchange="appData.${tab}.categories[${catIdx}].items[${itemIdx}].image = this.value" class="flex-1 text-xs text-stone-400 focus:outline-none focus:text-blue-600 border-b border-transparent hover:border-blue-200">
                         </div>
                     </div>
                     <div class="w-24">
@@ -373,6 +444,7 @@
         window.itemRowSimple = function (tab, itemIdx, item) {
             return `
                 <div class="flex gap-2 items-start bg-white p-2 rounded shadow-sm group/item">
+                    <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-300 mt-3 cursor-grab handle-item hover:text-amber-500"></i>
                     <div class="flex-1">
                         <input placeholder="Nombre" value="${item.name}" onchange="appData.${tab}.items[${itemIdx}].name = this.value" class="w-full font-bold border-b mb-1 focus:outline-none focus:border-amber-500">
                     </div>
@@ -389,13 +461,16 @@
         window.itemRowLaundry = function (catIdx, itemIdx, item) {
             return `
                 <div class="grid grid-cols-12 gap-1 items-center bg-white p-2 rounded shadow-sm">
+                    <div class="col-span-1 flex justify-center">
+                        <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-300 cursor-grab handle-item hover:text-blue-500"></i>
+                    </div>
                     <div class="col-span-5">
                         <input value="${item.name}" onchange="appData.laundry.categories[${catIdx}].items[${itemIdx}].name = this.value" class="w-full font-bold text-sm bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none" placeholder="Nombre">
                     </div>
                     <div class="col-span-3">
                         <input value="${item.priceWash}" onchange="appData.laundry.categories[${catIdx}].items[${itemIdx}].priceWash = this.value" class="w-full text-right text-xs font-mono bg-blue-50/50 rounded px-1 py-1 border border-transparent focus:border-blue-500" type="text" placeholder="Lav">
                     </div>
-                    <div class="col-span-3">
+                    <div class="col-span-2">
                         <input value="${item.priceIron}" onchange="appData.laundry.categories[${catIdx}].items[${itemIdx}].priceIron = this.value" class="w-full text-right text-xs font-mono bg-stone-50 rounded px-1 py-1 border border-transparent focus:border-blue-500" type="text" placeholder="Pla">
                     </div>
                     <div class="col-span-1 text-center">

@@ -1129,14 +1129,18 @@
                     <div class="space-y-4">
                         ${cat.items.map(item => `
                             <div>
-                                <div class="flex justify-between items-start">
-                                    <div>
+                                <div class="flex gap-3 justify-between items-start">
+                                    <div class="flex-1">
                                         <h4 class="font-bold text-stone-800 text-sm">
                                             ${item.name}
                                             ${item.allergens ? `<sup class="text-[10px] font-bold text-stone-400 ml-1">(${item.allergens})</sup>` : ''}
                                         </h4>
                                         ${item.desc ? `<p class="text-xs text-stone-500 mt-0.5 description-text">${item.desc.replace(/\(([\d\/,]+)\)/g, '<sup class="text-[10px] font-bold text-stone-400 ml-1">($1)</sup>')}</p>` : ''}
                                     </div>
+                                    
+                                    <!-- Image Thumbnail -->
+                                    ${item.image ? `<div class="w-16 h-16 shrink-0 rounded-lg overflow-hidden bg-stone-100 ml-3"><img src="${item.image}" class="w-full h-full object-cover"></div>` : ''}
+
                                     <span class="font-bold text-amber-700 text-sm shrink-0 ml-2">${item.price}€</span>
                                 </div>
                                 <div class="w-full h-[1px] bg-stone-100 mt-2"></div>

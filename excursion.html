@@ -166,8 +166,12 @@
             document.getElementById('content').classList.remove('hidden');
 
             // Hero
-            document.getElementById('hero-img').src = data.heroImage || data.image;
-            document.getElementById('hero-img').onerror = function () { this.src = 'https://via.placeholder.com/800x600?text=No+Image'; };
+            const heroImg = document.getElementById('hero-img');
+            heroImg.src = data.heroImage || data.image || '';
+            heroImg.onerror = function () {
+                this.classList.add('hidden');
+                this.parentElement.style.backgroundColor = '#1c1917'; // stone-900
+            };
 
             document.getElementById('hero-title').textContent = data.title;
             document.getElementById('hero-subtitle').textContent = data.subtitle || '';

@@ -156,13 +156,16 @@
                             <div class="p-4 pt-0 border-t border-blue-200/50 mt-2">
                                 <div class="mb-4">
                                     ${field('Video de Cabecera (Fondo Portada)', `appData.tourism.videoUrl`, data.videoUrl)}
-                                    <p class="text-xs text-gray-500 -mt-2 mb-2">Video de fondo a pantalla completa en la página principal de Turismo.</p>
+                                    <p class="text-xs text-gray-500 -mt-2 mb-2">Video de fondo a pantalla completa. Usar formato embed de YouTube.</p>
+                                </div>
+                                <div class="mb-4">
+                                    ${field('Imagen de Portada (Opcional - Reemplaza al Video)', `appData.tourism.coverImage`, data.coverImage || '')}
+                                    <p class="text-xs text-gray-500 -mt-2 mb-2">Si se añade una imagen, sustituirá al video de fondo. Ideal para móviles o carga rápida.</p>
                                 </div>
                                 <div class="mb-4">
                                     ${field('Video Promocional (Miniatura)', `appData.tourism.videoUrlPromo`, data.videoUrlPromo || '')}
                                     <p class="text-xs text-gray-500 -mt-2 mb-2">Se muestra en pequeño junto al texto introductorio.</p>
                                 </div>
-                                <p class="text-xs text-gray-400 italic">Usar formato embed de YouTube: https://www.youtube.com/embed/VIDEO_ID</p>
                             </div>
                          </details>`;
 

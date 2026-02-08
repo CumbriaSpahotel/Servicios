@@ -91,12 +91,19 @@
     <div class="relative h-[50vh] md:h-[60vh] lg:h-[70vh] w-full overflow-hidden transition-all duration-700">
         <!-- Video Background -->
         <div class="absolute inset-0 z-0">
+            <!-- Image Background (Hidden by default) -->
+            <img id="tourism-img" src=""
+                class="absolute inset-0 w-full h-full object-cover hidden transition-transform duration-[10s] hover:scale-105"
+                alt="Background">
+
+            <!-- Video Background -->
             <iframe id="tourism-frame"
-                class="w-full h-[140%] -mt-[20%] object-cover opacity-60 scale-125 pointer-events-none" src=""
+                class="w-full h-[140%] -mt-[20%] object-cover opacity-60 scale-125 pointer-events-none hidden" src=""
                 title="Background Video" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
             </iframe>
+
             <div
                 class="absolute inset-0 bg-gradient-to-b from-stone-950/30 via-stone-950/60 to-stone-950 pointer-events-none">
             </div>
@@ -225,10 +232,21 @@
         })();
 
         function render(data) {
-            // 1. Hero
+            // 1. Hero (Video or Image)
             const tFrame = document.getElementById('tourism-frame');
-            if (data.videoUrl) tFrame.src = data.videoUrl + "&autoplay=1&mute=1&loop=1&playlist=lE6RYpe9IT0&controls=0&showinfo=0";
+            const tImg = document.getElementById('tourism-img');
 
+            if (data.coverImage) {
+                // Show Image, Hide Video
+                tImg.src = data.coverImage;
+                tImg.classList.remove('hidden');
+                tFrame.classList.add('hidden');
+            } else if (data.videoUrl) {
+                // Show Video, Hide Image
+                tFrame.src = data.videoUrl + "&autoplay=1&mute=1&loop=1&playlist=lE6RYpe9IT0&controls=0&showinfo=0";
+                tFrame.classList.remove('hidden');
+                tImg.classList.add('hidden');
+            }
             // 2. Desc
             const tDesc = document.getElementById('tourism-desc');
             tDesc.innerText = data.desc || "Explora...";
@@ -243,6 +261,8 @@
 
             if (data.excursions && data.excursions.length > 0) {
                 data.excursions.forEach((item, index) => {
+                    if (!item.id) return; // Skip items with missing ID
+
                     const el = document.createElement('a');
                     el.href = `excursion.html?id=${item.id}`;
                     // Responsive heights: h-80 mobile, h-96 desktop

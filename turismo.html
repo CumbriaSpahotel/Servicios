@@ -277,7 +277,20 @@
 
             if (data.excursions && data.excursions.length > 0) {
                 // Collect Unique Types
-                const types = ['Todos', ...new Set(data.excursions.map(item => item.type || 'Otros').filter(t => t))];
+                const uniqueTypes = [...new Set(data.excursions.map(item => item.type || 'Otros').filter(t => t))];
+
+                // Sort Types: Todos -> Ciudad Real -> Provincia -> Others
+                const types = ['Todos', ...uniqueTypes.filter(t => t !== 'Todos').sort((a, b) => {
+                    const priority = ['Ciudad Real', 'Provincia'];
+                    const idxA = priority.findIndex(p => a.toLowerCase().includes(p.toLowerCase()));
+                    const idxB = priority.findIndex(p => b.toLowerCase().includes(p.toLowerCase()));
+
+                    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+                    if (idxA !== -1) return -1;
+                    if (idxB !== -1) return 1;
+
+                    return a.localeCompare(b);
+                })];
 
                 // Render Filters
                 types.forEach(type => {

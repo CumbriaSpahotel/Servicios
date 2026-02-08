@@ -96,7 +96,7 @@
             // Create a temp invisible file input
             const input = document.createElement('input');
             input.type = 'file';
-            input.accept = 'image/*';
+            // input.accept = 'image/*'; // Removed to allow videos too
             input.onchange = async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
@@ -666,13 +666,38 @@
 
         window.field = function (label, path, value, type = 'text') {
             const safeValue = value === undefined || value === null ? '' : value;
+
+            // Auto-detect if it's an image or video field
+            const isMedia = label.toLowerCase().includes('imagen') ||
+                label.toLowerCase().includes('foto') ||
+                label.toLowerCase().includes('video') ||
+                path.toLowerCase().includes('image') ||
+                path.toLowerCase().includes('url');
+
+            // Generate Input
+            let inputHtml = type === 'textarea'
+                ? `<textarea onchange="${path} = this.value" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-amber-500 options-input" rows="4">${safeValue}</textarea>`
+                : `<input type="${type}" value="${safeValue}" onchange="${path} = this.value" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-amber-500 options-input" placeholder="http://...">`;
+
+            // If Media, add Upload Button
+            if (isMedia && type !== 'textarea') {
+                return `
+                <div class="mb-4">
+                    <label class="block text-sm font-bold text-gray-600 mb-1">${label}</label>
+                    <div class="flex gap-2">
+                        ${inputHtml}
+                        <button id="btn-${path}" onclick="triggerUpload('${path}')" class="px-3 py-2 bg-stone-200 hover:bg-stone-300 rounded-lg text-stone-700 transition flex items-center gap-2 whitespace-nowrap" title="Subir archivo">
+                            <i data-lucide="upload" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                `;
+            }
+
             return `
                 <div class="mb-4">
                     <label class="block text-sm font-bold text-gray-600 mb-1">${label}</label>
-                    ${type === 'textarea'
-                    ? `<textarea onchange="${path} = this.value" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-amber-500 options-input" rows="4">${safeValue}</textarea>`
-                    : `<input type="${type}" value="${safeValue}" onchange="${path} = this.value" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-amber-500 options-input">`
-                }
+                    ${inputHtml}
                 </div>
             `;
         }

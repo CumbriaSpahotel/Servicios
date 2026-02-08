@@ -49,14 +49,12 @@
         </a>
     </div>
 
-    <!-- Hero Video Section -->
+    <!-- Hero Image Section -->
     <div class="relative w-full aspect-[16/9] lg:aspect-[21/9] sticky top-0 z-0">
-        <iframe id="tourism-frame" class="w-full h-full object-cover" src="" title="YouTube Tourism Video"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen></iframe>
+        <img src="Imagenes/CIUDAD REAL GIGANTES, CASTILLOS Y NATURALEZA.png"
+            class="w-full h-full object-cover shadow-2xl">
         <div
-            class="absolute inset-0 bg-gradient-to-t from-stone-900 via-transparent to-transparent pointer-events-none">
+            class="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/20 to-transparent pointer-events-none">
         </div>
     </div>
 
@@ -65,255 +63,287 @@
 
         <!-- Intro Card -->
         <!-- Intro Card -->
-        <div class="bg-stone-900 px-6 pt-5 pb-2 rounded-t-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
-            <div class="w-10 h-1 bg-white/20 rounded-full mx-auto mb-4"></div>
-
-            <div class="flex items-center gap-2 mb-1">
-                <span
-                    class="px-2 py-0.5 rounded text-amber-500 text-[9px] font-bold uppercase tracking-wider border border-amber-500/20">Guía</span>
-            </div>
-            <h1 class="text-2xl font-bold text-white mb-2 leading-tight">Ciudad Real <span
-                    class="text-stone-500 font-serif italic">Experience</span></h1>
-
-            <!-- Dynamic Description -->
-            <div class="prose prose-invert prose-stone max-w-none mb-6">
-                <p id="tourism-desc"
-                    class="text-stone-300 text-sm leading-relaxed whitespace-pre-line border-l-2 border-amber-500/50 pl-4 py-1">
-                    <!-- Loaded from db.js -->
-                </p>
+        <div class="relative px-6 pt-5 pb-2 rounded-t-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.5)] overflow-hidden">
+            <!-- Background Image -->
+            <div class="absolute inset-0 z-0">
+                <img src="Imagenes/CIUDAD REAL GIGANTES, CASTILLOS Y NATURALEZA.png"
+                    class="w-full h-full object-cover opacity-50">
+                <div class="absolute inset-0 bg-gradient-to-b from-stone-900/95 via-stone-900/90 to-stone-900"></div>
             </div>
 
-            <!-- New Minimalist Icons Row (Cultura & Shopping) -->
-            <div class="flex items-center gap-8 pl-4 pb-4">
+            <!-- Content -->
+            <div class="relative z-10">
+                <div class="w-10 h-1 bg-white/20 rounded-full mx-auto mb-4"></div>
 
-                <!-- Icon: Cultura -->
-                <a href="https://www.google.com/maps/search/Monumentos+Ciudad+Real" target="_blank"
-                    class="group flex flex-col items-center gap-2">
-                    <div
-                        class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-indigo-500/20 group-hover:border-indigo-500/50 transition duration-300">
-                        <i data-lucide="landmark"
-                            class="w-5 h-5 text-indigo-300 group-hover:text-indigo-200 transition"></i>
-                    </div>
+                <div class="flex items-center gap-2 mb-1">
                     <span
-                        class="text-[10px] font-bold uppercase tracking-wider text-stone-400 group-hover:text-indigo-300 transition">Cultura</span>
-                </a>
-
-                <!-- Icon: Shopping -->
-                <a href="https://www.google.com/maps/search/Shopping+Ciudad+Real" target="_blank"
-                    class="group flex flex-col items-center gap-2">
-                    <div
-                        class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-pink-500/20 group-hover:border-pink-500/50 transition duration-300">
-                        <i data-lucide="shopping-bag"
-                            class="w-5 h-5 text-pink-300 group-hover:text-pink-200 transition"></i>
-                    </div>
-                    <span
-                        class="text-[10px] font-bold uppercase tracking-wider text-stone-400 group-hover:text-pink-300 transition">Shopping</span>
-                </a>
-
-            </div>
-        </div>
-
-        <!-- Section 1: Ciudad Real (Only Teatro remains) -->
-        <div class="bg-stone-900 px-6 pt-4 pb-2 sticky top-0 z-20">
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                <i data-lucide="map-pin" class="w-4 h-4 text-rose-500"></i>
-                Explorar Ciudad Real
-            </h2>
-        </div>
-
-        <div class="bg-stone-900 px-6 pb-6 flex flex-col gap-3">
-            <!-- Banner: Teatro Quijano -->
-            <a href="excursion-quijano.html"
-                class="group relative overflow-hidden rounded-xl bg-stone-800 border border-white/5 active:scale-95 transition flex items-stretch h-24 overflow-hidden shadow-lg">
-
-                <!-- Image Section (White Background) -->
-                <div class="w-28 shrink-0 bg-white flex items-center justify-center p-3 relative z-10">
-                    <img src="Imagenes/Logo-Qijano.png" alt="Teatro Quijano"
-                        class="w-full h-full object-contain filter drop-shadow-sm group-hover:scale-105 transition duration-500">
+                        class="px-2 py-0.5 rounded text-amber-500 text-[9px] font-bold uppercase tracking-wider border border-amber-500/20">Guía</span>
                 </div>
+                <h1 class="text-2xl font-bold text-white mb-2 leading-tight">Ciudad Real <span
+                        class="text-stone-500 font-serif italic">Experience</span></h1>
 
-                <!-- Text Section -->
-                <div class="flex-1 p-3 flex flex-col justify-center relative z-10 border-l border-white/5 bg-stone-800">
-                    <h3 class="font-serif font-bold text-lg text-white mb-1 group-hover:text-rose-400 transition">Teatro
-                        Municipal</h3>
-                    <p class="text-[10px] text-stone-400 leading-tight line-clamp-2">
-                        Escenario principal de la cultura. Teatro, danza y música.
+                <!-- Dynamic Description -->
+                <div class="prose prose-invert prose-stone max-w-none mb-6">
+                    <p id="tourism-desc"
+                        class="text-stone-300 text-sm leading-relaxed whitespace-pre-line border-l-2 border-amber-500/50 pl-4 py-1">
+                        <!-- Loaded from db.js -->
                     </p>
                 </div>
-                <!-- Arrow Icon -->
-                <div
-                    class="w-8 flex items-center justify-center text-stone-600 bg-stone-800 group-hover:text-rose-400 transition pr-2 relative z-10">
-                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+
+                <!-- Promotional Video -->
+                <div class="mb-8 rounded-xl overflow-hidden shadow-lg border border-white/10 relative group">
+                    <iframe class="w-full aspect-video"
+                        src="https://www.youtube.com/embed/40fgsb3EbrE?list=PLCvAsDau1uLP8E-YGMIV3asYjlwlw5uV2"
+                        title="Nueva imagen de promoción turística de Ciudad Real" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                    </iframe>
                 </div>
-            </a>
-        </div>
 
-        <!-- Section 2: Provincia -->
-        <div class="px-6 pt-6 pb-2 bg-stone-900">
-            <h2 class="text-lg font-bold text-white flex items-center gap-2 mb-4">
-                <i data-lucide="compass" class="w-4 h-4 text-amber-500"></i>
-                Joyas de la Provincia
-            </h2>
+                <!-- New Minimalist Icons Row (Cultura & Shopping) -->
+                <div class="flex items-center gap-8 pl-4 pb-4">
 
-            <div class="rounded-xl overflow-hidden shadow-lg border border-white/10 relative">
-                <img src="Imagenes/CIUDAD REAL GIGANTES, CASTILLOS Y NATURALEZA.png"
-                    class="w-full h-auto object-contain">
-                <!-- Gradient removed or adjusted if it obscures too much, kept for text readability if needed, but user wants to SEE the image. 
+                    <!-- Icon: Cultura -->
+                    <a href="https://www.google.com/maps/search/Monumentos+Ciudad+Real" target="_blank"
+                        class="group flex flex-col items-center gap-2">
+                        <div
+                            class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-indigo-500/20 group-hover:border-indigo-500/50 transition duration-300">
+                            <i data-lucide="landmark"
+                                class="w-5 h-5 text-indigo-300 group-hover:text-indigo-200 transition"></i>
+                        </div>
+                        <span
+                            class="text-[10px] font-bold uppercase tracking-wider text-stone-400 group-hover:text-indigo-300 transition">Cultura</span>
+                    </a>
+
+                    <!-- Icon: Shopping -->
+                    <a href="https://www.google.com/maps/search/Shopping+Ciudad+Real" target="_blank"
+                        class="group flex flex-col items-center gap-2">
+                        <div
+                            class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-pink-500/20 group-hover:border-pink-500/50 transition duration-300">
+                            <i data-lucide="shopping-bag"
+                                class="w-5 h-5 text-pink-300 group-hover:text-pink-200 transition"></i>
+                        </div>
+                        <span
+                            class="text-[10px] font-bold uppercase tracking-wider text-stone-400 group-hover:text-pink-300 transition">Shopping</span>
+                    </a>
+
+                </div>
+            </div>
+
+            <!-- Section 1: Ciudad Real (Only Teatro remains) -->
+            <div class="bg-stone-900 px-6 pt-4 pb-2 sticky top-0 z-20">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-rose-500"></i>
+                    Explorar Ciudad Real
+                </h2>
+            </div>
+
+            <div class="bg-stone-900 px-6 pb-6 flex flex-col gap-3">
+                <!-- Banner: Teatro Quijano -->
+                <a href="excursion-quijano.html"
+                    class="group relative overflow-hidden rounded-xl bg-stone-800 border border-white/5 active:scale-95 transition flex items-stretch h-24 overflow-hidden shadow-lg">
+
+                    <!-- Image Section (White Background) -->
+                    <div class="w-28 shrink-0 bg-white flex items-center justify-center p-3 relative z-10">
+                        <img src="Imagenes/Logo-Qijano.png" alt="Teatro Quijano"
+                            class="w-full h-full object-contain filter drop-shadow-sm group-hover:scale-105 transition duration-500">
+                    </div>
+
+                    <!-- Text Section -->
+                    <div
+                        class="flex-1 p-3 flex flex-col justify-center relative z-10 border-l border-white/5 bg-stone-800">
+                        <h3 class="font-serif font-bold text-lg text-white mb-1 group-hover:text-rose-400 transition">
+                            Teatro
+                            Municipal</h3>
+                        <p class="text-[10px] text-stone-400 leading-tight line-clamp-2">
+                            Escenario principal de la cultura. Teatro, danza y música.
+                        </p>
+                    </div>
+                    <!-- Arrow Icon -->
+                    <div
+                        class="w-8 flex items-center justify-center text-stone-600 bg-stone-800 group-hover:text-rose-400 transition pr-2 relative z-10">
+                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Section 2: Provincia -->
+            <div class="px-6 pt-6 pb-2 bg-stone-900">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2 mb-4">
+                    <i data-lucide="compass" class="w-4 h-4 text-amber-500"></i>
+                    Joyas de la Provincia
+                </h2>
+
+                <div class="rounded-xl overflow-hidden shadow-lg border border-white/10 relative">
+                    <img src="Imagenes/CIUDAD REAL GIGANTES, CASTILLOS Y NATURALEZA.png"
+                        class="w-full h-auto object-contain">
+                    <!-- Gradient removed or adjusted if it obscures too much, kept for text readability if needed, but user wants to SEE the image. 
                       User said "que se vea entera". The gradient might obscure the bottom. 
                       Let's keep a subtle gradient only if there is text overlay.
                       The 'Descubre' tag is there.
                  -->
-                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
-                <!-- Removed the big gradient from-black/60 to let image shine, just subtle -->
-            </div>
-        </div>
-
-        <div class="bg-stone-900 px-6 pb-8 flex flex-col gap-3">
-
-            <!-- Banner: Almagro -->
-            <a href="excursion-almagro.html"
-                class="group relative overflow-hidden rounded-xl bg-stone-800 border border-white/5 active:scale-95 transition flex items-stretch min-h-32 shadow-lg">
-
-                <!-- Image Section (White Background) -->
-                <div class="w-32 shrink-0 bg-white flex items-center justify-center relative z-10 overflow-hidden">
-                    <img src="Imagenes/Almagro.peg.jpeg"
-                        class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                </div>
-
-                <!-- Text Section -->
-                <div class="flex-1 p-4 flex flex-col justify-center relative z-10 bg-stone-800 border-l border-white/5">
-                    <h3 class="font-serif font-bold text-lg text-white mb-2 group-hover:text-amber-400 transition">
-                        Almagro</h3>
-                    <p class="text-[10px] text-stone-300 leading-relaxed text-justify">
-                        En Cumbria Spa & Hotel, su refugio de relax y bienestar en plena naturaleza, queremos invitarle
-                        a una experiencia cultural y histórica única: explorar <strong>Almagro</strong>, una joya
-                        arquitectónica y patrimonial situada en el corazón de Ciudad Real. Esta encantadora localidad
-                        combina historia, arte y tradición, ofreciendo un viaje fascinante al pasado mientras disfruta
-                        de los encantos de Castilla-La Mancha.
-                    </p>
-                </div>
-                <!-- Arrow Icon -->
-                <div
-                    class="w-8 flex items-center justify-center text-stone-400 bg-stone-800 group-hover:text-amber-400 transition pr-2 relative z-10">
-                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                </div>
-            </a>
-
-            <!-- Banner: Naturaleza -->
-            <a href="https://www.google.com/maps/search/Parques+Naturales+Ciudad+Real" target="_blank"
-                class="group relative overflow-hidden rounded-xl bg-stone-800 border border-white/5 active:scale-95 transition flex items-stretch h-20 shadow-lg">
-                <!-- Icon Section (White Background) -->
-                <div class="w-20 shrink-0 flex items-center justify-center p-2 bg-white">
-                    <i data-lucide="trees" class="w-8 h-8 text-emerald-600 group-hover:scale-110 transition"></i>
-                </div>
-
-                <!-- Text Section -->
-                <div class="flex-1 p-3 flex flex-col justify-center border-l border-white/5 bg-stone-800">
-                    <h3 class="font-bold text-base text-white mb-0.5 group-hover:text-emerald-400 transition">Naturaleza
-                    </h3>
-                    <p class="text-[10px] text-stone-400 leading-tight">
-                        Parques Nacionales y Tablas de Daimiel.
-                    </p>
-                </div>
-                <div class="w-8 flex items-center justify-center text-stone-600 bg-stone-800 pr-2">
-                    <i data-lucide="external-link" class="w-4 h-4"></i>
-                </div>
-            </a>
-
-            <!-- Map Button (Keep as simple bar) -->
-            <a href="https://www.google.com/maps/search/Turismo+Ciudad+Real" target="_blank"
-                class="rounded-xl bg-stone-800/30 border border-dashed border-stone-700 hover:bg-stone-800 transition py-3 flex items-center justify-center gap-2 text-stone-500 text-xs group active:scale-95">
-                <i data-lucide="map" class="w-4 h-4 group-hover:text-stone-300 transition"></i>
-                <span class="font-medium group-hover:text-stone-300">Ver mapa general</span>
-            </a>
-
-        </div>
-
-        <!-- Footer Info -->
-        <div class="px-8 pb-12 text-center opacity-40">
-            <p class="text-[10px] text-stone-500">
-                Hotel Cumbria • Guía Turística<br>
-                Ciudad Real
-            </p>
-        </div>
-
-    </div>
-
-    <!-- Excursion Details Modal Template -->
-    <div id="excursion-modal"
-        class="fixed inset-0 z-[60] flex items-end justify-center pointer-events-none opacity-0 transition-opacity duration-300">
-        <div class="absolute inset-0 bg-black/80 modal-backdrop" onclick="closeExcursionModal()"></div>
-        <div
-            class="modal-content relative w-full h-[85vh] bg-stone-900 rounded-t-[2.5rem] overflow-hidden pointer-events-auto flex flex-col shadow-2xl transform translate-y-full transition-transform duration-300">
-
-            <!-- Header Image -->
-            <div class="relative h-64 shrink-0">
-                <img id="modal-img" src="" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-stone-900 via-transparent to-transparent"></div>
-                <button onclick="closeExcursionModal()"
-                    class="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/30 backdrop-blur flex items-center justify-center text-white hover:bg-black/50 z-20">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <!-- Content -->
-            <div class="flex-1 overflow-y-auto p-8 pt-0 -mt-6 relative z-10 bg-stone-900 rounded-t-[2rem]">
-                <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-6 mt-4"></div>
-                <h2 id="modal-title" class="text-2xl font-serif font-bold text-amber-500 mb-6"></h2>
-                <div class="prose prose-invert prose-stone max-w-none">
-                    <p id="modal-desc" class="text-stone-300 text-sm leading-relaxed whitespace-pre-line"></p>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none">
+                    </div>
+                    <!-- Removed the big gradient from-black/60 to let image shine, just subtle -->
                 </div>
             </div>
 
+            <div class="bg-stone-900 px-6 pb-8 flex flex-col gap-3">
+
+                <!-- Banner: Almagro -->
+                <a href="excursion-almagro.html"
+                    class="group relative overflow-hidden rounded-xl bg-stone-800 border border-white/5 active:scale-95 transition flex items-stretch min-h-32 shadow-lg">
+
+                    <!-- Image Section (White Background) -->
+                    <div class="w-32 shrink-0 bg-white flex items-center justify-center relative z-10 overflow-hidden">
+                        <img src="Imagenes/Almagro.peg.jpeg"
+                            class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    </div>
+
+                    <!-- Text Section -->
+                    <div
+                        class="flex-1 p-4 flex flex-col justify-center relative z-10 bg-stone-800 border-l border-white/5">
+                        <h3 class="font-serif font-bold text-lg text-white mb-2 group-hover:text-amber-400 transition">
+                            Almagro</h3>
+                        <p class="text-[10px] text-stone-300 leading-relaxed text-justify">
+                            En Cumbria Spa & Hotel, su refugio de relax y bienestar en plena naturaleza, queremos
+                            invitarle
+                            a una experiencia cultural y histórica única: explorar <strong>Almagro</strong>, una joya
+                            arquitectónica y patrimonial situada en el corazón de Ciudad Real. Esta encantadora
+                            localidad
+                            combina historia, arte y tradición, ofreciendo un viaje fascinante al pasado mientras
+                            disfruta
+                            de los encantos de Castilla-La Mancha.
+                        </p>
+                    </div>
+                    <!-- Arrow Icon -->
+                    <div
+                        class="w-8 flex items-center justify-center text-stone-400 bg-stone-800 group-hover:text-amber-400 transition pr-2 relative z-10">
+                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                    </div>
+                </a>
+
+                <!-- Banner: Naturaleza -->
+                <a href="https://www.google.com/maps/search/Parques+Naturales+Ciudad+Real" target="_blank"
+                    class="group relative overflow-hidden rounded-xl bg-stone-800 border border-white/5 active:scale-95 transition flex items-stretch h-20 shadow-lg">
+                    <!-- Icon Section (White Background) -->
+                    <div class="w-20 shrink-0 flex items-center justify-center p-2 bg-white">
+                        <i data-lucide="trees" class="w-8 h-8 text-emerald-600 group-hover:scale-110 transition"></i>
+                    </div>
+
+                    <!-- Text Section -->
+                    <div class="flex-1 p-3 flex flex-col justify-center border-l border-white/5 bg-stone-800">
+                        <h3 class="font-bold text-base text-white mb-0.5 group-hover:text-emerald-400 transition">
+                            Naturaleza
+                        </h3>
+                        <p class="text-[10px] text-stone-400 leading-tight">
+                            Parques Nacionales y Tablas de Daimiel.
+                        </p>
+                    </div>
+                    <div class="w-8 flex items-center justify-center text-stone-600 bg-stone-800 pr-2">
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </div>
+                </a>
+
+                <!-- Map Button (Keep as simple bar) -->
+                <a href="https://www.google.com/maps/search/Turismo+Ciudad+Real" target="_blank"
+                    class="rounded-xl bg-stone-800/30 border border-dashed border-stone-700 hover:bg-stone-800 transition py-3 flex items-center justify-center gap-2 text-stone-500 text-xs group active:scale-95">
+                    <i data-lucide="map" class="w-4 h-4 group-hover:text-stone-300 transition"></i>
+                    <span class="font-medium group-hover:text-stone-300">Ver mapa general</span>
+                </a>
+
+            </div>
+
+            <!-- Footer Info -->
+            <div class="px-8 pb-12 text-center opacity-40">
+                <p class="text-[10px] text-stone-500">
+                    Hotel Cumbria • Guía Turística<br>
+                    Ciudad Real
+                </p>
+            </div>
+
         </div>
-    </div>
 
-    <script src="db.js"></script>
-    <script>
-        lucide.createIcons();
-        const appData = DB.get();
+        <!-- Excursion Details Modal Template -->
+        <div id="excursion-modal"
+            class="fixed inset-0 z-[60] flex items-end justify-center pointer-events-none opacity-0 transition-opacity duration-300">
+            <div class="absolute inset-0 bg-black/80 modal-backdrop" onclick="closeExcursionModal()"></div>
+            <div
+                class="modal-content relative w-full h-[85vh] bg-stone-900 rounded-t-[2.5rem] overflow-hidden pointer-events-auto flex flex-col shadow-2xl transform translate-y-full transition-transform duration-300">
 
-        if (appData.tourism) {
-            if (appData.tourism.videoUrl) document.getElementById('tourism-frame').src = appData.tourism.videoUrl;
-            if (appData.tourism.desc) document.getElementById('tourism-desc').textContent = appData.tourism.desc;
+                <!-- Header Image -->
+                <div class="relative h-64 shrink-0">
+                    <img id="modal-img" src="" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-stone-900 via-transparent to-transparent"></div>
+                    <button onclick="closeExcursionModal()"
+                        class="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/30 backdrop-blur flex items-center justify-center text-white hover:bg-black/50 z-20">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
 
-            // Excursions logic is now handled by the static button calling openExcursion(0)
-            // No need to render a list anymore since we iconified it.
-        }
+                <!-- Content -->
+                <div class="flex-1 overflow-y-auto p-8 pt-0 -mt-6 relative z-10 bg-stone-900 rounded-t-[2rem]">
+                    <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-6 mt-4"></div>
+                    <h2 id="modal-title" class="text-2xl font-serif font-bold text-amber-500 mb-6"></h2>
+                    <div class="prose prose-invert prose-stone max-w-none">
+                        <p id="modal-desc" class="text-stone-300 text-sm leading-relaxed whitespace-pre-line"></p>
+                    </div>
+                </div>
 
-        function openExcursion(idx) {
-            const exc = appData.tourism.excursions[idx];
-            if (!exc) return;
+            </div>
+        </div>
 
-            document.getElementById('modal-img').src = exc.image || '';
-            document.getElementById('modal-title').textContent = exc.title;
-            const descEl = document.getElementById('modal-desc');
-            descEl.innerHTML = exc.fullDesc;
+        <script src="db.js"></script>
+        <script>
+            lucide.createIcons();
+            const appData = DB.get();
 
-            const modal = document.getElementById('excursion-modal');
-            const content = modal.querySelector('.modal-content');
+            if (appData.tourism) {
+                const tFrame = document.getElementById('tourism-frame');
+                if (tFrame && appData.tourism.videoUrl) tFrame.src = appData.tourism.videoUrl;
 
-            modal.classList.remove('pointer-events-none', 'opacity-0');
-            modal.classList.add('opacity-100'); // Fade in backdrop
+                if (appData.tourism.desc) {
+                    const tDesc = document.getElementById('tourism-desc');
+                    if (tDesc) tDesc.textContent = appData.tourism.desc;
+                }
 
-            // Small delay for slide up animation
-            setTimeout(() => {
-                content.classList.remove('translate-y-full');
-            }, 10);
-        }
+                // Excursions logic is now handled by the static button calling openExcursion(0)
+                // No need to render a list anymore since we iconified it.
+            }
 
-        function closeExcursionModal() {
-            const modal = document.getElementById('excursion-modal');
-            const content = modal.querySelector('.modal-content');
+            function openExcursion(idx) {
+                const exc = appData.tourism.excursions[idx];
+                if (!exc) return;
 
-            content.classList.add('translate-y-full');
+                document.getElementById('modal-img').src = exc.image || '';
+                document.getElementById('modal-title').textContent = exc.title;
+                const descEl = document.getElementById('modal-desc');
+                descEl.innerHTML = exc.fullDesc;
 
-            setTimeout(() => {
-                modal.classList.remove('opacity-100');
-                modal.classList.add('opacity-0', 'pointer-events-none');
-            }, 300);
-        }
-    </script>
+                const modal = document.getElementById('excursion-modal');
+                const content = modal.querySelector('.modal-content');
+
+                modal.classList.remove('pointer-events-none', 'opacity-0');
+                modal.classList.add('opacity-100'); // Fade in backdrop
+
+                // Small delay for slide up animation
+                setTimeout(() => {
+                    content.classList.remove('translate-y-full');
+                }, 10);
+            }
+
+            function closeExcursionModal() {
+                const modal = document.getElementById('excursion-modal');
+                const content = modal.querySelector('.modal-content');
+
+                content.classList.add('translate-y-full');
+
+                setTimeout(() => {
+                    modal.classList.remove('opacity-100');
+                    modal.classList.add('opacity-0', 'pointer-events-none');
+                }, 300);
+            }
+        </script>
 </body>
 
 </html>

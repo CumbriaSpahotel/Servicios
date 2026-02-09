@@ -259,9 +259,26 @@
             document.getElementById('full-desc').innerHTML = descHtml || '<p class="text-stone-400">Sin descripción disponible.</p>';
 
             // Stabilize iframes in content: add lazy loading
+            const isMobile = window.innerWidth < 768;
             document.querySelectorAll('#full-desc iframe').forEach(iframe => {
-                iframe.setAttribute('loading', 'lazy');
-                iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups');
+                const src = iframe.getAttribute('src') || '';
+                const title = iframe.getAttribute('title') || 'Ver contenido';
+
+                if (isMobile) {
+                    // On mobile: replace iframe with a nice link button
+                    const linkCard = document.createElement('a');
+                    linkCard.href = src;
+                    linkCard.target = '_blank';
+                    linkCard.className = 'block w-full p-6 my-4 rounded-2xl bg-gradient-to-r from-amber-600 to-amber-700 text-white text-center no-underline shadow-xl';
+                    linkCard.innerHTML = `
+                        <p class="text-lg font-bold mb-1">${title}</p>
+                        <p class="text-sm text-amber-200 opacity-80">Toca para abrir ↗</p>
+                    `;
+                    iframe.parentElement.replaceChild(linkCard, iframe);
+                } else {
+                    // On desktop: keep iframe with lazy loading
+                    iframe.setAttribute('loading', 'lazy');
+                }
             });
 
             // Gallery

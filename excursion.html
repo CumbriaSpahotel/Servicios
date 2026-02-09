@@ -145,6 +145,7 @@
         </div>
     </div>
 
+    <script src="firebase-config.js"></script>
     <script type="module">
         import { DB } from './db.js?v=5';
 
@@ -209,29 +210,33 @@
             tag.className = `px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border bg-black/40 backdrop-blur-sm ${colors[color] || colors.amber}`;
 
             // Desc
-            // Desc
+            let descHtml = '';
+
+            // Short description (intro text)
+            const shortDesc = data.description || data.shortDesc || '';
+            if (shortDesc) {
+                descHtml += `<p class="leading-relaxed text-stone-300 text-lg mb-6 text-justify italic border-l-4 border-amber-500/50 pl-4">${shortDesc}</p>`;
+            }
+
+            // Full description (HTML or auto-formatted text)
             if (data.fullDesc) {
-                // If it looks like HTML, use it. If not, auto-format paragraphs.
                 if (data.fullDesc.trim().startsWith('<')) {
-                    document.getElementById('full-desc').innerHTML = data.fullDesc;
+                    descHtml += data.fullDesc;
                 } else {
                     const paragraphs = data.fullDesc.split('\n').filter(p => p.trim().length > 0);
-                    const html = paragraphs.map(p => {
-                        // Check if it's a list item (starts with -)
+                    descHtml += paragraphs.map(p => {
                         if (p.trim().startsWith('-')) {
                             return `<li class="ml-4 list-disc text-stone-300 mb-2 pl-2">${p.replace('-', '').trim()}</li>`;
                         }
-                        // Check if it's a header (short and ends with :)
                         if (p.trim().endsWith(':') && p.trim().length < 50) {
                             return `<h3 class="text-xl font-serif font-bold text-white mt-6 mb-3">${p.trim().replace(':', '')}</h3>`;
                         }
                         return `<p class="leading-relaxed text-stone-300 text-lg mb-4 text-justify">${p}</p>`;
                     }).join('');
-                    document.getElementById('full-desc').innerHTML = html;
                 }
-            } else {
-                document.getElementById('full-desc').innerHTML = `<p>${data.description}</p>`;
             }
+
+            document.getElementById('full-desc').innerHTML = descHtml || '<p class="text-stone-400">Sin descripción disponible.</p>';
 
             // Gallery
             if (data.gallery && data.gallery.length > 0) {

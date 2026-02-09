@@ -847,8 +847,14 @@
             btn.innerHTML = '<i data-lucide="loader-2" class="w-6 h-6 animate-spin"></i> Guardando...';
 
             try {
+                // Debug: Log tourism data before save
+                console.log("🔍 [SAVE] Tourism before saving:", JSON.stringify(window.appData.tourism, null, 2));
+                console.log("🔍 [SAVE] Excursions count:", window.appData.tourism?.excursions?.length);
+
                 // Save Main Data
                 await DB.save(window.appData);
+
+                console.log("✅ [SAVE] Data saved successfully!");
 
                 // Save History if we are in Restaurant tab
 

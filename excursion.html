@@ -26,6 +26,26 @@
         h3 {
             font-family: 'Playfair Display', serif;
         }
+
+        /* Stabilize iframes in dynamic content */
+        #full-desc iframe {
+            max-width: 100%;
+            border: none;
+            border-radius: 12px;
+            background: #292524;
+            will-change: transform;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #full-desc>div {
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            #full-desc iframe {
+                height: 500px !important;
+            }
+        }
     </style>
 </head>
 
@@ -237,6 +257,12 @@
             }
 
             document.getElementById('full-desc').innerHTML = descHtml || '<p class="text-stone-400">Sin descripción disponible.</p>';
+
+            // Stabilize iframes in content: add lazy loading
+            document.querySelectorAll('#full-desc iframe').forEach(iframe => {
+                iframe.setAttribute('loading', 'lazy');
+                iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups');
+            });
 
             // Gallery
             if (data.gallery && data.gallery.length > 0) {

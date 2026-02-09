@@ -75,9 +75,9 @@
     </div>
 
     <script src="firebase-config.js"></script>
-    <script type="module" src="db.js"></script>
+    <script type="module" src="db.js?v=2"></script>
     <script type="module">
-        import { DB } from './db.js';
+        import { DB } from './db.js?v=2';
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 

@@ -6,6 +6,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Excursión - Hotel Cumbria</title>
+    <link rel="icon" type="image/x-icon" href="Imagenes/Hotel Cumbria.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link
@@ -253,7 +254,12 @@
             // Video
             if (data.videoUrl) {
                 document.getElementById('video-section').classList.remove('hidden');
-                document.getElementById('video-frame').src = data.videoUrl;
+                let videoSrc = data.videoUrl;
+                // Handle Google Drive
+                if (videoSrc.includes('drive.google.com')) {
+                    videoSrc = videoSrc.replace('/view?usp=sharing', '/preview').replace('/view', '/preview');
+                }
+                document.getElementById('video-frame').src = videoSrc;
             }
 
             // Link

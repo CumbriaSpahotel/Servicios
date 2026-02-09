@@ -11,6 +11,7 @@
     <meta name="description"
         content="Portal de servicios del Hotel Cumbria & Spa. Restaurante, Room Service, Spa y más.">
     <title>Cumbria Hotel & Spa | Guest Portal</title>
+    <link rel="icon" type="image/x-icon" href="Imagenes/Hotel Cumbria.ico">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -1137,6 +1138,11 @@
 
             // Already embed format?
             if (url.includes('/embed/')) return url;
+
+            // Handle Google Drive
+            if (url.includes('drive.google.com')) {
+                return url.replace('/view?usp=sharing', '/preview').replace('/view', '/preview');
+            }
 
             let videoId = '';
 

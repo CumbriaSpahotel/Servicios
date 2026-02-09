@@ -6,6 +6,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Ciudad Real Experience | Cumbria Hotel</title>
+    <link rel="icon" type="image/x-icon" href="Imagenes/Hotel Cumbria.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link
@@ -249,13 +250,17 @@
             } else if (data.videoUrl) {
                 // Show Video, Hide Image
                 let src = data.videoUrl;
-                if (src.includes('vimeo')) {
+                if (src.includes('drive.google.com')) {
+                    // Google Drive: convert /view to /preview
+                    src = src.replace('/view?usp=sharing', '/preview').replace('/view', '/preview');
+                } else if (src.includes('vimeo')) {
                     // Vimeo embed parameters
                     src += "?background=1&autoplay=1&loop=1&byline=0&title=0";
-                } else {
+                } else if (src.includes('youtube') || src.includes('youtu.be')) {
                     // YouTube embed parameters
                     src += "&autoplay=1&mute=1&loop=1&playlist=lE6RYpe9IT0&controls=0&showinfo=0";
                 }
+                // If none match, use URL as-is
                 tFrame.src = src;
                 tFrame.classList.remove('hidden');
                 tImg.classList.add('hidden');

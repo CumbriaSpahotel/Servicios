@@ -223,17 +223,21 @@
     </div>
 
     <!-- Scripts -->
-    <script src="db.js?v=2" type="module"></script>
+    <script src="db.js?v=3" type="module"></script>
     <script type="module">
-        import { DB } from './db.js?v=2';
+        import { DB } from './db.js?v=3';
 
         lucide.createIcons();
 
         (async function init() {
             const appData = await DB.get();
+            console.log("📊 Tourism Data Loaded:", appData?.tourism);
+            console.log("📸 Excursions:", appData?.tourism?.excursions?.map(e => ({ title: e.title, hasImage: !!e.image, image: e.image })));
 
             if (appData && appData.tourism) {
                 render(appData.tourism);
+            } else {
+                console.error("❌ No tourism data found!");
             }
         })();
 

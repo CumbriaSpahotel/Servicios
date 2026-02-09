@@ -350,7 +350,10 @@ const DB = {
 
             if (docSnap.exists()) {
                 console.log("✅ Data loaded from Firestore");
-                return DB.mergeDefaults(docSnap.data());
+                const cloudData = DB.mergeDefaults(docSnap.data());
+                // Sync localStorage with cloud data so all browsers stay updated
+                localStorage.setItem(DB_KEY, JSON.stringify(cloudData));
+                return cloudData;
             } else {
                 console.log("ℹ️ No remote data found, checking local...");
                 const stored = localStorage.getItem(DB_KEY);

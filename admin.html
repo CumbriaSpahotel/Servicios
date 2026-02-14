@@ -316,7 +316,7 @@
                                                 <div class="space-y-4">
                                                     ${field('Título', `appData.tourism.excursions[${idx}].title`, exc.title)}
                                                     ${field('Subtítulo', `appData.tourism.excursions[${idx}].subtitle`, exc.subtitle || '')}
-                                                    ${field('ID Texto (Slug)', `appData.tourism.excursions[${idx}].id`, exc.id)}
+                                                    ${field('ID Texto (Slug)', `appData.tourism.excursions[${idx}].id`, exc.id, 'text', 'ej: almagro-visita')}
                                                 </div>
                                                 <div class="space-y-4">
                                                      <div class="mb-4">
@@ -395,7 +395,7 @@
                                 </div>
                             </div>
                             <div class="mb-4">
-                                ${field('Video Presentación (URL YouTube)', `appData.spa.videoUrl`, data.videoUrl || '')}
+                                ${field('Video Presentación (URL YouTube o Drive)', `appData.spa.videoUrl`, data.videoUrl || '')}
                             </div>
                          </div>`;
 
@@ -676,7 +676,7 @@
             }
         }
 
-        window.field = function (label, path, value, type = 'text') {
+        window.field = function (label, path, value, type = 'text', placeholder = '') {
             const safeValue = value === undefined || value === null ? '' : value;
 
             // Auto-detect if it's an image or video field
@@ -686,10 +686,15 @@
                 path.toLowerCase().includes('image') ||
                 path.toLowerCase().includes('url');
 
+            // Set default placeholder if not provided
+            if (!placeholder) {
+                placeholder = isMedia ? 'http://...' : 'Escribe aquí...';
+            }
+
             // Generate Input - using oninput for instant updates
             let inputHtml = type === 'textarea'
-                ? `<textarea oninput="${path} = this.value" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-amber-500 options-input" rows="4">${safeValue}</textarea>`
-                : `<input type="${type}" value="${safeValue}" oninput="${path} = this.value" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-amber-500 options-input" placeholder="http://...">`;
+                ? `<textarea oninput="${path} = this.value" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-amber-500 options-input" rows="4" placeholder="${placeholder}">${safeValue}</textarea>`
+                : `<input type="${type}" value="${safeValue}" oninput="${path} = this.value" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-amber-500 options-input" placeholder="${placeholder}">`;
 
             // If Media, add Upload Button
             if (isMedia && type !== 'textarea') {

@@ -316,15 +316,30 @@
                 document.getElementById('ext-link').href = data.linkUrl;
             }
 
-            // PDF Button (Insert if exists)
+            // PDF Viewer (Embed & Button)
             if (data.pdfUrl) {
                 const container = document.getElementById('link-section').parentNode;
+
+                // 1. Embed Viewer
+                const pdfEmbed = document.createElement('div');
+                pdfEmbed.className = "pt-8 md:pt-12 border-t border-white/5";
+                pdfEmbed.innerHTML = `
+                    <h3 class="text-2xl md:text-3xl font-serif text-white mb-6 md:mb-10 text-center italic">Guía Digital</h3>
+                    <div class="relative w-full h-[600px] md:h-[800px] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-stone-900 group">
+                        <iframe src="https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(data.pdfUrl)}" class="w-full h-full" frameborder="0"></iframe>
+                        <div class="absolute inset-0 pointer-events-none ring-1 ring-inset ring-white/10 rounded-2xl md:rounded-3xl"></div>
+                    </div>
+                `;
+                container.appendChild(pdfEmbed);
+
+                // 2. Download Button (below viewer)
                 const pdfBtn = document.createElement('div');
-                pdfBtn.className = "flex justify-center mt-6 pb-20";
+                pdfBtn.className = "flex justify-center mt-8 pb-20";
                 pdfBtn.innerHTML = `
-                    <a href="${data.pdfUrl}" target="_blank" class="flex items-center gap-3 px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold shadow-lg transition transform hover:scale-105 border border-red-500">
-                        <i data-lucide="file-text" class="w-5 h-5"></i>
-                        <span>Descargar Guía PDF</span>
+                    <a href="${data.pdfUrl}" target="_blank" class="flex items-center gap-3 px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold shadow-lg transition transform hover:scale-105 border border-red-500 group relative overflow-hidden">
+                        <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer"></span>
+                        <i data-lucide="file-text" class="w-5 h-5 relative z-10"></i>
+                        <span class="relative z-10">Descargar Guía PDF</span>
                     </a>
                 `;
                 container.appendChild(pdfBtn);

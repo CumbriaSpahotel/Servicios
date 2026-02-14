@@ -325,12 +325,26 @@
                 pdfEmbed.className = "pt-8 md:pt-12 border-t border-white/5";
 
                 let embedContent = '';
-                // Check for Google Drive Link
-                if (data.pdfUrl.includes('drive.google.com')) {
-                    const driveEmbedUrl = data.pdfUrl.replace('/view', '/preview').replace('?usp=sharing', '').replace('?usp=drive_link', '');
-                    embedContent = `<iframe src="${driveEmbedUrl}" class="w-full h-full" frameborder="0"></iframe>`;
+                let isDrive = false;
+
+                // Robust Google Drive ID Extraction
+                const driveRegex = /\/file\/d\/([a-zA-Z0-9_-]+)/;
+                const driveMatch = data.pdfUrl.match(driveRegex);
+
+                if (driveMatch && driveMatch[1]) {
+                    isDrive = true;
+                    const fileId = driveMatch[1];
+                    const driveEmbedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+                    embedContent = `
+                        <iframe src="${driveEmbedUrl}" class="w-full h-full" frameborder="0"></iframe>
+                        <div class="absolute bottom-4 left-0 w-full text-center pointer-events-none">
+                             <span class="bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-md">
+                                ¿No carga? Usa el botón de descarga abajo &darr;
+                             </span>
+                        </div>
+                    `;
                 } else {
-                    // Standard PDF embed
+                    // Standard PDF embed (Object)
                     embedContent = `
                         <object data="${data.pdfUrl}" type="application/pdf" class="w-full h-full">
                             <div class="flex flex-col items-center justify-center h-full text-center p-6 bg-stone-800 text-stone-400">

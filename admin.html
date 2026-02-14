@@ -369,6 +369,9 @@
                                                     ${field('Video URL (YouTube Embed)', `appData.tourism.excursions[${idx}].videoUrl`, exc.videoUrl || '')}
                                                     ${field('Enlace Externo (Web)', `appData.tourism.excursions[${idx}].linkUrl`, exc.linkUrl || '')}
                                                 </div>
+                                                <div class="mt-4">
+                                                    ${field('Documento PDF (URL)', `appData.tourism.excursions[${idx}].pdfUrl`, exc.pdfUrl || '', 'text', 'https://...archivo.pdf')}
+                                                </div>
                                             </div>
 
                                         </div>

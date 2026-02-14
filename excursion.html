@@ -316,6 +316,20 @@
                 document.getElementById('ext-link').href = data.linkUrl;
             }
 
+            // PDF Button (Insert if exists)
+            if (data.pdfUrl) {
+                const container = document.getElementById('link-section').parentNode;
+                const pdfBtn = document.createElement('div');
+                pdfBtn.className = "flex justify-center mt-6 pb-20";
+                pdfBtn.innerHTML = `
+                    <a href="${data.pdfUrl}" target="_blank" class="flex items-center gap-3 px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold shadow-lg transition transform hover:scale-105 border border-red-500">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                        <span>Descargar Guía PDF</span>
+                    </a>
+                `;
+                container.appendChild(pdfBtn);
+            }
+
             lucide.createIcons();
         }
     </script>
